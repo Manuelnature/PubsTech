@@ -5,6 +5,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RetailingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TransferController;
+use App\Http\Controllers\DashboardController;
+
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +29,58 @@ use App\Http\Controllers\WarehouseController;
 //     return view('welcome');
 // });
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('retailing', [RetailingController::class, 'index']);
-Route::get('profile', [ProfileController::class, 'index']);
-Route::get('warehouse', [WarehouseController::class, 'index']);
+Route::group(['middleware' => 'disable_back_button'], function () {
+
+    Route::get('/', [LoginController::class, 'index'])->middleware('alreadyLoggedIn');
+    // Route::get('/', [LoginController::class, 'index']);
+    Route::post('user_login', [LoginController::class, 'user_login'])->name('login_user');
+
+    Route::get('register', [RegisterController::class, 'index']);
+    Route::post('register', [RegisterController::class, 'user_register'])->name('register_user');
+
+        Route::get('set_password', [SetPasswordController::class, 'index']);
+        Route::post('set_user_password', [SetPasswordController::class, 'set_password'])->name('set_user_password');
+
+
+    Route::group(['middleware' => 'isLoggedIn'], function () {
+
+        // DASHBOARD ======================
+        Route::get('home', [HomeController::class, 'index']);
+        Route::post('filter_sales', [HomeController::class, 'filter_sales_records'])->name('filter_sales');
+        Route::get('dashboard', [DashboardController::class, 'index']);
+        Route::get('retailer_dashboard', [DashboardController::class, 'retailer_dashboard'])->name('retailer_dashboard');
+
+        // PROFILE ======================
+        Route::get('profile', [ProfileController::class, 'index']);
+        Route::post('update_user_profile', [ProfileController::class, 'update_user_profile'])->name('update_user_profile');
+
+        // PRODUCT ======================
+        Route::get('product', [ProductController::class, 'index']);
+        Route::post('add_product', [ProductController::class, 'add_product'])->name('add_product');
+        Route::post('add_most_purchased', [ProductController::class, 'add_most_purchased'])->name('add_most_purchased');
+        Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
+        Route::post('delete_product', [ProductController::class, 'delete_product'])->name('delete_product');
+
+         // RETAIL ======================
+         Route::get('retailing', [RetailingController::class, 'index']);
+         Route::post('add_sale', [RetailingController::class, 'add_sale'])->name('add_sale');
+         Route::post('add_sale_from_modal', [RetailingController::class, 'add_sale_from_modal'])->name('add_sale_from_modal');
+
+         // WAREHOUSE ======================
+         Route::get('warehouse', [WarehouseController::class, 'index']);
+         Route::post('add_stock', [WarehouseController::class, 'add_stock'])->name('add_stock');
+
+         // TRANSFERs ======================
+         Route::get('transfer', [TransferController::class, 'index']);
+         Route::post('transfer_stock', [TransferController::class, 'transfer_stock'])->name('transfer_stock');
+
+         // USERS ======================
+         Route::get('users', [UserController::class, 'index']);
+         Route::post('add_user', [UserController::class, 'add_user'])->name('add_user');
+         Route::post('update_user', [UserController::class, 'update_user'])->name('update_user');
+         Route::post('delete_user', [UserController::class, 'delete_user'])->name('delete_user');
+
+         // LOGOUT ======================
+         Route::get('logout', [LoginController::class, 'logout_user'])->name('logout');
+    });
+});

@@ -1,0 +1,304 @@
+Sales table ====
+id (pk)
+product_id (fk)
+quantity_before (stock_before - stock_after for the first insert
+			else:
+			current_quantity_before = 	previous_quantity_before - previous_quantity_sold)
+quantity_sold
+amount
+sold_date
+sold_by
+is_cancelled (boolean default: false)
+remarks
+updated_reason
+updated_by (null as default)
+updated_at
+sold_at (time)
+
+
+============Product, Audit, Warehouse, Users,
+lst_product
+
+Products ====
+id (pk)
+name
+description
+price_per_item
+quantity_per_crate
+price_per_crate
+total_items
+stock_threshold (where it gets to know we are running out of stock)
+remarks
+created_by
+created_at
+updated_by
+updated_at
+
+
+Warehouse ====
+id (pk)
+product_id (fk)
+quantity_per_crate
+no_of_crates
+no_of_pieces
+price_per_crate
+price_per_piece (decimal 10,2)
+total_items (items) total items is generated
+stock_date (day of the main stock)
+description / comments
+created_by
+created_at
+updated_reason
+updated_by
+updated_at
+
+Retail (Warehouse Logs) ====
+id (pk)
+product_id (fk)
+original_stock
+stock_before (per item)
+stock_after (per item)
+expected_price
+collected_by
+collected_at
+remarks
+created_by
+created_at
+updated_by
+updated_at
+
+
+Audit======
+Any/All activities that would happen on the platform / portal
+id (pk)
+user
+action (SALES / LOGIN / LOGOUT / RETAILING / WAREHOUSING / ADD_USER / 			CHANGE_USER_ROLE)
+remarks
+created_by
+created_at
+updated_by
+updated_at
+
+
+Retail 1:
+original stock: 100
+Stock before: 100
+Stock after: 60
+
+Retail 2:
+original stock: 100
+Stock before: 60
+Stock after: 40
+
+Retail 3: *** 80 added
+original stock: 120
+Stock before: 120
+Stock after: 90
+
+Retail 4:
+original stock: 120
+Stock before: 90
+Stock after: 0
+
+
+
+Note =======================================
+A scheduler checks stock_after in warehouse_logs against stock_threshold in products.
+If the stock after is <= the stock_threshold then send a notification/sms alert.
+
+--Expected price = difference in stock_before and stock_after * price_per_piece in warehose table
+
+
+---On new stock when there is existing stock, get the remaining items and add it to the new items, this gives us the new total_stock in warehouse table.
+The total_stock in warehouse table is always the original stock
+
+////During retail
+---If current_original_stock - previous_original_stock == 0:
+		then original_stock = previous_stock_after
+		then stock_before = original_stock or previous_stock_after
+	elseif current_original_stock - previous_original_stock > 0:
+		then original_stock = current_total_stock
+		then stock_before = original_stock or current_total_stock
+	else:
+		echo invalid situation since the difference between the current_original_stock - previous_original_stock is negative(-).
+		Please discuss with Admin.
+
+
+
+
+CREATE TABLE tbl_products (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    description longtext,
+    price_per_item varchar(255),
+    quantity_per_crate varchar(100),
+    price_per_crate varchar(255),
+    total_items varchar(255),
+    stock_threshold varchar(255),
+    remarks varchar(255),
+    created_by varchar(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tbl_sales (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    quantity_before varchar(255),
+    quantity_sold varchar(255),
+    amount varchar(255),
+    sold_date varchar(255),
+    sold_by varchar(255),
+    is_cancelled tinyint(0),
+    remarks varchar(255),
+    updated_reason varchar(255),
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    sold_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_ProductSold FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+
+);
+
+
+
+CREATE TABLE tbl_warehouse (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    quantity_per_crate varchar(50),
+    no_of_crates varchar(50),
+    no_of_pieces varchar(50),
+    price_per_crate varchar(50),
+    price_per_piece varchar(50),
+    total_items varchar(50),
+    stock_date date,
+    description longtext,
+    created_by varchar(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_reason longtext,
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_ProductWarehouse FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_warehouse_logs (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    original_stock varchar(255),
+    stock_before varchar(255),
+    stock_after varchar(255),
+    expected_price varchar(255),
+    collected_by varchar(255),
+    collected_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    remarks longtext,
+    created_by varchar(255),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_ProductWarehouseLog FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+CREATE TABLE tbl_files (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    title varchar(255),
+    description varchar(255),
+    filename varchar(255),
+    file_id varchar(255),
+    file_url varchar(255),
+    folder_id int(11),
+    date_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    date_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (folder_id) REFERENCES tbl_folders(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+   );
+
+
+   CREATE TABLE tbl_warehouse_logs (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    number_of_pieces_transfered varchar(20),
+    original_stock varchar(20),
+    stock_before varchar(20),
+    stock_after varchar(20),
+    expected_price varchar(20),
+    collected_by varchar(100),
+    collected_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    remarks longtext,
+    created_by varchar(100),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_ProductWarehouseLog FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+CREATE TABLE tbl_sales_audit (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    user_id int,
+    product_id int,
+    starting_stock varchar(20),
+    starting_stock_price varchar(20),
+    ending_stock varchar(20),
+    ending_stock_price varchar(20),
+    expected_price varchar(20),
+    sales_date varchar(20),
+    created_by varchar(100),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_by varchar(255),
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_product_audit FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id),
+    CONSTRAINT FK_user_audit FOREIGN KEY (user_id)
+    REFERENCES tbl_users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+
+
+=============tbl_bar_table
+purchased_items (text)
+[
+    {
+        'product_id':1,
+        "quantity": 5,
+        "total_price": 50,
+        "last_added_time": "the last time you topped up"
+    },
+    {
+        'product_id':2,
+        "quantity": 5,
+        "total_price": 50,
+        "last_added_time": "the last time you topped up"
+    },
+    {
+        'product_id':1,
+        "quantity": 5,
+        "total_price": 50,
+        "last_added_time": "the last time you topped up"
+    }
+]
+
+
+
+
+
+
+
+
+

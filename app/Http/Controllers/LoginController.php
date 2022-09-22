@@ -1,0 +1,184 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Login;
+use App\Models\SalesAudit;
+use App\Models\Sales;
+use Session;
+use Carbon\Carbon;
+
+class LoginController extends Controller
+{
+    public function index(){
+        return view('auth.login');
+    }
+
+    public function user_login(Request $request)
+    {
+        try {
+            $request->validate([
+                'txt_username' => 'required',
+                // 'txt_email' => 'required|email',
+                // 'txt_password' => 'required'
+            ], [
+                'txt_username.required' => 'Username is required',
+                // 'txt_email.email' => 'Email field must have a valid email address',
+                // 'txt_password.required' => 'Password field cnnot be empty',
+            ]);
+
+            // $email = $request->get('txt_email');
+            $username = $request->get('txt_username');
+            $password = $request->get('txt_password');
+
+            if(!empty($password)){
+                $login_data = Login::where('username', '=', $username)->first();
+
+                if($login_data){
+                    if (Hash::check($password, $login_data->password)) {
+
+                        //=== Setting up a session ==//
+                        Session::put('user_session', $login_data);
+
+                        Alert::toast('Log In Successfully','success');
+
+                        $user_session = Session::get('user_session');
+
+                        if ($user_session->role == 'Retailer') {
+                             $this->get_sales_audit();
+                            return redirect('retailer_dashboard');
+                        }
+                        else {
+                            $this->get_sales_audit();
+                            return redirect('home');
+                        }
+                    }
+                    else{
+                        Alert::toast('Password Incorrect','warning');
+                        return back();
+                    }
+                }
+                else {
+                    Alert::toast('Username not found','warning');
+                        return back();
+                }
+            }
+            else {
+                $set_password_user_details = Login::where('username', $username)->get();
+
+                if ($set_password_user_details){
+                    if($set_password_user_details[0]->password == "" || $set_password_user_details[0]->password == NULL){
+                        // dd($set_password_email_details);
+                        Alert::toast('New user! Set up Password','success');
+                        return view('auth.set_password', compact('set_password_user_details'));
+                    }
+                    else{
+                        Alert::toast('Enter Password to Login','warning');
+                       return back();
+                    }
+                }
+                else{
+                    Alert::toast('Username not found! Enter Again','warning');
+                    return back();
+                }
+            }
+
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
+
+
+
+    public function get_sales_audit (){
+
+        $user_session = Session::get('user_session');
+        $current_user_id = $user_session->id;
+        $sales_audit_records = array();
+        $date_and_time_now = Carbon::now()->toDateTimeString();
+        $today_date = Carbon::now()->format('Y-m-d');
+
+
+        $all_sales_records_for_audit = Sales::get_sales_details_in_group();
+        if (count($all_sales_records_for_audit) > 0) {
+            foreach ($all_sales_records_for_audit as $sales_record) {
+                $product_id = $sales_record->product_id;
+
+                $last_sale_under_each_product_id = Sales::select_last_sale_under_each_product_id($product_id, $date_and_time_now);
+                if(count($last_sale_under_each_product_id) > 0){
+                    foreach ($last_sale_under_each_product_id as $last_sale) {
+                        $main_product_id = $last_sale->product_id;
+                        $product_name = $last_sale->name;
+                        $price_per_item = $last_sale->price_per_item;
+                        $stock_left = $last_sale->stock_after;
+
+                        // $get_all_from_sales_audit = SalesAudit::find($main_product_id);
+                        $get_all_from_sales_audit = SalesAudit::where('product_id', $main_product_id)->get()[0];
+                        if($get_all_from_sales_audit){
+                            $sales_audit = SalesAudit::where('product_id', $main_product_id)->get()[0];
+                            $sales_audit->user_id = $current_user_id;
+                            // $sales_audit->product_id = $main_product_id;
+                            $sales_audit->starting_stock = $stock_left;
+                            $sales_audit->sales_date = $today_date;
+                            $sales_audit->save();
+                        }
+                        else{
+                            $sales_audit = new SalesAudit();
+                            $sales_audit->user_id = $current_user_id;
+                            $sales_audit->product_id = $main_product_id;
+                            $sales_audit->starting_stock = $stock_left;
+                            $sales_audit->sales_date = $today_date;
+                            $sales_audit->save();
+                        }
+                        // array_push( $sales_audit_records, ['product_name' => $product_name, 'price_per_item'=> $price_per_item, 'stock_left'=>$stock_left]);
+                    }
+                }
+
+            }
+        }
+    }
+
+
+
+    public function logout_user(Request $request){
+
+
+        $date_and_time_now = Carbon::now()->toDateTimeString();
+        $all_sales_records_for_audit = Sales::get_sales_details_in_group();
+        if (count($all_sales_records_for_audit) > 0) {
+            foreach ($all_sales_records_for_audit as $sales_record) {
+                $product_id = $sales_record->product_id;
+
+                $last_sale_under_each_product_id = Sales::select_last_sale_under_each_product_id($product_id, $date_and_time_now);
+                if(count($last_sale_under_each_product_id) > 0){
+                    foreach ($last_sale_under_each_product_id as $last_sale) {
+                        $main_product_id = $last_sale->product_id;
+                        $product_name = $last_sale->name;
+                        $price_per_item = $last_sale->price_per_item;
+                        $stock_left = $last_sale->stock_after;
+
+                        $sales_audit = SalesAudit::find($main_product_id);
+
+
+                        $starting_stock = $sales_audit->starting_stock;
+                        $difference_in_stock = (int)$starting_stock - (int)$stock_left;
+                        $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
+
+                        $sales_audit->ending_stock = $stock_left;
+                        $sales_audit->expected_amount = $expected_amount;
+                        $sales_audit->save();
+                    }
+                }
+
+            }
+        }
+
+        $request->session()->forget('user_session');
+
+        return redirect('/');
+    }
+
+}

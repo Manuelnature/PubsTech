@@ -12,8 +12,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Sales / Retailing</li>
+              <li class="breadcrumb-item"><a href="#">Warehouse</a></li>
+              {{-- <li class="breadcrumb-item active">Sales / Warehouse</li> --}}
             </ol>
           </div>
         </div>
@@ -39,41 +39,80 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Products</label>
-                  <select class="select2" multiple="multiple" data-placeholder="Select Product" style="width: 100%;">
-                    <option>Club</option>
-                    <option>Guiness</option>
-                    <option>Golder</option>
-                    <option>Origin</option>
-                    <option>Don Simon</option>
-                    <option>Shandy</option>
-                    <option>Heineken</option>
-                  </select>
+            <form action="{{ route('add_stock') }}" method="POST">
+                @csrf
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="txt_product_name">Products</label>
+                          <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" name="txt_product_name" value="{{ old('txt_product_name') }}" >
+                            <option selected disabled>Select Product</option>
+                            @foreach ($all_products as $product)
+                                <option value="{{$product->id}}">{{$product->name}}</option>
+                            @endforeach
+                          </select>
+                          <span class="text-danger">@error('txt_product_name') {{ $message }} @enderror</span>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txt_quantity_of_crates">Quantity (Crate)</label>
+                            <input type="number" class="form-control" id="txt_quantity_of_crates" name="txt_quantity_of_crates" value="{{ old('txt_quantity_of_crates') }}">
+                        </div>
+                        <span class="text-danger">@error('txt_quantity_of_crates') {{ $message }} @enderror</span>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txt_quantity">Quantity (Pieces)</label>
+                            <input type="number" class="form-control" id="txt_quantity" name="txt_quantity" value="{{ old('txt_quantity') }}">
+                        </div>
+                        <span class="text-danger">@error('txt_quantity') {{ $message }} @enderror</span>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="txt_stock_date">Stock Date</label>
+                            <input type="date" class="form-control" id="txt_stock_date" name="txt_stock_date" value="{{ old('txt_stock_date') }}">
+                            {{-- <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="txt_stock_date"/>
+                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div> --}}
+                            <span class="text-danger">@error('txt_stock_date') {{ $message }} @enderror</span>
+                        </div>
+                      </div>
                 </div>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-default">Secondary</button>
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Products</label>
-                  <select class="select2" multiple="multiple" data-placeholder="Select Product" style="width: 100%;">
-                    <option>Club</option>
-                    <option>Guiness</option>
-                    <option>Golder</option>
-                    <option>Origin</option>
-                    <option>Don Simon</option>
-                    <option>Shandy</option>
-                    <option>Heineken</option>
-                  </select>
+                <!-- /.row -->
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="txt_description">Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter product description" name="txt_description">{{old('txt_description')}}</textarea>
+                        </div>
+                        <span class="text-danger">@error('txt_description') {{ $message }} @enderror</span>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-default">Secondary</button>
-              </div>
-              
-            </div>
-            <!-- /.row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-secondary">Submit</button>
+                    </div>
+                </div>
+
+                {{-- <div class="row">
+                    <div class="col-md-10">
+                        <div class="form-group row">
+                            <label for="txt_total_price" class="col-sm-2 col-form-label">Total Price</label>
+                            <div class="col-sm-10">
+                              <input type="text" class="form-control" id="txt_total_price" name="txt_total_price" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-block btn-secondary">Submit</button>
+                    </div>
+                </div> --}}
+            </form>
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
@@ -82,191 +121,202 @@
         </div>
         <!-- /.card -->
 
-      </div> 
-      <!-- /.container-fluid -->
-
-      <div class="modal fade" id="modal-default" >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Product Name</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Price per Product: <span>¢ 45.00 </span> </p>
-
-              <form class="form-horizontal">
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputEmail3" placeholder="Quantity">
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Total</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputPassword3" placeholder="Total" readonly>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-              </form>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-secondary">Submit</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal --> 
+      <!-- /.container-fluid -->
 
     </section>
 
-    
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Warehouse Info</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        {{-- <th>Quantity per Crate</th> --}}
+                        <th>No. of Crates</th>
+                        <th>No. of Pieces</th>
+                        <th>Price per Piece</th>
+                        <th>Total Items</th>
+                        <th>Total Price</th>
+                        <th>Description</th>
+                        <th>Stock Date</th>
+                        <th>Created By</th>
+                        <th>Date Created</th>
+                        <th>Updated By</th>
+                        <th>Updated Reason</th>
+                        <th>Updated At</th>
+                        <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ($get_product_records as $records)
+                        <tr>
+                            <td>{{ $records->name }}</td>
+                            {{-- <td> {{ $records->quantity_per_crate }}</td> --}}
+                            <td>{{ $records->no_of_crates }}</td>
+                            <td>{{ $records->no_of_pieces }}</td>
+                            <td>
+                                @php
+                                    echo 'Gh¢ '.number_format($records->price_per_piece, 2);
+                                @endphp
+                            </td>
+                            <td>{{ $records->total_items }}</td>
+                            <td>
+                                @php
+                                    if ($records->total_price != NULL || $records->total_price != "") {
+                                        echo 'Gh¢ '.number_format($records->total_price, 2);
+                                    }
+                                    else {
+                                        echo 'Gh¢ 0.00';
+                                    }
+
+                                @endphp
+                            </td>
+                            <td>{{ $records->description }}</td>
+                            <td>{{ $records->stock_date }}</td>
+                            <td>{{ $records->created_by }}</td>
+                            <td>{{ $records->created_at }}</td>
+                            <td>
+                                @if ($records->updated_by == "" || $records->updated_by == NULL)
+                                    <p>Not updated</p>
+                                @else
+                                    <p>{{$records->updated_by}}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($records->updated_reason == "" || $records->updated_reason == NULL)
+                                    <p>Not Stated</p>
+                                @else
+                                    <p>{{$records->updated_reason}}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($records->updated_at == "" || $records->updated_at == NULL)
+                                    <p>Not updated</p>
+                                @else
+                                    <p>{{$records->updated_at}}</p>
+                                @endif
+                            </td>
+
+                            <td class="text-center">
+                                <a class="text-primary"
+                                    onclick="edit_user(this)"
+                                    data-toggle="modal"
+                                    data-target="#edit-user"
+                                    data-id="{{ $records->id }}"
+                                    data-product_name="{{ $records->name }}"
+                                    data-first_name="{{ $records->no_of_crates }}"
+                                    data-last_name="{{ $records->no_of_pieces }}"
+                                    data-email="{{ $records->description }}"
+                                    data-username="{{ $records->stock_date }}"
+                                >
+                                <i class="fas fa-edit"></i>
+                                </a>
+                                <a  class="text-danger"
+                                    onclick="delete_user(this)"
+                                    data-toggle="modal"
+                                    data-target="#delete-user"
+                                    data-id="{{ $records->id }}"
+                                    data-first_name="{{ $records->name }}"
+                                >
+                                <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
 
   </div>
   <!-- /.content-wrapper -->
 
+  @section('Extra_JS')
+  <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+  @endsection
+
+        <!-- DataTables  & Plugins -->
+      <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+      <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+      <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+      <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+      <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+      <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+      <script src="plugins/jszip/jszip.min.js"></script>
+      <script src="plugins/pdfmake/pdfmake.min.js"></script>
+      <script src="plugins/pdfmake/vfs_fonts.js"></script>
+      <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+      <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+      <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+      {{-- <script src="dist/js/adminlte.min.js"></script> --}}
+
+      <script>
+        $(function () {
+          $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "ordering": true,
+            "order": [[ 10, "desc" ]],
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+          $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+          });
+        });
+      </script>
+
+
+    <script>
+        $("#txt_quantity_of_crates").attr("value", 0);
+        $("#txt_quantity").attr("value", 0);
+
+        var today = new Date();
+        var dd = ("0" + (today.getDate())).slice(-2);
+        var mm = ("0" + (today.getMonth() +　1)).slice(-2);
+        var yyyy = today.getFullYear();
+        today =  yyyy + '-' + mm + '-' + dd ;
+        // today =  mm + '/' + dd + '/' + yyyy ;
+        $("#txt_stock_date").attr("value", today);
+    </script>
 
 
 
-  <script>
-    $(function () {
-      //Initialize Select2 Elements
-      $('.select2').select2()
-  
-      //Initialize Select2 Elements
-      $('.select2bs4').select2({
-        theme: 'bootstrap4'
-      })
-  
-      //Datemask dd/mm/yyyy
-      $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-      //Datemask2 mm/dd/yyyy
-      $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-      //Money Euro
-      $('[data-mask]').inputmask()
-  
-      //Date picker
-      $('#reservationdate').datetimepicker({
-          format: 'L'
-      });
-  
-      //Date and time picker
-      $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
-  
-      //Date range picker
-      $('#reservation').daterangepicker()
-      //Date range picker with time picker
-      $('#reservationtime').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        locale: {
-          format: 'MM/DD/YYYY hh:mm A'
-        }
-      })
-      //Date range as a button
-      $('#daterange-btn').daterangepicker(
-        {
-          ranges   : {
-            'Today'       : [moment(), moment()],
-            'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-            'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate  : moment()
-        },
-        function (start, end) {
-          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-        }
-      )
-  
-      //Timepicker
-      $('#timepicker').datetimepicker({
-        format: 'LT'
-      })
-  
-      //Bootstrap Duallistbox
-      $('.duallistbox').bootstrapDualListbox()
-  
-      //Colorpicker
-      $('.my-colorpicker1').colorpicker()
-      //color picker with addon
-      $('.my-colorpicker2').colorpicker()
-  
-      $('.my-colorpicker2').on('colorpickerChange', function(event) {
-        $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-      })
-    })
-    // BS-Stepper Init
-    document.addEventListener('DOMContentLoaded', function () {
-      window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-    })
-  
-    // DropzoneJS Demo Code Start
-    Dropzone.autoDiscover = false
-  
-    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-    var previewNode = document.querySelector("#template")
-    previewNode.id = ""
-    var previewTemplate = previewNode.parentNode.innerHTML
-    previewNode.parentNode.removeChild(previewNode)
-  
-    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-      url: "/target-url", // Set the url
-      thumbnailWidth: 80,
-      thumbnailHeight: 80,
-      parallelUploads: 20,
-      previewTemplate: previewTemplate,
-      autoQueue: false, // Make sure the files aren't queued until manually added
-      previewsContainer: "#previews", // Define the container to display the previews
-      clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-    })
-  
-    myDropzone.on("addedfile", function(file) {
-      // Hookup the start button
-      file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
-    })
-  
-    // Update the total progress bar
-    myDropzone.on("totaluploadprogress", function(progress) {
-      document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-    })
-  
-    myDropzone.on("sending", function(file) {
-      // Show the total progress bar when upload starts
-      document.querySelector("#total-progress").style.opacity = "1"
-      // And disable the start button
-      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-    })
-  
-    // Hide the total progress bar when nothing's uploading anymore
-    myDropzone.on("queuecomplete", function(progress) {
-      document.querySelector("#total-progress").style.opacity = "0"
-    })
-  
-    // Setup the buttons for all transfers
-    // The "add files" button doesn't need to be setup because the config
-    // `clickable` has already been specified.
-    document.querySelector("#actions .start").onclick = function() {
-      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-    }
-    document.querySelector("#actions .cancel").onclick = function() {
-      myDropzone.removeAllFiles(true)
-    }
-    // DropzoneJS Demo Code End
-  </script>
 
 @endsection
 

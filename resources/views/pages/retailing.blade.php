@@ -1,6 +1,10 @@
 @extends('layouts.base_template')
 @section('content')
 
+@php
+    $user_session_details = Session::get('user_session');
+@endphp
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -12,12 +16,70 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Sales / Retailing</li>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add-most-purchase">
+                    Add To Most Purchased
+                </button>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
+
+      <div class="modal fade" id="add-most-purchase" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Item to Most Purchased</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('add_most_purchased') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Products</label>
+                                    <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" id="txt_modal_product_id"  name="txt_modal_product_id" value="{{ old('txt_modal_product_id') }}" >
+                                        <option selected disabled>Select Product</option>
+                                        @foreach ($all_products as $product)
+                                            <option value="{{$product->id}}">{{$product->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('txt_modal_product_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_modal_product_photo">Upload File</label>
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="txt_modal_product_photo" name="txt_modal_product_photo" onChange="loadProductImage(this);">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                      </div>
+                                </div>
+                                <span class="text-danger">@error('txt_modal_product_photo') {{ $message }} @enderror</span>
+                                <div>
+                                    <img id="uploaded_product_image" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
     </section>
 
     <!-- Main content -->
@@ -39,63 +101,77 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Products</label>
-                  <select class="select2" multiple="multiple" data-placeholder="Select Product" style="width: 100%;">
-                    <option>Club</option>
-                    <option>Guiness</option>
-                    <option>Golder</option>
-                    <option>Origin</option>
-                    <option>Don Simon</option>
-                    <option>Shandy</option>
-                    <option>Heineken</option>
-                  </select>
-                </div>
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-default">Secondary</button>
-              </div>
-              <!-- /.col -->
-              <div class="col-md-6">
-                <label>Most Purchased</label>
-                <div class="table-responsive">
-                  <table class="table text-center">
-                    <tr>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                    </tr>
+            <form action="{{ route('add_sale') }}" method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Products</label>
+                                    <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" id="txt_product_id"  name="txt_product_id" value="{{ old('txt_product_id') }}" >
+                                        <option selected disabled>Select Product</option>
+                                        @foreach ($all_products as $product)
+                                            <option value="{{$product->id}}">{{$product->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('txt_product_id') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="txt_quantity">Quantity</label>
+                                    <input type="text" class="form-control" id="txt_quantity" name="txt_quantity" placeholder="Quantity">
+                                </div>
+                                <span class="text-danger">@error('txt_quantity') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_remarks">Remarks</label>
+                                    <textarea class="form-control" rows="3" placeholder="" name="txt_remarks">{{old('txt_remarks')}}</textarea>
+                                </div>
+                                <span class="text-danger">@error('txt_remarks') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="txt_total_amount">Total (Gh¢)</label>
+                                    <input type="text" class="form-control" id="txt_total_amount" name="txt_total_amount" readonly>
+                                </div>
+                                <span class="text-danger">@error('txt_total_amount') {{ $message }} @enderror</span>
+                                <button type="submit" class="btn btn-secondary">Enter</button>
+                            </div>
+                        </div>
+                    </div>
 
-                    <tr>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                      <td>
-                        <img src="assets/img/club1.jpg" class="img-thumbnail" alt="..." data-toggle="modal" data-target="#modal-default">
-                      </td>
-                    </tr>
-                  </table>
+                    <!-- /.col -->
+                    <div class="col-md-6">
+                        <label>Most Purchased</label>
+                        <div class="table-responsive">
+                        <table class="table text-center">
+                            <tr class="row">
+                                @foreach ($most_purchased_products as $most_purchased)
+                                <td class="col-md-3">
+                                    <img src="assets/img/products/{{ $most_purchased->photo }}" class="img-thumbnail"  data-toggle="modal"
+                                    onclick="enter_product(this)"
+                                    data-target="#product_modal"
+                                    data-id="{{ $most_purchased->id }}"
+                                    data-name="{{ $most_purchased->name }}"
+                                    >
+                                </td>
+                                @endforeach
+                            </tr>
+                        </table>
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
+                <!-- /.row -->
+            </form>
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
@@ -104,189 +180,318 @@
         </div>
         <!-- /.card -->
 
-      </div> 
+      </div>
       <!-- /.container-fluid -->
 
-      <div class="modal fade" id="modal-default" >
+      <div class="modal fade" id="product_modal" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Product Name</h4>
+              <h4 class="modal-title" id="product_name_modal"></h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <p>Price per Product: <span>¢ 45.00 </span> </p>
 
-              <form class="form-horizontal">
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Quantity</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputEmail3" placeholder="Quantity">
+            <form class="form-horizontal" action="{{ route('add_sale_from_modal') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="card-body">
+                    <div class="form-group row">
+                        <input type="hidden" class="form-control" id="txt_product_id_modal" name="txt_product_id_modal">
+                        <input type="hidden" class="form-control" id="txt_product_name_modal" name="txt_product_name_modal">
+
+                        <label for="txt_quantity_model" class="col-sm-2 col-form-label">Quantity</label>
+                        <div class="col-sm-10">
+                        <input type="text" class="form-control" id="txt_quantity_modal" name="txt_quantity_modal" placeholder="Quantity">
+                        <span class="text-danger">@error('txt_quantity_modal') {{ $message }} @enderror</span>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Total</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputPassword3" placeholder="Total" readonly>
                     </div>
-                  </div>
+                    <div class="card-footer">
+                        <div class="form-group row">
+                            <label for="txt_total_amount_modal" class="col-sm-2 col-form-label">Total (Gh¢)</label>
+                            <div class="col-sm-10">
+                            <input type="text" class="form-control" id="txt_total_amount_modal" name="txt_total_amount_modal" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_remarks_modal">Remarks</label>
+                                    <textarea class="form-control" rows="3" placeholder="" name="txt_remarks_modal">{{old('txt_remarks_modal')}}</textarea>
+                                </div>
+                                <span class="text-danger">@error('txt_remarks_modal') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+
                 </div>
-                <!-- /.card-body -->
-              </form>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-secondary">Submit</button>
-            </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </div>
+            </form>
           </div>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal --> 
+      <!-- /.modal -->
 
     </section>
 
-    
 
-  </div>
-  <!-- /.content-wrapper -->
+    <section class="content">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            <div class="card">
+                <div class="card-header">
+                <h3 class="card-title">My Sales Records For Today</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Original Stock</th>
+                        <th>Stock Before</th>
+                        <th>Quantity Sold</th>
+                        <th>Stock After</th>
+                        <th>Expected Amount</th>
+                        <th>Created By</th>
+                        <th>Created At</th>
+                        <th>Remarks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($individual_sales_for_today as $today_sales)
+                        <tr>
+                            <td>{{ $today_sales->name }}</td>
+                            <td>{{ $today_sales->original_stock }}</td>
+                            <td>{{ $today_sales->stock_before }}</td>
+                            <td>{{ $today_sales->quantity_sold }}</td>
+                            <td>{{ $today_sales->stock_after }}</td>
+                            <td>
+                                    @php
+                                        echo 'Gh¢ '.number_format($today_sales->expected_price, 2);
+                                    @endphp
+                            </td>
+                            <td>{{ $today_sales->created_by }}</td>
+                            <td>{{ $today_sales->created_at }}</td>
+                            <td>
+                                    @if ($today_sales->remarks == "" || $today_sales->remarks == NULL)
+                                        <p>No Remarks</p>
+                                    @else
+                                        <p>{{$today_sales->remarks}}</p>
+                                    @endif
+                            </td>
+
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+        <section class="content">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title">Overrall Sales Record</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Original Stock</th>
+                            <th>Stock Before</th>
+                            <th>Quantity Sold</th>
+                            <th>Stock After</th>
+                            <th>Expected Amount</th>
+                            <th>Created By</th>
+                            <th>Created At</th>
+                            <th>Remarks</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($all_sales_records as $sales_record)
+                            <tr>
+                                <td>{{ $sales_record->name }}</td>
+                                <td>{{ $sales_record->original_stock }}</td>
+                                <td>{{ $sales_record->stock_before }}</td>
+                                <td>{{ $sales_record->quantity_sold }}</td>
+                                <td>{{ $sales_record->stock_after }}</td>
+                                <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($sales_record->expected_price, 2);
+                                        @endphp
+                                </td>
+                                <td>{{ $sales_record->created_by }}</td>
+                                <td>{{ $sales_record->created_at }}</td>
+                                <td>
+                                        @if ($sales_record->remarks == "" || $sales_record->remarks == NULL)
+                                            <p>No Remarks</p>
+                                        @else
+                                            <p>{{$sales_record->remarks}}</p>
+                                        @endif
+                                </td>
+
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    @endif
+
+</div>
+<!-- /.content-wrapper -->
 
 
+{{-- ======== Show modal with Values ============== --}}
   <script>
-    $(function () {
-      //Initialize Select2 Elements
-      $('.select2').select2()
-  
-      //Initialize Select2 Elements
-      $('.select2bs4').select2({
-        theme: 'bootstrap4'
-      })
-  
-      //Datemask dd/mm/yyyy
-      $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-      //Datemask2 mm/dd/yyyy
-      $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-      //Money Euro
-      $('[data-mask]').inputmask()
-  
-      //Date picker
-      $('#reservationdate').datetimepicker({
-          format: 'L'
-      });
-  
-      //Date and time picker
-      $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
-  
-      //Date range picker
-      $('#reservation').daterangepicker()
-      //Date range picker with time picker
-      $('#reservationtime').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        locale: {
-          format: 'MM/DD/YYYY hh:mm A'
-        }
-      })
-      //Date range as a button
-      $('#daterange-btn').daterangepicker(
-        {
-          ranges   : {
-            'Today'       : [moment(), moment()],
-            'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-            'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate  : moment()
-        },
-        function (start, end) {
-          $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-        }
-      )
-  
-      //Timepicker
-      $('#timepicker').datetimepicker({
-        format: 'LT'
-      })
-  
-      //Bootstrap Duallistbox
-      $('.duallistbox').bootstrapDualListbox()
-  
-      //Colorpicker
-      $('.my-colorpicker1').colorpicker()
-      //color picker with addon
-      $('.my-colorpicker2').colorpicker()
-  
-      $('.my-colorpicker2').on('colorpickerChange', function(event) {
-        $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
-      })
-    })
-    // BS-Stepper Init
-    document.addEventListener('DOMContentLoaded', function () {
-      window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-    })
-  
-    // DropzoneJS Demo Code Start
-    Dropzone.autoDiscover = false
-  
-    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-    var previewNode = document.querySelector("#template")
-    previewNode.id = ""
-    var previewTemplate = previewNode.parentNode.innerHTML
-    previewNode.parentNode.removeChild(previewNode)
-  
-    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-      url: "/target-url", // Set the url
-      thumbnailWidth: 80,
-      thumbnailHeight: 80,
-      parallelUploads: 20,
-      previewTemplate: previewTemplate,
-      autoQueue: false, // Make sure the files aren't queued until manually added
-      previewsContainer: "#previews", // Define the container to display the previews
-      clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-    })
-  
-    myDropzone.on("addedfile", function(file) {
-      // Hookup the start button
-      file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
-    })
-  
-    // Update the total progress bar
-    myDropzone.on("totaluploadprogress", function(progress) {
-      document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-    })
-  
-    myDropzone.on("sending", function(file) {
-      // Show the total progress bar when upload starts
-      document.querySelector("#total-progress").style.opacity = "1"
-      // And disable the start button
-      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-    })
-  
-    // Hide the total progress bar when nothing's uploading anymore
-    myDropzone.on("queuecomplete", function(progress) {
-      document.querySelector("#total-progress").style.opacity = "0"
-    })
-  
-    // Setup the buttons for all transfers
-    // The "add files" button doesn't need to be setup because the config
-    // `clickable` has already been specified.
-    document.querySelector("#actions .start").onclick = function() {
-      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+    function enter_product() {
+        $('#product_modal').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget)
+            modal = $(this)
+        var product_id = link.data('id')
+        var product_name = link.data('name')
+
+        modal.find('#txt_product_id_modal').val(product_id);
+        modal.find('#txt_product_name_modal').val(product_name);
+        document.getElementById('product_name_modal').innerHTML = product_name;
+        });
     }
-    document.querySelector("#actions .cancel").onclick = function() {
-      myDropzone.removeAllFiles(true)
-    }
-    // DropzoneJS Demo Code End
   </script>
+
+
+
+{{-- ======== Clear All Inputs when closed ============== --}}
+<script>
+    $('#product_modal').on('hidden.bs.modal', function (e) {
+        $(this)
+            .find("input,textarea,select")
+            .val('')
+            .end()
+            .find("input[type=checkbox], input[type=radio]")
+            .prop("checked", "")
+            .end();
+        })
+</script>
+
+{{-- ======== Perform Calculation on Product Selected ============== --}}
+@section('Product_JS')
+    <script type="text/javascript" src="{{ asset('assets/js/product.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            setProductList( @json($all_products) );
+        });
+    </script>
+ @endsection
+
+ <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+
+ <script>
+    $(function () {
+      bsCustomFileInput.init();
+    });
+</script>
+
+
+@section('Extra_JS')
+    <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+@endsection
+
+@section('LoadImage_JS')
+  <script src="{{ asset('assets/js/load_image.js') }}" ></script>
+@endsection
+
+    <!-- DataTables  & Plugins -->
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="plugins/jszip/jszip.min.js"></script>
+    <script src="plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    {{-- <script src="dist/js/adminlte.min.js"></script> --}}
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "ordering": true,
+            "order": [[ 7, "desc" ]],
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "order": [[ 7, "desc" ]],
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');;
+        });
+    </script>
 
 @endsection
 
