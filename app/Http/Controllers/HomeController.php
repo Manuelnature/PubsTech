@@ -9,6 +9,7 @@ use App\Models\WarehouseLogs;
 use App\Models\Sales;
 use App\Models\SalesAudit;
 use App\Models\Dashboard;
+use App\Models\Retail;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
 use Carbon\Carbon;
@@ -105,9 +106,15 @@ class HomeController extends Controller
         $individual_all_sales_data = $response_from_retailer_dashboard[2];
         // dd($individual_all_sales_data);
 
-        $all_sales_audit_records = SalesAudit::get_all_sales_audit_records();
 
-        return view('pages.home', compact('total_no_of_items', 'total_quantity_sold', 'total_expected_sold_price', 'all_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records'));
+        // $current_time = Carbon::now()->toDateTimeString();
+        $last_audit_time = SalesAudit::select_audit();
+        $last_audit_time = $last_audit_time[0]->created_at;
+        $all_sales_audit_records = SalesAudit::get_all_product_audit_records($last_audit_time);
+        // dd($all_sales_audit_records);
+        $get_warehouse_records = Retail::get_each_product_details();
+
+        return view('pages.home', compact('total_no_of_items', 'total_quantity_sold', 'total_expected_sold_price', 'all_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_warehouse_records'));
     }
 
 

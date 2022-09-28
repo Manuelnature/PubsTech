@@ -54,6 +54,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'my_logs' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/my_logs.log'),
+            'level' => 'info',
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

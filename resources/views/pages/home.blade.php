@@ -13,7 +13,14 @@
           <div class="col-sm-6">
             <h1 class="m-0">Dashboard</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
+          <div class="col-sm-3">
+            <ol class="breadcrumb float-sm-right">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_current_stock">
+                    View Current Stock
+                </button>
+            </ol>
+          </div><!-- /.col -->
+          <div class="col-sm-3">
             <ol class="breadcrumb float-sm-right">
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_stocks_left">
                     Stock At Login
@@ -24,6 +31,60 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
+    <div class="modal fade" id="view_current_stock" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Current Stock</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                              <tr>
+                                  <th>Product Name</th>
+                                  <th>Price Per Item</th>
+                                  <th>Stock Left</th>
+                                  <th>Expected Price</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($get_warehouse_records as $audit_record)
+                                <tr>
+                                    <td>{{ $audit_record->name }}</td>
+                                    <td>{{ $audit_record->price_per_item }}</td>
+                                    <td>{{ $audit_record->total_quantity}}</td>
+                                    <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($audit_record->total_amount, 2);
+                                        @endphp
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                          </table>
+                    </div>
+
+                    <div class="card-footer">
+                        These are the Sales Records before you took over
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                </div>
+            </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
 
     <div class="modal fade" id="view_stocks_left" >
         <div class="modal-dialog modal-lg">

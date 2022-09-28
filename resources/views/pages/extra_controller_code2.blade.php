@@ -1,123 +1,4 @@
 
-                                @php
-                                if($user->first_name != NULL || $user->first_name != ""){
-                                    $first_name = $user->first_name;
-                                }
-                                else{
-                                    $first_name = "";
-                                }
-                                if($user->last_name != NULL || $user->last_name != ""){
-                                    $last_name = $user->last_name;
-                                }
-                                else{
-                                    $last_name = "";
-                                }
-                                if($user->email != NULL || $user->email != ""){
-                                    $email = $user->email;
-                                }
-                                else{
-                                    $email = "";
-                                }
-                                if($user->phone_number != NULL || $user->phone_number != ""){
-                                    $phone_number = $user->phone_number;
-                                }
-                                else{
-                                    $phone_number = "";
-                                }
-                                if($user->role != NULL || $user->role != ""){
-                                    $role = $user->role;
-                                }
-                                else{
-                                    $role = "";
-                                }
-                            @endphp
-
-
-
-
-if (link.data('first_name') != NULL || link.data('first_name') != "") {
-    var first_name = link.data('first_name')
-} else {
-    var first_name = ""
-}
-if (link.data('last_name') != NULL || link.data('last_name') != "") {
-    var last_name = link.data('last_name')
-} else {
-    var last_name = ""
-}
-if (link.data('email') != NULL || link.data('email') != "") {
-    var email = link.data('email')
-} else {
-    var email = ""
-}
-if (link.data('phone_number') != NULL || link.data('phone_number') != "") {
-    var phone_number = link.data('email')
-} else {
-    var phone_number = ""
-}
-if (link.data('role') != NULL || link.data('role') != "") {
-    var role = link.data('role')
-} else {
-    var role = ""
-}
-
-
-if (first_name != NULL || first_name != "") {
-            modal.find('#txt_first_name').val(first_name);
-        } else {
-            modal.find('#txt_first_name').val("");
-        }
-        if (last_name!= NULL || last_name != "") {
-            modal.find('#txt_last_name').val(last_name);
-        } else {
-            modal.find('#txt_last_name').val("");
-        }
-        if (email != NULL || email != "") {
-            modal.find('#txt_email').val(email);
-        } else {
-            modal.find('#txt_email').val("");
-        }
-        if (phone_number != NULL || phone_number != "") {
-            modal.find('#txt_phone_number').val(phone_number);
-        } else {
-            modal.find('#txt_phone_number').val("");
-        }
-        if (role != NULL || role != "") {
-            modal.find('#txt_role').val(role);
-        } else {
-            modal.find('#txt_role').val("");
-        }
-
-
-        if (first_name != undefined || first_name != "") {
-            modal.find('#txt_first_name').val(first_name);
-        } else {
-            modal.find('#txt_first_name').val("");
-        }
-        if (last_name!= undefined || last_name != "") {
-            modal.find('#txt_last_name').val(last_name);
-        } else {
-            modal.find('#txt_last_name').val("");
-        }
-        if (email != undefined || email != "") {
-            modal.find('#txt_email').val(email);
-        } else {
-            modal.find('#txt_email').val("");
-        }
-        if (phone_number != undefined || phone_number != "") {
-            modal.find('#txt_phone_number').val(phone_number);
-        } else {
-            modal.find('#txt_phone_number').val("");
-        }
-        if (role != undefined || role != "") {
-            modal.find('#txt_role').val(role);
-        } else {
-            modal.find('#txt_role').val("");
-        }
-
-
-
-
 ====================== TRANSFER CONTROLLER INITIAL CODE (TRANSFER STOCK METHOD )=========================
 
 public function transfer_stock(Request $request){
@@ -328,3 +209,152 @@ public function transfer_stock(Request $request){
 }
 
 
+
+
+====================== ONLY THE IF ELSE STATEMENT (TRANSFER STOCK METHOD )=========================
+$get_product_details_from_warehouse_logs = WarehouseLogs::where('product_id', $product_id)->get();
+
+if (count($get_product_details_from_warehouse_logs) > 0){
+
+    $previous_original_stock = $get_product_details_from_warehouse_logs[0]->original_stock;
+    $previous_stock_before = $get_product_details_from_warehouse_logs[0]->stock_before;
+    $previous_stock_after = $get_product_details_from_warehouse_logs[0]->stock_after;
+
+    if (($current_original_stock - $previous_original_stock) == 0) {
+
+        $original_stock = $previous_original_stock;
+        $stock_before = $previous_stock_after;
+
+        if (($stock_before - $quantity_transfered) >= 0) {
+            $stock_after =  $stock_before - $quantity_transfered;
+        }
+        else {
+            Alert::toast('Quantity left is not up to the transfer requested','warning');
+            return redirect()->back();
+        }
+
+    }
+    elseif (($current_original_stock - $previous_original_stock) > 0) {
+        $original_stock = $current_original_stock;
+        $difference_in_stock = $current_original_stock - $previous_original_stock;
+        $stock_before = $previous_stock_after + $difference_in_stock;
+        // $stock_after = $stock_before - $quantity_transfered;
+
+        if (($stock_before - $quantity_transfered) >= 0) {
+            $stock_after =  $stock_before - $quantity_transfered;
+        } else {
+            Alert::toast('Quantity left is not up to the transfer requested','warning');
+            return redirect()->back();
+        }
+    }
+    else {
+        Alert::toast('Invalid Transfer','warning');
+        return redirect()->back();
+    }
+
+    $expected_price = ((double)$stock_before - (double)$stock_after) * (double)$price_per_piece;
+
+    //============ SAVE IN WAREHOUSE_LOGS DB ==============
+    $warehouse_logs = new WarehouseLogs();
+    $warehouse_logs->product_id = $product_id;
+    $warehouse_logs->price_per_piece = $price_per_piece;
+    $warehouse_logs->quantity_transfered_in_pieces = $quantity_transfered;
+    $warehouse_logs->original_stock = $original_stock;
+    $warehouse_logs->stock_before = $stock_before;
+    $warehouse_logs->stock_after = $stock_after;
+    $warehouse_logs->expected_price = $expected_price;
+    $warehouse_logs->collected_by = $collected_by;
+    $warehouse_logs->collected_at = $date_collected;
+    $warehouse_logs->remarks = $remarks;
+    $warehouse_logs->created_by = $active_user;
+    $warehouse_logs->save();
+
+
+    // ============ UPDATING WAREHOUSE DB AFTER TRANSFER ==============
+    if (($quantity_transfered / $quantity_per_crate) > 0) {
+        $pieces_transfered = $quantity_transfered % $quantity_per_crate;
+        $crates_transfered = (int)($quantity_transfered / $quantity_per_crate);
+    } else {
+        $pieces_transfered = $quantity_in_pieces;
+        $crates_transfered = $quantity_in_crate;
+    }
+
+    $get_warehouse_records_of_the_product = Warehouse::find($warehouse_id_of_product);
+    $total_items_from_warehouse = $get_warehouse_records_of_the_product->total_items;
+    $total_crates_from_warehouse = $get_warehouse_records_of_the_product->no_of_crates;
+    $total_pieces_from_warehouse = $get_warehouse_records_of_the_product->no_of_pieces;
+    $total_expected_from_warehouse = $get_warehouse_records_of_the_product->expected_price;
+
+    $get_warehouse_records_of_the_product->total_items = (int)$total_items_from_warehouse - (int)$quantity_transfered;
+    $get_warehouse_records_of_the_product->no_of_crates = (int)$total_crates_from_warehouse - (int)$crates_transfered;
+    $get_warehouse_records_of_the_product->no_of_pieces = (int)$total_pieces_from_warehouse - (int)$pieces_transfered;
+    $get_warehouse_records_of_the_product->total_price = (int)$total_expected_from_warehouse - (int)$expected_price;
+    $get_warehouse_records_of_the_product->save();
+}
+else {
+    //========================= SAVE IN WAREHOUSE_LOGS DB =================================
+   $original_stock = $current_original_stock;
+   $stock_before = $current_original_stock;
+
+   if (($stock_before - $quantity_transfered) >= 0) {
+    $stock_after =  $stock_before - $quantity_transfered;
+    } else {
+        Alert::toast('Quantity left is not up to the transfer requested','warning');
+        return redirect()->back();
+    }
+
+   $expected_price = ((double)$stock_before - (double)$stock_after) * (double)$price_per_piece;
+
+   $warehouse_logs = new WarehouseLogs();
+   $warehouse_logs->product_id = $product_id;
+   $warehouse_logs->price_per_piece = $price_per_piece;
+   $warehouse_logs->quantity_transfered_in_pieces = $quantity_transfered;
+   $warehouse_logs->original_stock = $original_stock;
+   $warehouse_logs->stock_before = $stock_before;
+   $warehouse_logs->stock_after = $stock_after;
+   $warehouse_logs->expected_price = $expected_price;
+   $warehouse_logs->collected_by = $collected_by;
+   $warehouse_logs->collected_at = $date_collected;
+   $warehouse_logs->remarks = $remarks;
+   $warehouse_logs->created_by = $active_user;
+   $warehouse_logs->save();
+
+
+   // ============ UPDATING WAREHOUSE DB AFTER TRANSFER ==============
+   if (($quantity_transfered / $quantity_per_crate) > 0) {
+        $pieces_transfered = $quantity_transfered % $quantity_per_crate;
+        $crates_transfered = (int)($quantity_transfered / $quantity_per_crate);
+    } else {
+        $pieces_transfered = $quantity_in_pieces;
+        $crates_transfered = $quantity_in_crate;
+    }
+    dump('Pieces Transfered: '.$pieces_transfered);
+    dump('Crates Transfered: '.$crates_transfered);
+
+    $get_warehouse_records_of_the_product = Warehouse::find($warehouse_id_of_product);
+
+    $total_items_from_warehouse = $get_warehouse_records_of_the_product->total_items;
+    $total_price_from_warehouse = $get_warehouse_records_of_the_product->total_price;
+    // $total_crates_from_warehouse = $get_warehouse_records_of_the_product->no_of_crates;
+    // $total_pieces_from_warehouse = $get_warehouse_records_of_the_product->no_of_pieces;
+
+
+    $total_items_left = (int)$total_items_from_warehouse - (int)$quantity_transfered;
+
+    if (($total_items_left / $quantity_per_crate) > 0 ) {
+        $total_pieces_left = $total_items_left % $quantity_per_crate;
+        $total_crates_left = (int)($total_items_left / $quantity_per_crate);
+    } else {
+        $total_pieces_left = $total_items_left;
+        $total_crates_left = 0;
+    }
+
+    $total_amount_left = (double)$total_items_left * (double)$price_per_piece;
+
+
+    $get_warehouse_records_of_the_product->total_items = $total_items_left;
+    $get_warehouse_records_of_the_product->no_of_crates = $total_crates_left;
+    $get_warehouse_records_of_the_product->no_of_pieces = $total_pieces_left;
+    $get_warehouse_records_of_the_product->total_price = $total_amount_left;
+    $get_warehouse_records_of_the_product->save();
+}

@@ -197,7 +197,7 @@
                                     <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <a class="text-danger"
+                                    {{-- <a class="text-danger"
                                         onclick="delete_product(this)"
                                         data-toggle="modal"
                                         data-target="#delete-product"
@@ -205,7 +205,7 @@
                                         data-product_name="{{ $product->name }}"
                                     >
                                     <i class="fas fa-trash"></i>
-                                    </a>
+                                    </a> --}}
                                 </td>
                             @endif
                         </tr>
@@ -320,7 +320,7 @@
       </div>
       <!-- /.modal -->
 
-      <div class="modal fade" id="delete-product" >
+      {{-- <div class="modal fade" id="delete-product" >
         <div class="modal-dialog">
           <div class="modal-content">
 
@@ -346,7 +346,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div>
+      </div> --}}
 
 
 

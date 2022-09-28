@@ -41,7 +41,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Products</label>
-                                    <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" id="txt_modal_product_id"  name="txt_modal_product_id" value="{{ old('txt_modal_product_id') }}" >
+                                    <select class="form-control" data-placeholder="Select Product" style="width: 100%;" id="txt_modal_product_id"  name="txt_modal_product_id" value="{{ old('txt_modal_product_id') }}" >
                                         <option selected disabled>Select Product</option>
                                         @foreach ($all_products as $product)
                                             <option value="{{$product->id}}">{{$product->name}}</option>
@@ -109,7 +109,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label>Products</label>
-                                    <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" id="txt_product_id"  name="txt_product_id" value="{{ old('txt_product_id') }}" >
+                                    <select class="form-control" data-placeholder="Select Product" style="width: 100%;" id="txt_product_id"  name="txt_product_id" value="{{ old('txt_product_id') }}" >
                                         <option selected disabled>Select Product</option>
                                         @foreach ($all_products as $product)
                                             <option value="{{$product->id}}">{{$product->name}}</option>

@@ -45,7 +45,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                           <label for="txt_product_name">Products</label>
-                          <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" name="txt_product_name" value="{{ old('txt_product_name') }}" >
+                          <select class="form-control   " data-placeholder="Select Product" style="width: 100%;" name="txt_product_name" value="{{ old('txt_product_name') }}" >
                             <option selected disabled>Select Product</option>
                             @foreach ($all_products as $product)
                                 <option value="{{$product->id}}">{{$product->name}}</option>
@@ -218,27 +218,29 @@
 
                             <td class="text-center">
                                 <a class="text-primary"
-                                    onclick="edit_user(this)"
+                                    onclick="edit_warehouse_record(this)"
                                     data-toggle="modal"
-                                    data-target="#edit-user"
-                                    data-id="{{ $records->id }}"
+                                    data-target="#edit_warehouse_record"
+                                    data-warehouse_id="{{ $records->id }}"
+                                    data-product_id="{{ $records->product_id }}"
                                     data-product_name="{{ $records->name }}"
-                                    data-first_name="{{ $records->no_of_crates }}"
-                                    data-last_name="{{ $records->no_of_pieces }}"
-                                    data-email="{{ $records->description }}"
-                                    data-username="{{ $records->stock_date }}"
+                                    data-no_of_crates="{{ $records->no_of_crates }}"
+                                    data-no_of_pieces="{{ $records->no_of_pieces }}"
+                                    data-description="{{ $records->description }}"
+                                    data-stock_date="{{ $records->stock_date }}"
                                 >
                                 <i class="fas fa-edit"></i>
                                 </a>
-                                <a  class="text-danger"
-                                    onclick="delete_user(this)"
+                                {{-- <a  class="text-danger"
+                                    onclick="delete_warehouse_record(this)"
                                     data-toggle="modal"
-                                    data-target="#delete-user"
-                                    data-id="{{ $records->id }}"
-                                    data-first_name="{{ $records->name }}"
+                                    data-target="#delete_warehouse_record"
+                                    data-warehouse_id="{{ $records->id }}"
+                                    data-product_id="{{ $records->product_id }}"
+                                    data-product_name="{{ $records->name }}"
                                 >
                                 <i class="fas fa-trash"></i>
-                                </a>
+                                </a> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -257,12 +259,169 @@
     </section>
 
 
+        <div class="modal fade" id="edit_warehouse_record" >
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title" id="title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <form action="{{ route('update_stock') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="row ">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+
+                                        <input type="hidden" class="form-control" id="warehouse_id" name="warehouse_id">
+                                        <input type="hidden" class="form-control" id="product_id" name="product_id">
+
+                                        <label for="txt_edit_product_name"> Product Name</label>
+                                        <input type="text" class="form-control" id="txt_edit_product_name" name="txt_edit_product_name" readonly>
+
+                                        <span class="text-danger">@error('txt_edit_product_name') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="txt_edit_number_of_crates">Quantity (Crate)</label>
+                                        <input type="number" class="form-control" id="txt_edit_number_of_crates" name="txt_edit_number_of_crates">
+                                    </div>
+                                    <span class="text-danger">@error('txt_edit_number_of_crates') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="txt_edit_number_of_pieces"> Quantity (Pieces)</label>
+                                        <input type="number" class="form-control" id="txt_edit_number_of_pieces" name="txt_edit_number_of_pieces">
+
+                                        <span class="text-danger">@error('txt_edit_number_of_pieces') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="txt_edit_stock_date">Stock Date</label>
+                                        <input type="text" class="form-control" id="txt_edit_stock_date" onfocus="(this.type='date')" onblur="(this.type='text')" name="txt_edit_stock_date">
+                                    </div>
+                                    <span class="text-danger">@error('txt_edit_stock_date') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="txt_edit_description">Description</label>
+                                        <textarea class="form-control" rows="3" name="txt_edit_description" id="txt_edit_description"></textarea>
+                                    </div>
+                                    <span class="text-danger">@error('txt_edit_description') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-secondary">Update Warehouse</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <div class="modal fade" id="delete_warehouse_record" >
+            <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form action="{{ route('delete_stock') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" id="warehouse_id" name="warehouse_id">
+                            </div>
+                            <h5 class="text-center mb-4">Are you sure you want to delete </h5>
+                            <h4 id="product_name" class="text-center text-bold mb-4"></h4>
+
+                            <div class="text-center">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger pl-3 pr-3">Yes</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+
   </div>
   <!-- /.content-wrapper -->
 
-  @section('Extra_JS')
-  <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
-  @endsection
+    @section('Extra_JS')
+    <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+    @endsection
+
+
+    <script>
+        function edit_warehouse_record() {
+            $('#edit_warehouse_record').on('shown.bs.modal', function(e) {
+            var link = $(e.relatedTarget) //use this https://api.jquery.com/event.relatedtarget/
+                modal = $(this)
+            var warehouse_id = link.data('warehouse_id')
+            var product_id = link.data('product_id')
+            var product_name = link.data('product_name')
+            var no_of_crates = link.data('no_of_crates')
+            var no_of_pieces = link.data('no_of_pieces')
+            var stock_date = link.data('stock_date')
+            var description = link.data('description')
+
+            modal.find('#warehouse_id').val(warehouse_id);
+            modal.find('#product_id').val(product_id);
+            modal.find('#txt_edit_product_name').val(product_name);
+            modal.find('#txt_edit_number_of_crates').val(no_of_crates);
+            modal.find('#txt_edit_number_of_pieces').val(no_of_pieces);
+            modal.find('#txt_edit_stock_date').val(stock_date);
+            modal.find('#selected').val(status);
+            modal.find('#txt_edit_description').val(description);
+            // document.getElementById('txt_edit_stock_date').val()
+            document.getElementById('selected').innerHTML = status;
+            document.getElementById('title').innerHTML = 'Edit '+ product_name;
+            });
+        }
+
+
+        function delete_warehouse_record() {
+            $('#delete_warehouse_record').on('shown.bs.modal', function(e) {
+            var link = $(e.relatedTarget)
+                modal = $(this)
+            var warehouse_id = link.data('warehouse_id')
+            var product_id = link.data('product_id')
+            var product_name = link.data('product_name')
+
+            modal.find('#warehouse_id').val(warehouse_id);
+            document.getElementById('product_name').innerHTML = product_name;
+            });
+
+        }
+
+            $("#txt_price_per_item").attr("value", 0);
+            $("#txt_quantity_per_crate").attr("value", 0);
+            $("#txt_stock_threshold").attr("value", 0);
+
+    </script>
+
 
         <!-- DataTables  & Plugins -->
       <script src="plugins/datatables/jquery.dataTables.min.js"></script>
@@ -279,7 +438,7 @@
       <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
       {{-- <script src="dist/js/adminlte.min.js"></script> --}}
 
-      <script>
+    <script>
         $(function () {
           $("#example1").DataTable({
             "responsive": true,
@@ -299,7 +458,7 @@
             "responsive": true,
           });
         });
-      </script>
+    </script>
 
 
     <script>

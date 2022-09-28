@@ -35,7 +35,7 @@
 
 
 
-========== IF THERE IS NO SALES AUDIT PICK FROM WAREHOUSE LOGS TABLE ===================
+==================== IF THERE IS NO SALES AUDIT PICK FROM WAREHOUSE LOGS TABLE ===================
 $sales_audit_records = SalesAudit::all();
 if(count($sales_audit_records) > 0){
     $all_sales_audit_records = json_encode($sales_audit_records);

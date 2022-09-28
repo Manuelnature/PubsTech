@@ -34,4 +34,15 @@ class Warehouse extends Model
             echo 'Caught exception';
         }
     }
+
+
+    public static function select_all_product_ids(){
+        try {
+            return  DB::table('tbl_warehouse')
+            ->select('product_id')
+            ->get();
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
 }

@@ -69,10 +69,13 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          // WAREHOUSE ======================
          Route::get('warehouse', [WarehouseController::class, 'index']);
          Route::post('add_stock', [WarehouseController::class, 'add_stock'])->name('add_stock');
+         Route::post('update_stock', [WarehouseController::class, 'update_stock'])->name('update_stock');
+         Route::post('delete_stock', [WarehouseController::class, 'delete_stock'])->name('delete_stock');
 
          // TRANSFERs ======================
          Route::get('transfer', [TransferController::class, 'index']);
          Route::post('transfer_stock', [TransferController::class, 'transfer_stock'])->name('transfer_stock');
+         Route::post('update_transfer', [TransferController::class, 'update_transfer'])->name('update_transfer');
 
          // USERS ======================
          Route::get('users', [UserController::class, 'index']);
