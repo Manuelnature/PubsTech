@@ -262,7 +262,7 @@
                                                 @endforeach
                                         </select>
 
-                                            <span class="text-danger">@error('txt_edit_product_name') {{ $message }} @enderror</span>
+                                            <span class="text-danger">@error('txt_product_id') {{ $message }} @enderror</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

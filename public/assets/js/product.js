@@ -33,6 +33,30 @@ $('#txt_quantity_modal').on("keydown keyup change", function(e) {
     }
 });
 
+
+$('#txt_edit_quantity').on("keydown keyup change", function(e) {
+
+    calculatePriceForRetailEdit();
+
+    if($('#txt_edit_quantity').val().length == 0){
+
+      $("#txt_edit_total").val("");
+      return;
+    }
+});
+
+
+$('#txt_edit_product_id').on("keydown keyup change", function(e) {
+
+    calculatePriceForRetailEdit();
+
+    if($('#txt_edit_quantity').val().length == 0){
+
+      $("#txt_edit_total").val("");
+      return;
+    }
+});
+
 //============This also works perfectly ==================
 /* $('#txt_quantity_modal').bind('input',function(){
     console.log(prod_list);
@@ -122,4 +146,40 @@ function calculatePriceForRetailModal(){
 
     var total_cost = cost_separated_with_comma;
     $("#txt_total_amount_modal").val(total_cost);
+}
+
+
+function calculatePriceForRetailEdit(){
+    var product_id = $('#txt_edit_product_id').val();
+
+    var quantity = $('#txt_edit_quantity').val();
+    if(quantity.length == 0){
+        return;
+    }
+
+    var quantity_int = parseInt(quantity);
+
+    var amount;
+
+    prod_list.forEach(function(product) {
+        if(product["id"] == product_id){
+            amount = product["price_per_item"];
+        }
+    });
+
+    if(amount.length == 0){
+        return;
+        }
+    var amount_int = parseInt(amount);
+
+    var cost = amount_int * quantity_int;
+
+    var cost_to_two_decimal_places = cost.toFixed(2);
+    console.log(cost_to_two_decimal_places);
+    var cost_separated_with_comma = cost_to_two_decimal_places.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    console.log(cost_separated_with_comma);
+
+    var total_cost = cost_separated_with_comma;
+    $("#txt_edit_total").val(total_cost);
 }

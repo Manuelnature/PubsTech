@@ -267,7 +267,7 @@
                     <thead>
                     <tr>
                         <th>Product Name</th>
-                        <th>Original Stock</th>
+                        {{-- <th>Original Stock</th> --}}
                         <th>Stock Before</th>
                         <th>Quantity Sold</th>
                         <th>Stock After</th>
@@ -275,13 +275,14 @@
                         <th>Created By</th>
                         <th>Created At</th>
                         <th>Remarks</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($individual_sales_for_today as $today_sales)
                         <tr>
                             <td>{{ $today_sales->name }}</td>
-                            <td>{{ $today_sales->original_stock }}</td>
+                            {{-- <td>{{ $today_sales->original_stock }}</td> --}}
                             <td>{{ $today_sales->stock_before }}</td>
                             <td>{{ $today_sales->quantity_sold }}</td>
                             <td>{{ $today_sales->stock_after }}</td>
@@ -298,6 +299,24 @@
                                     @else
                                         <p>{{$today_sales->remarks}}</p>
                                     @endif
+                            </td>
+
+                            <td>
+                                <a class="text-primary"
+                                onclick="edit_sales_record(this)"
+                                data-toggle="modal"
+                                data-target="#edit_sales_record"
+                                data-sale_id="{{ $today_sales->id }}"
+                                data-product_id="{{ $today_sales->product_id }}"
+                                data-product_name="{{ $today_sales->name }}"
+                                data-quantity_sold="{{ $today_sales->quantity_sold }}"
+                                data-stock_before="{{ $today_sales->stock_before }}"
+                                data-stock_after="{{ $today_sales->stock_after }}"
+                                data-expected_price="{{ $today_sales->expected_price }}"
+                                data-remarks="{{ $today_sales->remarks }}"
+                                >
+                                <i class="fas fa-edit"></i>
+                                </a>
                             </td>
 
                         </tr>
@@ -340,7 +359,7 @@
                         <thead>
                         <tr>
                             <th>Product Name</th>
-                            <th>Original Stock</th>
+                            {{-- <th>Original Stock</th> --}}
                             <th>Stock Before</th>
                             <th>Quantity Sold</th>
                             <th>Stock After</th>
@@ -348,13 +367,14 @@
                             <th>Created By</th>
                             <th>Created At</th>
                             <th>Remarks</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach ($all_sales_records as $sales_record)
                             <tr>
                                 <td>{{ $sales_record->name }}</td>
-                                <td>{{ $sales_record->original_stock }}</td>
+                                {{-- <td>{{ $sales_record->original_stock }}</td> --}}
                                 <td>{{ $sales_record->stock_before }}</td>
                                 <td>{{ $sales_record->quantity_sold }}</td>
                                 <td>{{ $sales_record->stock_after }}</td>
@@ -372,6 +392,23 @@
                                             <p>{{$sales_record->remarks}}</p>
                                         @endif
                                 </td>
+                                <td>
+                                    <a class="text-primary"
+                                    onclick="edit_sales_record(this)"
+                                    data-toggle="modal"
+                                    data-target="#edit_sales_record"
+                                    data-sale_id="{{ $sales_record->id }}"
+                                    data-product_id="{{ $sales_record->product_id }}"
+                                    data-product_name="{{ $sales_record->name }}"
+                                    data-quantity_sold="{{ $sales_record->quantity_sold }}"
+                                    data-stock_before="{{ $sales_record->stock_before }}"
+                                    data-stock_after="{{ $sales_record->stock_after }}"
+                                    data-expected_price="{{ $sales_record->expected_price }}"
+                                    data-remarks="{{ $sales_record->remarks }}"
+                                    >
+                                    <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
 
                             </tr>
                         @endforeach
@@ -387,11 +424,134 @@
             <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
+
+
+            <div class="modal fade" id="edit_sales_record" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h4 class="modal-title" id="edit_title"></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <form action="{{ route('update_sale') }}" method="POST">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+
+                                                <input type="hidden" class="form-control" id="txt_sale_id" name="txt_sale_id">
+                                                {{-- <input type="hidden" class="form-control" id="txt_product_id" name="txt_product_id"> --}}
+
+                                                <label for="txt_edit_product_id"> Product Name</label>
+                                                <select class="form-control" data-placeholder="Select Product" style="width: 100%;" name="txt_edit_product_id" id="txt_edit_product_id" >
+                                                    <option selected id="product_name"></option>
+                                                    @foreach ($all_products as $product)
+                                                        <option value="{{$product->id}}">{{$product->name}}</option>
+                                                    @endforeach
+                                            </select>
+
+                                                <span class="text-danger">@error('txt_edit_product_id') {{ $message }} @enderror</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txt_edit_quantity">Quantity</label>
+                                                <input type="number" class="form-control" id="txt_edit_quantity" name="txt_edit_quantity" >
+                                            </div>
+                                            <span class="text-danger">@error('txt_edit_quantity') {{ $message }} @enderror</span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txt_edit_total">Total</label>
+                                                <input type="number" class="form-control" id="txt_edit_total" name="txt_edit_total" readonly>
+                                            </div>
+                                            <span class="text-danger">@error('txt_edit_total') {{ $message }} @enderror</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txt_edit_remarks">Remarks</label>
+                                                <textarea class="form-control" rows="3" name="txt_edit_remarks" id="txt_edit_remarks"></textarea>
+                                            </div>
+                                            <span class="text-danger">@error('txt_edit_remarks') {{ $message }} @enderror</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-secondary">Update Sale</button>
+                            </div>
+                        </form>
+                    </div>
+                <!-- /.modal-content -->
+                </div>
+            <!-- /.modal-dialog -->
+            </div>
+
+
         </section>
     @endif
 
 </div>
 <!-- /.content-wrapper -->
+
+
+
+
+{{-- ================= Edit Sales modal =============== --}}
+
+<script>
+    function edit_sales_record() {
+        $('#edit_sales_record').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget)
+            modal = $(this)
+        var sale_id = link.data('sale_id')
+        var product_id = link.data('product_id')
+        var product_name = link.data('product_name')
+        var quantity_sold = link.data('quantity_sold')
+        var stock_before = link.data('stock_before')
+        var stock_after = link.data('stock_after')
+        var expected_price = link.data('expected_price')
+        var remarks = link.data('remarks')
+
+        modal.find('#txt_sale_id').val(sale_id);
+        modal.find('#txt_edit_product_id').val(product_id);
+        modal.find('#txt_edit_product_name').val(product_name);
+        modal.find('#txt_edit_quantity').val(quantity_sold);
+        modal.find('#txt_edit_remarks').val(remarks);
+        modal.find('#product_name').val(product_id);
+        modal.find('#txt_edit_total').val(expected_price);
+        document.getElementById('product_name').innerHTML = product_name;
+        document.getElementById('edit_title').innerHTML = 'Edit '+ product_name + 'Sales';
+        });
+    }
+
+
+    // function delete_transfer_record() {
+    //     $('#delete_transfer_record').on('shown.bs.modal', function(e) {
+    //     var link = $(e.relatedTarget)
+    //         modal = $(this)
+    //     var warehouse_id = link.data('warehouse_id')
+    //     var product_id = link.data('product_id')
+    //     var product_name = link.data('product_name')
+
+    //     modal.find('#warehouse_id').val(warehouse_id);
+    //     document.getElementById('product_name').innerHTML = product_name;
+    //     });
+
+    // }
+</script>
+
 
 
 {{-- ======== Show modal with Values ============== --}}
@@ -452,6 +612,9 @@
 @section('LoadImage_JS')
   <script src="{{ asset('assets/js/load_image.js') }}" ></script>
 @endsection
+
+
+
 
     <!-- DataTables  & Plugins -->
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>

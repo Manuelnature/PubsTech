@@ -65,6 +65,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::get('retailing', [RetailingController::class, 'index']);
          Route::post('add_sale', [RetailingController::class, 'add_sale'])->name('add_sale');
          Route::post('add_sale_from_modal', [RetailingController::class, 'add_sale_from_modal'])->name('add_sale_from_modal');
+         Route::post('update_sale', [RetailingController::class, 'update_sale'])->name('update_sale');
 
          // WAREHOUSE ======================
          Route::get('warehouse', [WarehouseController::class, 'index']);
