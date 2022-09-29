@@ -245,7 +245,7 @@
                                     <input type="hidden" class="form-control" id="product_id" name="product_id">
 
                                     <label for="txt_edit_product_name"> Product Name</label>
-                                    <input type="text" class="form-control" id="txt_edit_product_name" name="txt_edit_product_name" readonly>
+                                    <input type="text" class="form-control" id="txt_edit_product_name" name="txt_edit_product_name">
 
                                     <span class="text-danger">@error('txt_edit_product_name') {{ $message }} @enderror</span>
                                 </div>
