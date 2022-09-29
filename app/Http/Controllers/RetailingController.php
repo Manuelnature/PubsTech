@@ -282,16 +282,16 @@ class RetailingController extends Controller
                     $new_retail_total_amount = (double)$new_retail_total_quantity * (double)$price_per_piece;
 
 
-                    // ===========Updating Sales Table ================
-                    $update_sale = Sales::find($sale_id);
+                    // // ===========Updating Sales Table ================
+                    // $update_sale = Sales::find($sale_id);
 
-                    $update_sale->quantity_sold = $new_quantity_sold;
-                    $update_sale->expected_price = $new_expected_price;
-                    $update_sale->stock_after = $new_stock_after;
-                    $update_sale->remarks = $remarks;
-                    $update_sale->updated_by = $active_user;
-                    $update_sale->updated_at = $current_date_and_time;
-                    $update_sale->save();
+                    // $update_sale->quantity_sold = $new_quantity_sold;
+                    // $update_sale->expected_price = $new_expected_price;
+                    // $update_sale->stock_after = $new_stock_after;
+                    // $update_sale->remarks = $remarks;
+                    // $update_sale->updated_by = $active_user;
+                    // $update_sale->updated_at = $current_date_and_time;
+                    // $update_sale->save();
 
 
                     //===========Updating Retail Table ================
@@ -312,8 +312,19 @@ class RetailingController extends Controller
 
                     Alert::toast('Records Updated Successfully','success');
                     return redirect()->back();
-
                 }
+
+
+                // ===========Updating Sales Table ================
+                $update_sale = Sales::find($sale_id);
+
+                $update_sale->quantity_sold = $new_quantity_sold;
+                $update_sale->expected_price = $new_expected_price;
+                $update_sale->stock_after = $new_retail_total_quantity;
+                $update_sale->remarks = $remarks;
+                $update_sale->updated_by = $active_user;
+                $update_sale->updated_at = $current_date_and_time;
+                $update_sale->save();
 
             }
             else {
