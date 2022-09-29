@@ -259,6 +259,61 @@ class RetailingController extends Controller
                 $stock_before = $previous_retail_total_quantity;
 
 
+
+
+                // if (($stock_before - $quantity_sold) >= 0) {
+                //     $stock_after =  $stock_before - $quantity_sold;
+                // } else {
+                //     Alert::toast('Quantity left is not up to the sale requested','warning');
+                //         return redirect()->back();
+                // }
+
+                //     $difference_in_quantity = (int)$quantity_sold - (int)$previous_quantity_sold;
+
+                // if ($difference_in_quantity >= 0) {
+                //     $new_quantity_sold = (int)$previous_quantity_sold + (int)$difference_in_quantity;
+                //     // $new_retail_total_quantity = (int)$previous_quantity_sold + (int)$difference_in_quantity;
+
+                //     // $new_stock_after = (int)$previous_stock_after - (int)$difference_in_quantity;
+                //     $new_retail_total_quantity = (int)$previous_retail_total_quantity - (int)$difference_in_quantity;
+                //     $new_stock_after = $new_retail_total_quantity;
+                // }
+                // else {
+                //     $new_quantity_sold = (int)$previous_quantity_sold - (int)$difference_in_quantity;
+                //     // $new_stock_after = (int)$previous_stock_after + (int)$difference_in_quantity;
+                //     $new_retail_total_quantity = (int)$previous_retail_total_quantity + (int)$difference_in_quantity;
+                //     $new_stock_after = $new_retail_total_quantity;
+                // }
+
+                //     $new_expected_price = (double)$new_quantity_sold * (double)$price_per_piece;
+
+                //     $new_retail_total_amount = (double)$new_retail_total_quantity * (double)$price_per_piece;
+
+                //     $update_retail = Retail::find($retail_id);
+                //     $update_retail->no_of_crates = $new_retail_total_crates ;
+                //     $update_retail->no_of_pieces = $new_retail_total_pieces ;
+                //     $update_retail->total_quantity = $new_retail_total_quantity ;
+                //     $update_retail->total_amount = $new_retail_total_amount;
+                //     $update_retail->save();
+
+
+                //         // ===========Updating Sales Table ================
+                //     $update_sale = Sales::find($sale_id);
+
+                //     $update_sale->quantity_sold = $new_quantity_sold;
+                //     $update_sale->expected_price = $new_expected_price;
+                //     $update_sale->stock_after = $new_stock_after;
+                //     $update_sale->remarks = $remarks;
+                //     $update_sale->updated_by = $active_user;
+                //     $update_sale->updated_at = $current_date_and_time;
+                //     $update_sale->save();
+
+                //     Alert::toast('Records Updated Successfully','success');
+                //     return redirect()->back();
+
+
+
+
                 if (($quantity_sold - $previous_quantity_sold) > $previous_retail_total_quantity) {
                     Alert::toast('Quantity left is not up to the sale requested','warning');
                     return back();
@@ -267,14 +322,16 @@ class RetailingController extends Controller
                         $difference_in_quantity = (int)$quantity_sold - (int)$previous_quantity_sold;
 
                     if ($difference_in_quantity >= 0) {
-                        $new_quantity_sold = (int)$previous_quantity_sold + (int)$difference_in_quantity;
-                        $new_stock_after = (int)$previous_stock_after - (int)$difference_in_quantity;
+                        $new_quantity_sold = (int)$previous_quantity_sold - (int)$difference_in_quantity;
+                        // $new_stock_after = (int)$previous_stock_after - (int)$difference_in_quantity;
                         $new_retail_total_quantity = (int)$previous_retail_total_quantity - (int)$difference_in_quantity;
+                        $new_stock_after = $new_retail_total_quantity;
                     }
                     else {
-                        $new_quantity_sold = (int)$previous_quantity_sold - (int)$difference_in_quantity;
-                        $new_stock_after = (int)$previous_stock_after + (int)$difference_in_quantity;
-                        $new_retail_total_quantity = (int)$previous_retail_total_quantity + (int)$difference_in_quantity;
+                        $new_quantity_sold = (int)$previous_quantity_sold + (int)$difference_in_quantity;
+                        // $new_stock_after = (int)$previous_stock_after + (int)$difference_in_quantity;
+                        $new_retail_total_quantity = (int)$previous_retail_total_quantity - (int)$difference_in_quantity;
+                        $new_stock_after = $new_retail_total_quantity;
                     }
 
                     $new_expected_price = (double)$new_quantity_sold * (double)$price_per_piece;
@@ -310,21 +367,22 @@ class RetailingController extends Controller
                     $update_retail->total_amount = $new_retail_total_amount;
                     $update_retail->save();
 
+
+                        // ===========Updating Sales Table ================
+                    $update_sale = Sales::find($sale_id);
+
+                    $update_sale->quantity_sold = $quantity_sold;
+                    $update_sale->expected_price = $new_expected_price;
+                    $update_sale->stock_after = $new_retail_total_quantity;
+                    $update_sale->remarks = $remarks;
+                    $update_sale->updated_by = $active_user;
+                    $update_sale->updated_at = $current_date_and_time;
+                    $update_sale->save();
+
                     Alert::toast('Records Updated Successfully','success');
                     return redirect()->back();
                 }
 
-
-                // ===========Updating Sales Table ================
-                $update_sale = Sales::find($sale_id);
-
-                $update_sale->quantity_sold = $new_quantity_sold;
-                $update_sale->expected_price = $new_expected_price;
-                $update_sale->stock_after = $new_retail_total_quantity;
-                $update_sale->remarks = $remarks;
-                $update_sale->updated_by = $active_user;
-                $update_sale->updated_at = $current_date_and_time;
-                $update_sale->save();
 
             }
             else {
@@ -804,6 +862,254 @@ class RetailingController extends Controller
                 return redirect()->back();
 
             }
+
+
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
+
+
+    public function update_sale_old_old (Request $request){
+        // dd($request->all());
+        try {
+            $user_session = Session::get('user_session');
+            $active_user = $user_session->first_name." ".$user_session->last_name;
+            $current_date_and_time = Carbon::now()->toDateTimeString();
+
+            $sale_id = $request->get('txt_sale_id');
+            $product_id = $request->get('txt_edit_product_id');
+            $quantity_sold = $request->get('txt_edit_quantity');
+            $total_amount = $request->get('txt_edit_total');
+            $remarks = $request->get('txt_edit_remarks');
+
+            // dd($remarks);
+
+            // $get_record_from_product = Product::find($product_id);
+            // $price_per_piece = $get_record_from_product->price_per_item;
+            $get_product_details = Products::find($product_id);
+            $quantity_per_crate = $get_product_details->quantity_per_crate;
+
+
+
+
+            // ========== Get records from sales table ===========
+            $get_records_from_sales = Sales::find($sale_id);
+            $old_sale_product_id = $get_records_from_sales->product_id;
+            $previous_quantity_sold = $get_records_from_sales->quantity_sold;
+            $previous_expected_price = $get_records_from_sales->expected_price;
+            $previous_stock_before = $get_records_from_sales->stock_before;
+            $previous_stock_after = $get_records_from_sales->stock_after;
+
+            if ($old_sale_product_id == $product_id) {
+
+                    //===========Get records from Retail Table ================
+                $get_stock_records_form_retail = Retail::where('product_id', $product_id)->get()[0];
+                $retail_id = $get_stock_records_form_retail->id;
+                $previous_retail_total_quantity = $get_stock_records_form_retail->total_quantity;
+                $previous_retail_total_amount = $get_stock_records_form_retail->total_amount;
+                $price_per_piece = $get_stock_records_form_retail->price_per_piece;
+                $stock_before = $previous_retail_total_quantity;
+
+
+                // if (($stock_before - $quantity_sold) >= 0) {
+                //     $stock_after =  $stock_before - $quantity_sold;
+                // } else {
+                //     Alert::toast('Quantity left is not up to the sale requested','warning');
+                //         return redirect()->back();
+                // }
+
+
+
+
+
+                if (($quantity_sold - $previous_quantity_sold) > $previous_retail_total_quantity) {
+                    Alert::toast('Quantity left is not up to the sale requested','warning');
+                    return back();
+                }
+                else {
+                        $difference_in_quantity = (int)$quantity_sold - (int)$previous_quantity_sold;
+
+                    if ($difference_in_quantity >= 0) {
+                        $new_quantity_sold = (int)$previous_quantity_sold + (int)$difference_in_quantity;
+                        $new_stock_after = (int)$previous_stock_after - (int)$difference_in_quantity;
+                        $new_retail_total_quantity = (int)$previous_retail_total_quantity - (int)$difference_in_quantity;
+                    }
+                    else {
+                        $new_quantity_sold = (int)$previous_quantity_sold - (int)$difference_in_quantity;
+                        $new_stock_after = (int)$previous_stock_after + (int)$difference_in_quantity;
+                        $new_retail_total_quantity = (int)$previous_retail_total_quantity + (int)$difference_in_quantity;
+                    }
+
+                    $new_expected_price = (double)$new_quantity_sold * (double)$price_per_piece;
+
+                    $new_retail_total_amount = (double)$new_retail_total_quantity * (double)$price_per_piece;
+
+
+                    // // ===========Updating Sales Table ================
+                    // $update_sale = Sales::find($sale_id);
+
+                    // $update_sale->quantity_sold = $new_quantity_sold;
+                    // $update_sale->expected_price = $new_expected_price;
+                    // $update_sale->stock_after = $new_stock_after;
+                    // $update_sale->remarks = $remarks;
+                    // $update_sale->updated_by = $active_user;
+                    // $update_sale->updated_at = $current_date_and_time;
+                    // $update_sale->save();
+
+
+                    //===========Updating Retail Table ================
+                    if (($new_retail_total_quantity / $quantity_per_crate) > 0 ) {
+                        $new_retail_total_pieces = $new_retail_total_quantity % $quantity_per_crate;
+                        $new_retail_total_crates = (int)($new_retail_total_quantity / $quantity_per_crate);
+                    } else {
+                        $new_retail_total_pieces = $new_retail_total_quantity;
+                        $new_retail_total_crates = 0;
+                    }
+
+                    $update_retail = Retail::find($retail_id);
+                    $update_retail->no_of_crates = $new_retail_total_crates ;
+                    $update_retail->no_of_pieces = $new_retail_total_pieces ;
+                    $update_retail->total_quantity = $new_retail_total_quantity ;
+                    $update_retail->total_amount = $new_retail_total_amount;
+                    $update_retail->save();
+
+
+                        // ===========Updating Sales Table ================
+                    $update_sale = Sales::find($sale_id);
+
+                    $update_sale->quantity_sold = $new_quantity_sold;
+                    $update_sale->expected_price = $new_expected_price;
+                    $update_sale->stock_after = $new_retail_total_quantity;
+                    $update_sale->remarks = $remarks;
+                    $update_sale->updated_by = $active_user;
+                    $update_sale->updated_at = $current_date_and_time;
+                    $update_sale->save();
+
+                    Alert::toast('Records Updated Successfully','success');
+                    return redirect()->back();
+                }
+
+
+            }
+            else {
+                 //===========Get records from Retail Table ================
+                 $old_product_records_form_retail = Retail::where('product_id', $old_sale_product_id)->get();
+                 $old_product_retail_id = $old_product_records_form_retail[0]->id;
+                 $old_product_previous_retail_total_quantity = $old_product_records_form_retail[0]->total_quantity;
+                 $old_product_previous_retail_total_amount = $old_product_records_form_retail[0]->total_amount;
+                 $old_product_price_per_piece = $old_product_records_form_retail[0]->price_per_piece;
+                 $old_product_stock_before = $old_product_previous_retail_total_quantity;
+
+
+                 $new_product_records_form_retail = Retail::where('product_id', $product_id)->get();
+                 $new_product_retail_id = $new_product_records_form_retail[0]->id;
+                 $new_product_previous_retail_total_quantity = $new_product_records_form_retail[0]->total_quantity;
+                 $new_product_previous_retail_total_amount = $new_product_records_form_retail[0]->total_amount;
+                 $new_product_price_per_piece = $new_product_records_form_retail[0]->price_per_piece;
+                 $new_product_stock_before = $new_product_previous_retail_total_quantity;
+
+
+                if (count($new_product_records_form_retail) > 0) {
+
+                    if (($new_product_stock_before - $quantity_sold) >= 0) {
+                        $new_product_stock_after =  $new_product_stock_before - $quantity_sold;
+                    } else {
+                        Alert::toast('Quantity left is not up to the sale requested','warning');
+                            return redirect()->back();
+                    }
+
+                    // $expected_price = (double)$quantity_sold * (double)$price_per_piece;
+                    // $new_retail_total_amount = (double)$previous_retail_total_amount - (double)$expected_price;
+                    // $new_retail_total_quantity = $previous_retail_total_quantity + $previous_quantity_sold;
+
+
+                    $expected_price = (double)$quantity_sold * (double)$new_product_price_per_piece;
+
+                    $new_product_new_retail_total_amount = (double)$new_product_previous_retail_total_amount - (double)$expected_price;
+                    $new_product_new_retail_total_quantity = $new_product_previous_retail_total_quantity - $quantity_sold;
+
+
+                    $old_product_new_retail_total_amount = (double)$old_product_previous_retail_total_amount + (double)$previous_expected_price;
+                    $old_product_new_retail_total_quantity = $old_product_previous_retail_total_quantity + $previous_quantity_sold;
+
+                    $old_product_stock_after = $old_product_new_retail_total_quantity;
+
+
+
+                    // ============= Updating SALES TABLE =====================
+                    $update_sales = Sales::find($sale_id);
+                    $update_sales->product_id = $product_id;
+                    $update_sales->stock_before = $new_product_stock_before;
+                    $update_sales->stock_after = $new_product_stock_after;
+                    $update_sales->quantity_sold = $quantity_sold;
+                    $update_sales->expected_price = $expected_price;
+                    $update_sales->remarks = $remarks;
+                    $update_sales->updated_by = $active_user;
+                    $update_sales->updated_at = $current_date_and_time;
+                    $update_sales->save();
+
+
+                    // ============= UPDATING RETAIL TABLE =====================
+                    // $get_product_details = Products::find($product_id);
+                    // $quantity_per_crate = $get_product_details->quantity_per_crate;
+
+                    if (($new_product_new_retail_total_quantity / $quantity_per_crate) > 0 ) {
+                        $new_product_total_pieces_left = $new_product_new_retail_total_quantity % $quantity_per_crate;
+                        $new_product_total_crates_left = (int)($new_product_new_retail_total_quantity / $quantity_per_crate);
+                    } else {
+                        $new_product_total_pieces_left = $new_product_new_retail_total_quantity;
+                        $new_product_total_crates_left = 0;
+                    }
+
+
+                    // ====updating retail for new product ==============
+                    $update_retail = Retail::find($new_product_retail_id);
+                    // if($update_retail->product_id ==  $product_id){
+                        $update_retail->stock_before = $new_product_stock_before;
+                        $update_retail->stock_after = $new_product_stock_after;
+                        $update_retail->no_of_crates = $new_product_total_crates_left;
+                        $update_retail->no_of_pieces = $new_product_total_pieces_left;
+                        $update_retail->total_quantity = $new_product_new_retail_total_quantity;
+                        $update_retail->total_amount = $new_product_new_retail_total_amount;
+                        // $update_retail->stock_after = $stock_after;
+                        $update_retail->save();
+                        Log::channel('my_logs')->info('Newwwwwww Product');
+                    // }
+
+
+                    // / ====updating retail for old product ==============
+                        if (($old_product_new_retail_total_quantity / $quantity_per_crate) > 0 ) {
+                            $old_product_total_pieces_left = $old_product_new_retail_total_quantity % $quantity_per_crate;
+                            $old_product_total_crates_left = (int)($old_product_new_retail_total_quantity / $quantity_per_crate);
+                        } else {
+                            $old_product_total_pieces_left = $old_product_new_retail_total_quantity;
+                            $old_product_total_crates_left = 0;
+                        }
+
+                        $update_old_product_retail = Retail::find($old_product_retail_id);
+                        $update_old_product_retail->stock_before = $old_product_stock_before;
+                        $update_old_product_retail->stock_after = $old_product_stock_after;
+                        $update_old_product_retail->no_of_crates = $old_product_total_crates_left;
+                        $update_old_product_retail->no_of_pieces = $old_product_total_pieces_left;
+                        $update_old_product_retail->total_quantity = $old_product_new_retail_total_quantity;
+                        $update_old_product_retail->total_amount = $old_product_new_retail_total_amount;
+                        // $update_retail->stock_after = $stock_after;
+                        $update_old_product_retail->save();
+                        Log::channel('my_logs')->info('Oldddddddddddddddddddd Product');
+
+
+                    Alert::toast('Records Updated Successfully','success');
+                    return redirect()->back();
+
+                }
+                else {
+                    Alert::toast('Product not found in retail! Please re-stock','warning');
+                            return redirect()->back();
+                }
+            }
+
+
 
 
         } catch (exception $e) {
