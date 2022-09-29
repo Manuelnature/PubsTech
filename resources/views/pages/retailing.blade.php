@@ -121,7 +121,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="txt_quantity">Quantity</label>
-                                    <input type="text" class="form-control" id="txt_quantity" name="txt_quantity" placeholder="Quantity">
+                                    <input type="number" class="form-control" id="txt_quantity" name="txt_quantity" placeholder="Quantity">
                                 </div>
                                 <span class="text-danger">@error('txt_quantity') {{ $message }} @enderror</span>
                             </div>
@@ -203,7 +203,7 @@
 
                         <label for="txt_quantity_model" class="col-sm-2 col-form-label">Quantity</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" id="txt_quantity_modal" name="txt_quantity_modal" placeholder="Quantity">
+                        <input type="number" class="form-control" id="txt_quantity_modal" name="txt_quantity_modal" placeholder="Quantity">
                         <span class="text-danger">@error('txt_quantity_modal') {{ $message }} @enderror</span>
                         </div>
                     </div>
@@ -534,6 +534,8 @@
         document.getElementById('product_name').innerHTML = product_name;
         document.getElementById('edit_title').innerHTML = 'Edit '+ product_name + 'Sales';
         });
+
+
     }
 
 
@@ -568,6 +570,9 @@
         document.getElementById('product_name_modal').innerHTML = product_name;
         });
     }
+
+            $("#txt_quantity_modal").attr("value", 0);
+            $("#txt_quantity").attr("value", 0);
   </script>
 
 

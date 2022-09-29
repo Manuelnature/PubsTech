@@ -120,9 +120,23 @@ class DashboardController extends Controller
         // }
         // $all_sales_audit_records = json_encode($sales_audit_records);
 
-        $all_sales_audit_records = SalesAudit::get_all_sales_audit_records();
+        // $all_sales_audit_records = SalesAudit::get_all_sales_audit_records();
         // dd($all_sales_audit_records);
 
-        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records'));
+        // $current_time = Carbon::now()->toDateTimeString();
+        $last_audit_time = SalesAudit::select_audit();
+        if(count($last_audit_time) > 0){
+            $last_audit_time = $last_audit_time[0]->created_at;
+            $all_sales_audit_records = SalesAudit::get_all_product_audit_records($last_audit_time);
+            // dd($all_sales_audit_records);
+        }
+        else{
+            $all_sales_audit_records = array();
+            $get_warehouse_records  = array();
+        }
+
+        $get_warehouse_records = Retail::get_each_product_details();
+
+        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_warehouse_records'));
     }
 }

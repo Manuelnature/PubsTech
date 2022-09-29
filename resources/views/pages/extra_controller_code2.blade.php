@@ -358,3 +358,26 @@ else {
     $get_warehouse_records_of_the_product->total_price = $total_amount_left;
     $get_warehouse_records_of_the_product->save();
 }
+
+
+
+
+
+// ============ UPDATING WAREHOUSE DB AFTER TRANSFER ==============
+            if (($quantity_transfered / $quantity_per_crate) >= 1) {
+                $pieces_transfered = $quantity_transfered % $quantity_per_crate;
+                $crates_transfered = (int)($quantity_transfered / $quantity_per_crate);
+            } else {
+                $pieces_transfered = $quantity_in_pieces;
+                $crates_transfered = $quantity_in_crate;
+            }
+
+            $get_warehouse_records_of_the_product = Warehouse::find($warehouse_id_of_product);
+            $total_items_from_warehouse = $get_warehouse_records_of_the_product->total_items;
+            $total_crates_from_warehouse = $get_warehouse_records_of_the_product->no_of_crates;
+            $total_pieces_from_warehouse = $get_warehouse_records_of_the_product->no_of_pieces;
+
+            $get_warehouse_records_of_the_product->total_items = (int)$total_items_from_warehouse - (int)$quantity_transfered;
+            $get_warehouse_records_of_the_product->no_of_crates = (int)$total_crates_from_warehouse - (int)$crates_transfered;
+            $get_warehouse_records_of_the_product->no_of_pieces = (int)$total_pieces_from_warehouse - (int)$pieces_transfered;
+            $get_warehouse_records_of_the_product->save();

@@ -108,19 +108,29 @@
                               </tr>
                             </thead>
                             <tbody>
-                                @foreach ($all_sales_audit_records as $audit_record)
-                                <tr>
-                                    <td>{{ $audit_record->name }}</td>
-                                    <td>{{ $audit_record->price_per_item }}</td>
-                                    <td>{{ $audit_record->starting_stock}}</td>
-                                    <td>
-                                        @php
-                                            $expected_amount = (double)$audit_record->starting_stock * (double)$audit_record->price_per_item;
-                                            echo 'Gh¢ '.number_format($expected_amount, 2);
-                                        @endphp
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @if (count($all_sales_audit_records) > 0)
+                                        @foreach ($all_sales_audit_records as $audit_record)
+                                        <tr>
+                                            <td>{{ $audit_record->name }}</td>
+                                            <td>{{ $audit_record->price_per_item }}</td>
+                                            <td>{{ $audit_record->starting_stock}}</td>
+                                            <td>
+                                                @php
+                                                    $expected_amount = (double)$audit_record->starting_stock * (double)$audit_record->price_per_item;
+                                                    echo 'Gh¢ '.number_format($expected_amount, 2);
+                                                @endphp
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                @else
+                                    <tr>
+                                        <td>-</td>
+                                        <td>0</td>
+                                        <td>00</td>
+                                        <td>0.00<td>
+                                    </tr>
+                                @endif
                             </tbody>
                           </table>
                     </div>

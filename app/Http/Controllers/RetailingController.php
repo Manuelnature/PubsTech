@@ -230,6 +230,8 @@ class RetailingController extends Controller
             $total_amount = $request->get('txt_edit_total');
             $remarks = $request->get('txt_edit_remarks');
 
+            // dd($remarks);
+
             // $get_record_from_product = Product::find($product_id);
             // $price_per_piece = $get_record_from_product->price_per_item;
             $get_product_details = Products::find($product_id);
@@ -286,6 +288,7 @@ class RetailingController extends Controller
                     $update_sale->quantity_sold = $new_quantity_sold;
                     $update_sale->expected_price = $new_expected_price;
                     $update_sale->stock_after = $new_stock_after;
+                    $update_sale->remarks = $remarks;
                     $update_sale->updated_by = $active_user;
                     $update_sale->updated_at = $current_date_and_time;
                     $update_sale->save();

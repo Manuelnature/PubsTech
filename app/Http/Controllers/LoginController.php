@@ -134,24 +134,28 @@ class LoginController extends Controller
         // }
 
         $get_all_from_warehouse = Retail::all();
-        foreach ($get_all_from_warehouse as $warehouse_details) {
-            $product_id = $warehouse_details->product_id;
-            // $product_name = $warehouse_details->name;
-            $price_per_item = $warehouse_details->price_per_piece;
-            // $stock_left = $warehouse_details->total_items;
-            $stock_left = $warehouse_details->total_quantity;
+
+        if (count($get_all_from_warehouse) > 0) {
+            foreach ($get_all_from_warehouse as $warehouse_details) {
+                $product_id = $warehouse_details->product_id;
+                // $product_name = $warehouse_details->name;
+                $price_per_item = $warehouse_details->price_per_piece;
+                // $stock_left = $warehouse_details->total_items;
+                $stock_left = $warehouse_details->total_quantity;
 
 
+                $sales_audit = new SalesAudit();
+                $sales_audit->user_id = $current_user_id;
+                $sales_audit->product_id = $product_id;
+                $sales_audit->starting_stock = $stock_left;
+                $sales_audit->sales_date = $today_date;
+                $sales_audit->created_by = $active_user;
+                $sales_audit->save();
 
-            $sales_audit = new SalesAudit();
-            $sales_audit->user_id = $current_user_id;
-            $sales_audit->product_id = $product_id;
-            $sales_audit->starting_stock = $stock_left;
-            $sales_audit->sales_date = $today_date;
-            $sales_audit->created_by = $active_user;
-            $sales_audit->save();
-
+            }
         }
+
+
     }
 
 

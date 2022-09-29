@@ -290,6 +290,21 @@ CREATE TABLE tbl_retail (
 );
 
 
+CREATE TABLE tbl_retail (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    stock_before varchar(255),
+    stock_after varchar(255),
+    quantity_in_crate varchar(255),
+    quantity_in_pieces varchar(255),
+    total_quantity varchar(255),
+    expected_price varchar(255),
+    CONSTRAINT FK_retail_product FOREIGN KEY (product_id)
+    REFERENCES tbl_products(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 
 
 =============tbl_bar_table
