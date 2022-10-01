@@ -58,21 +58,23 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txt_price_per_item">Price Per Item</label>
-                            <input type="number" class="form-control" id="txt_price_per_item" name="txt_price_per_item" value="{{old('txt_price_per_item')}}">
+                            <input type="number" min="0" step=".01" class="form-control" id="txt_price_per_item" name="txt_price_per_item" value="{{old('txt_price_per_item')}}">
                         </div>
                         <span class="text-danger">@error('txt_price_per_item') {{ $message }} @enderror</span>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txt_quantity_per_crate">Quantity per Crate</label>
-                            <input type="number" class="form-control" id="txt_quantity_per_crate" name="txt_quantity_per_crate" value="{{old('txt_quantity_per_crate')}}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_per_crate" name="txt_quantity_per_crate" value="{{old('txt_quantity_per_crate')}}">
                         </div>
                         <span class="text-danger">@error('txt_quantity_per_crate') {{ $message }} @enderror</span>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txt_stock_threshold">Stock Threshold</label>
-                            <input type="number" class="form-control" id="txt_stock_threshold" name="txt_stock_threshold" value="{{old('txt_stock_threshold')}}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_stock_threshold" name="txt_stock_threshold" value="{{old('txt_stock_threshold')}}">
                         </div>
                         <span class="text-danger">@error('txt_stock_threshold') {{ $message }} @enderror</span>
                     </div>
@@ -254,7 +256,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_price_per_item">Price Per Item</label>
-                                    <input type="number" class="form-control" id="txt_edit_price_per_item" name="txt_edit_price_per_item">
+                                    <input type="number" min="0" step=".01" class="form-control" id="txt_edit_price_per_item" name="txt_edit_price_per_item">
                                 </div>
                                 <span class="text-danger">@error('txt_edit_price_per_item') {{ $message }} @enderror</span>
                             </div>
@@ -264,7 +266,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_quantity_per_crate"> Quantity Per Crate</label>
-                                    <input type="number" class="form-control" id="txt_edit_quantity_per_crate" name="txt_edit_quantity_per_crate">
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity_per_crate" name="txt_edit_quantity_per_crate">
 
                                     <span class="text-danger">@error('txt_edit_quantity_per_crate') {{ $message }} @enderror</span>
                                 </div>
@@ -273,7 +276,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_stock_threshold">Stock Threshold</label>
-                                    <input type="number" class="form-control" id="txt_edit_stock_threshold" name="txt_edit_stock_threshold">
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_stock_threshold" name="txt_edit_stock_threshold">
                                 </div>
                                 <span class="text-danger">@error('txt_edit_stock_threshold') {{ $message }} @enderror</span>
                             </div>

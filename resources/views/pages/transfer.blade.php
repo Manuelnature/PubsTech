@@ -12,7 +12,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Transfer Products</a></li>
+              {{-- <li class="breadcrumb-item"><a href="#">Transfer Products</a></li> --}}
               {{-- <li class="breadcrumb-item active">Sales / Warehouse</li> --}}
             </ol>
           </div>
@@ -58,14 +58,16 @@
                       <div class="col-md-4">
                         <div class="form-group">
                             <label for="txt_quantity_to_transfer_in_crate">Quantity To Transfer (In Crate)</label>
-                            <input type="number" class="form-control" id="txt_quantity_to_transfer_in_crate" name="txt_quantity_to_transfer_in_crate" value="{{ old('txt_quantity_to_transfer_in_crate') }}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_to_transfer_in_crate" name="txt_quantity_to_transfer_in_crate" value="{{ old('txt_quantity_to_transfer_in_crate') }}">
                         </div>
                         <span class="text-danger">@error('txt_quantity_to_transfer_in_crate') {{ $message }} @enderror</span>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                             <label for="txt_quantity_to_transfer_in_pieces">Quantity To Transfer (In Pieces)</label>
-                            <input type="number" class="form-control" id="txt_quantity_to_transfer_in_pieces" name="txt_quantity_to_transfer_in_pieces" value="{{ old('txt_quantity_to_transfer_in_pieces') }}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_to_transfer_in_pieces" name="txt_quantity_to_transfer_in_pieces" value="{{ old('txt_quantity_to_transfer_in_pieces') }}">
                         </div>
                         <span class="text-danger">@error('txt_quantity_to_transfer_in_pieces') {{ $message }} @enderror</span>
                       </div>
@@ -286,14 +288,16 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="txt_edit_quantity_transfered_in_crates">Quantity Transfered (In Crates)</label>
-                                            <input type="number" class="form-control" id="txt_edit_quantity_transfered_in_crates" name="txt_edit_quantity_transfered_in_crates">
+                                            <input type="number" min="0" oninput="this.value =
+                                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity_transfered_in_crates" name="txt_edit_quantity_transfered_in_crates">
                                         </div>
                                         <span class="text-danger">@error('txt_edit_quantity_transfered_in_crates') {{ $message }} @enderror</span>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="txt_edit_quantity_transfered_in_pieces"> Quantity Transfered (in Pieces)</label>
-                                            <input type="number" class="form-control" id="txt_edit_quantity_transfered_in_pieces" name="txt_edit_quantity_transfered_in_pieces">
+                                            <input type="number" min="0" oninput="this.value =
+                                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity_transfered_in_pieces" name="txt_edit_quantity_transfered_in_pieces">
 
                                             <span class="text-danger">@error('txt_edit_quantity_transfered_in_pieces') {{ $message }} @enderror</span>
                                         </div>

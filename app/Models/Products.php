@@ -19,4 +19,26 @@ class Products extends Model
             echo 'Caught exception';
         }
     }
+
+    public static function select_products_in_warehouse(){
+        try {
+            return  DB::table('tbl_products')
+            ->select( 'tbl_products.*')
+            ->join('tbl_warehouse', 'tbl_warehouse.product_id', '=', 'tbl_products.id')
+            ->get();
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
+
+    public static function select_products_in_retail(){
+        try {
+            return  DB::table('tbl_products')
+            ->select( 'tbl_products.*')
+            ->join('tbl_retail', 'tbl_retail.product_id', '=', 'tbl_products.id')
+            ->get();
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
 }

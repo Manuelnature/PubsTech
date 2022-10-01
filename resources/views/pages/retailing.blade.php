@@ -121,7 +121,8 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="txt_quantity">Quantity</label>
-                                    <input type="number" class="form-control" id="txt_quantity" name="txt_quantity" placeholder="Quantity">
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity" name="txt_quantity" placeholder="Quantity">
                                 </div>
                                 <span class="text-danger">@error('txt_quantity') {{ $message }} @enderror</span>
                             </div>
@@ -139,7 +140,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="txt_total_amount">Total (Gh¢)</label>
-                                    <input type="text" class="form-control" id="txt_total_amount" name="txt_total_amount" readonly>
+                                    <input type="number" class="form-control" id="txt_total_amount" name="txt_total_amount" readonly>
                                 </div>
                                 <span class="text-danger">@error('txt_total_amount') {{ $message }} @enderror</span>
                                 <button type="submit" class="btn btn-secondary">Enter</button>
@@ -203,7 +204,8 @@
 
                         <label for="txt_quantity_model" class="col-sm-2 col-form-label">Quantity</label>
                         <div class="col-sm-10">
-                        <input type="number" class="form-control" id="txt_quantity_modal" name="txt_quantity_modal" placeholder="Quantity">
+                        <input type="number" min="0" oninput="this.value =
+                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_modal" name="txt_quantity_modal" placeholder="Quantity">
                         <span class="text-danger">@error('txt_quantity_modal') {{ $message }} @enderror</span>
                         </div>
                     </div>
@@ -212,7 +214,7 @@
                         <div class="form-group row">
                             <label for="txt_total_amount_modal" class="col-sm-2 col-form-label">Total (Gh¢)</label>
                             <div class="col-sm-10">
-                            <input type="text" class="form-control" id="txt_total_amount_modal" name="txt_total_amount_modal" readonly>
+                            <input type="number" class="form-control" id="txt_total_amount_modal" name="txt_total_amount_modal" readonly>
                             </div>
                         </div>
 
@@ -460,7 +462,8 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="txt_edit_quantity">Quantity</label>
-                                                <input type="number" class="form-control" id="txt_edit_quantity" name="txt_edit_quantity" >
+                                                <input type="number" min="0" oninput="this.value =
+                                                !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity" name="txt_edit_quantity" >
                                             </div>
                                             <span class="text-danger">@error('txt_edit_quantity') {{ $message }} @enderror</span>
                                         </div>

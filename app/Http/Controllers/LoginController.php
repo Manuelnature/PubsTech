@@ -197,28 +197,31 @@ class LoginController extends Controller
         $date_and_time_now = Carbon::now()->toDateTimeString();
         $today_date = Carbon::now()->format('Y-m-d');
 
-        $get_all_from_warehouse = Warehouse::all();
-        foreach ($get_all_from_warehouse as $warehouse_details) {
-            $product_id = $warehouse_details->product_id;
-            $product_name = $warehouse_details->name;
-            $price_per_item = $warehouse_details->price_per_item;
-            $stock_left = $warehouse_details->total_items;
+        // $get_all_from_warehouse = Warehouse::all();
+        $get_all_from_retail = Retail::all();
+        if (count($get_all_from_retail) > 0) {
+            foreach ($get_all_from_retail as $retail_details) {
+                $product_id = $retail_details->product_id;
+                // $product_name = $retail_details->name;
+                $price_per_item = $retail_details->price_per_piece;
+                $stock_left = $retail_details->total_quantity;
 
 
-            $get_sales_records = SalesAudit::sales_audit_record_for_user($current_user_id, $product_id, $today_date);
-            // dd($get_sales_records);
-            $audit_id = $get_sales_records[0]->id;
-            // dd($audit_id);
+                $get_sales_records = SalesAudit::sales_audit_record_for_user($current_user_id, $product_id);
+                // dd($get_sales_records);
+                $audit_id = $get_sales_records[0]->id;
+                // dd($audit_id);
 
-            $sales_audit = SalesAudit::find($audit_id);
+                $sales_audit = SalesAudit::find($audit_id);
 
-            $starting_stock = $sales_audit->starting_stock;
-            $difference_in_stock = (int)$starting_stock - (int)$stock_left;
-            $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
+                $starting_stock = $sales_audit->starting_stock;
+                $difference_in_stock = (int)$starting_stock - (int)$stock_left;
+                $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
 
-            $sales_audit->ending_stock = $stock_left;
-            $sales_audit->expected_amount = $expected_amount;
-            $sales_audit->save();
+                $sales_audit->ending_stock = $stock_left;
+                $sales_audit->expected_amount = $expected_amount;
+                $sales_audit->save();
+            }
         }
 
         $request->session()->forget('user_session');

@@ -16,7 +16,8 @@ use Log;
 class RetailingController extends Controller
 {
     public function index(){
-        $all_products = Products::where('status', 'Active')->get();
+        // $all_products = Products::where('status', 'Active')->get();
+        $all_products = Products::select_products_in_retail();
         $most_purchased_products = Products::where('is_most_purchased', '1')->where('status', 'Active')->get();
         $all_sales_records = Sales::get_sales_details();
 

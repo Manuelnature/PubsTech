@@ -12,7 +12,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Warehouse</a></li>
+              {{-- <li class="breadcrumb-item"><a href="#">Warehouse</a></li> --}}
               {{-- <li class="breadcrumb-item active">Sales / Warehouse</li> --}}
             </ol>
           </div>
@@ -58,14 +58,16 @@
                       <div class="col-md-3">
                         <div class="form-group">
                             <label for="txt_quantity_of_crates">Quantity (Crate)</label>
-                            <input type="number" class="form-control" id="txt_quantity_of_crates" name="txt_quantity_of_crates" value="{{ old('txt_quantity_of_crates') }}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_of_crates" name="txt_quantity_of_crates" value="{{ old('txt_quantity_of_crates') }}">
                         </div>
                         <span class="text-danger">@error('txt_quantity_of_crates') {{ $message }} @enderror</span>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                             <label for="txt_quantity">Quantity (Pieces)</label>
-                            <input type="number" class="form-control" id="txt_quantity" name="txt_quantity" value="{{ old('txt_quantity') }}">
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity" name="txt_quantity" value="{{ old('txt_quantity') }}">
                         </div>
                         <span class="text-danger">@error('txt_quantity') {{ $message }} @enderror</span>
                       </div>
@@ -289,7 +291,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="txt_edit_number_of_crates">Quantity (Crate)</label>
-                                        <input type="number" class="form-control" id="txt_edit_number_of_crates" name="txt_edit_number_of_crates">
+                                        <input type="number" min="0" oninput="this.value =
+                                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_number_of_crates" name="txt_edit_number_of_crates">
                                     </div>
                                     <span class="text-danger">@error('txt_edit_number_of_crates') {{ $message }} @enderror</span>
                                 </div>
@@ -299,7 +302,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="txt_edit_number_of_pieces"> Quantity (Pieces)</label>
-                                        <input type="number" class="form-control" id="txt_edit_number_of_pieces" name="txt_edit_number_of_pieces">
+                                        <input type="number" min="0" oninput="this.value =
+                                        !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_number_of_pieces" name="txt_edit_number_of_pieces">
 
                                         <span class="text-danger">@error('txt_edit_number_of_pieces') {{ $message }} @enderror</span>
                                     </div>

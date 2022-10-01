@@ -24,13 +24,15 @@ class SalesAudit extends Model
         }
     }
 
-    public static function sales_audit_record_for_user($current_user_id, $product_id, $today_date){
+    public static function sales_audit_record_for_user($current_user_id, $product_id){
         try{
             return  DB::table('tbl_sales_audit')
             ->select('tbl_sales_audit.*')
             ->where('user_id', $current_user_id)
             ->where('product_id', $product_id)
-            ->where(DB::raw('CAST(created_at as date)'), '=',  $today_date)
+            // ->where(DB::raw('CAST(created_at as date)'), '=',  $today_date)
+            ->orderBy('created_at', 'desc')
+            ->limit(1)
             ->get();
 
         }catch(exception $e){

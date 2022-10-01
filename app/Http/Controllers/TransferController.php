@@ -16,7 +16,9 @@ class TransferController extends Controller
 {
     public function index(){
         // $all_products = Products::all();
-        $all_products = Products::where('status', 'Active')->get();
+        // $all_products = Products::where('status', 'Active')->get();
+        $all_products = Products::select_products_in_warehouse();
+        // dd($all_products);
         // $all_products_id = Warehouse::select_all_product_ids();
         // foreach ($all_products_id as $product) {
         //     $select_product_name = Products::select_product($product->product_id);
