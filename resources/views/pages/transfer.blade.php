@@ -149,12 +149,12 @@
                   <thead>
                     <tr>
                         <th>Product Name</th>
-                        <th>Original Stock</th>
-                        <th>Stock Before</th>
+                        <!-- <th>Original Stock</th> -->
+                        <th>Stock Before(In Warehouse)</th>
                         <th>Quantity Transfered (In Crates)</th>
                         <th>Quantity Transfered (In Pieces)</th>
                         <th>Total Transfered</th>
-                        <th>Stock Left</th>
+                        <th>Stock Left(In Warehouse)</th>
                         <th>Price per Piece</th>
                         <th>Expected Amount</th>
                         <th>Collected By</th>
@@ -169,7 +169,7 @@
                     @foreach ($all_transfer_records as $transfer_record)
                         <tr>
                             <td>{{ $transfer_record->name }}</td>
-                            <td> {{ $transfer_record->original_stock }} </td>
+                            <!-- <td> {{ $transfer_record->original_stock }} </td> -->
                             <td>{{ $transfer_record->stock_before }}</td>
                             <td>{{ $transfer_record->quantity_transfered_in_crates }}</td>
                             <td>{{ $transfer_record->quantity_transfered_in_pieces }}</td>
