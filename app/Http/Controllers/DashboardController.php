@@ -7,6 +7,7 @@ use Session;
 use App\Models\Dashboard;
 use App\Models\Sales;
 use App\Models\SalesAudit;
+use App\Models\Retail;
 use App\Models\WarehouseLogs;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
