@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/public/assets/img/products/
 /storage/*.key
 /vendor
 .env
@@ -13,3 +14,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+app_git_pull.bat
+start_bar_app.bat
+start_bar_app_in_chrome.bat
+images.ico

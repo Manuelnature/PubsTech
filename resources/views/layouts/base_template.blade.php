@@ -206,7 +206,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Bar Manager2</span>
+      <span class="brand-text font-weight-light">Bar Manager</span>
     </a>
 
     @php
@@ -296,7 +296,7 @@
                     <li class="nav-link {{ Request::segment(1) === 'retailing' ? 'active' : null }}">
                         <a href="{{ url('retailing' )}}" >
                             <i class="nav-icon fas fa-wine-bottle"></i>
-                            <p>Retailing</p>
+                            <p>Sales</p>
                         </a>
                     </li>
                 </li>
