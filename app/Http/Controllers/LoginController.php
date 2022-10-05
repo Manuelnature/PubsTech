@@ -12,6 +12,7 @@ use App\Models\Sales;
 use App\Models\Retail;
 use Session;
 use Carbon\Carbon;
+use Log;
 
 class LoginController extends Controller
 {
@@ -192,15 +193,29 @@ class LoginController extends Controller
 
         //     }
         // }
+
+
         $user_session = Session::get('user_session');
+        Log::channel('my_logs')->info('SESSION FOUND ');
+        Log::channel('my_logs')->info($user_session );
         $current_user_id = $user_session->id;
+
+        Log::channel('my_logs')->info('SESSION assigned ');
+        Log::channel('my_logs')->info($current_user_id);
+
         $date_and_time_now = Carbon::now()->toDateTimeString();
         $today_date = Carbon::now()->format('Y-m-d');
 
         // $get_all_from_warehouse = Warehouse::all();
         $get_all_from_retail = Retail::all();
+        Log::channel('my_logs')->info('RETAIL ARRAY FOUND ');
+        Log::channel('my_logs')->info(count($get_all_from_retail));
+        $my_variable = 0;
         if (count($get_all_from_retail) > 0) {
+            Log::channel('my_logs')->info('EEEEEEEEEEEEEEEE IN IF STATEMENT');
             foreach ($get_all_from_retail as $retail_details) {
+                $my_variable = $my_variable + 1;
+
                 $product_id = $retail_details->product_id;
                 // $product_name = $retail_details->name;
                 $price_per_item = $retail_details->price_per_piece;
@@ -222,10 +237,11 @@ class LoginController extends Controller
                 $sales_audit->expected_amount = $expected_amount;
                 $sales_audit->save();
             }
+            Log::channel('my_logs')->info('My variable is : '.$my_variable);
         }
-
+        Log::channel('my_logs')->info('LLLLLLLASSSSSSSSSSST ALLLLLLLLLLL');
         $request->session()->forget('user_session');
-
+        Log::channel('my_logs')->info('LASSSSSSSSST CODEEEEEEEEEEEEE');
         return redirect('/');
     }
 
