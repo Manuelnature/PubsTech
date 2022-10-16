@@ -152,67 +152,66 @@
 
     @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
         <!-- Main content -->
+
+
         <section class="content">
-        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                        <h5 class="card-title">Filter Sales</h5>
 
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">
-                            <h5 class="card-title">Filter Sales</h5>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        </div>
+                        <!-- /.card-header -->
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            </div>
-                            <!-- /.card-header -->
+                        <div class="card-body">
+                            <form action="{{ route('filter_sales') }}" method="POST">
+                                @csrf
+                                <div class="row mb-3">
 
-                            <div class="card-body">
-                                <form action="{{ route('filter_sales') }}" method="POST">
-                                    @csrf
-                                    <div class="row mb-3">
-
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label for="txt_date_from">Start Date</label>
-                                                <input type="date" class="form-control" id="txt_date_from" name="txt_date_from" value="{{ old('txt_date_from') }}">
-                                            </div>
-                                            <span class="text-danger">@error('txt_date_from') {{ $message }} @enderror</span>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="txt_date_from">Start Date</label>
+                                            <input type="date" class="form-control" id="txt_date_from" name="txt_date_from" value="{{ old('txt_date_from') }}">
                                         </div>
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label for="txt_date_to">End Date</label>
-                                                <input type="date" class="form-control" id="txt_date_to" name="txt_date_to" value="{{ old('txt_date_to') }}">
-                                            </div>
-                                            <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
-                                        </div>
-                                        <div class="col-md-2" style="padding-top:30px !important;">
-                                            <button type="submit" class="btn btn-secondary btn-block">Submit</button>
-                                        </div>
+                                        <span class="text-danger">@error('txt_date_from') {{ $message }} @enderror</span>
                                     </div>
-                                </form>
-                            </div>
-                            <!-- ./card-body -->
-                            <div class="card-footer">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="txt_date_to">End Date</label>
+                                            <input type="date" class="form-control" id="txt_date_to" name="txt_date_to" value="{{ old('txt_date_to') }}">
+                                        </div>
+                                        <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
+                                    </div>
+                                    <div class="col-md-2" style="padding-top:30px !important;">
+                                        <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- ./card-body -->
+                        <div class="card-footer">
 
 
-                            </div>
-                            <!-- /.card-footer -->
                         </div>
-                        <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
+                        <!-- /.card-footer -->
                     </div>
+                    <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
 
-                </div><!--/. container-fluid -->
-            </section>
+            </div><!--/. container-fluid -->
+        </section>
 
         <!--=========== INITIAL DASHBOARD PRESENTATION========================-->
             <!-- Small boxes (Stat box) -->
@@ -310,11 +309,9 @@
             </div> --}}
             <!-- /.row -->
 
-        </div><!-- /.container-fluid -->
-        </section>
     @endif
 
-    <!-- Main content -->
+    <!-- Overall Sales -->
     <section class="content">
         <div class="container-fluid">
 
@@ -337,14 +334,14 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box">
                             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Total Stocks</span>
+                              <span class="info-box-text">Number of Products</span>
                               <span class="info-box-number">
-                                {{ $total_no_of_items }}
+                                {{ $total_number_of_products }}
                                 <small></small>
                               </span>
                             </div>
@@ -353,12 +350,12 @@
                           <!-- /.info-box -->
                         </div>
                         <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
                             <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Total Stock Sold</span>
+                              <span class="info-box-text">Number of Users</span>
                               <span class="info-box-number">{{ $total_quantity_sold }}</span>
                             </div>
                             <!-- /.info-box-content -->
@@ -370,7 +367,7 @@
                         <!-- fix for small devices only -->
                         <div class="clearfix hidden-md-up"></div>
 
-                        <div class="col-12 col-sm-6 col-md-3">
+                        {{-- <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
                             <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
@@ -378,22 +375,22 @@
                               <span class="info-box-text">Total Stock Left</span>
                               <span class="info-box-number">
                                 @php
-                                    $total_remaining_items = (double)$total_no_of_items - (double)$total_quantity_sold;
-                                    echo $total_remaining_items;
+                                    // $total_remaining_items = (double)$total_no_of_items - (double)$total_quantity_sold;
+                                    // echo $total_remaining_items;
                                 @endphp
                               </span>
                             </div>
                             <!-- /.info-box-content -->
                           </div>
                           <!-- /.info-box -->
-                        </div>
+                        </div> --}}
                         <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
                             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Expected Amount</span>
+                              <span class="info-box-text">Number of Car Washers</span>
                               <span class="info-box-number">
                                 @php
                                     echo 'Gh¢ '.number_format($total_expected_sold_price,2);
@@ -430,7 +427,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">Summary Of My Sales Records For Today </h5>
+                  <h5 class="card-title">Summary of My Sales Records For Today </h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -518,7 +515,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="my_sales" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -552,6 +549,8 @@
         <!-- /.container-fluid -->
     </section>
 
+
+    <!-- Overall Sales Records -->
     <section class="content">
         <div class="container-fluid">
           <div class="row">
@@ -559,7 +558,12 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Transfer Transactions</h3>
+                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Sales</h3>
+                        <span style="margin-left:40px !important">
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('F j, Y')}}
+                            <strong> to </strong>
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('F j, Y')}}
+                        </span>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -571,7 +575,66 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="sales" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                          <th>Product Name</th>
+                          <th>Total Quantity Sold</th>
+                          <th>Total Expected Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach (json_decode($overall_sales_record, true) as $sales_record)
+                          <tr>
+                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
+                              <td>
+                                    @php
+                                        echo 'Gh¢ '.number_format($sales_record['total_expected_price_per_product'], 2);
+                                    @endphp
+                             </td>
+                          </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+     <!-- Overall Transfer Records -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Transfer Transactions</h3>
+                    <span style="margin-left:40px !important">
+                        {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_start_date'])->format('F j, Y')}}
+                        <strong> to </strong>
+                        {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_end_date'])->format('F j, Y')}}
+                    </span>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="transfers" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -583,7 +646,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach (json_decode($all_data, true) as $transfer_record)
+                      @foreach (json_decode($overall_transfer_record, true) as $transfer_record)
                           <tr>
                               <td>{{ $transfer_record['product_name'] }}</td>
                               <td> {{ $transfer_record['original_stock'] }} </td>
@@ -621,5 +684,54 @@
 @section('Dashboard_JS')
   <script src="{{ asset('assets/js/dashboard.js') }}" ></script>
 @endsection
+
+
+    <!-- DataTables  & Plugins -->
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script src="plugins/jszip/jszip.min.js"></script>
+    <script src="plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    {{-- <script src="dist/js/adminlte.min.js"></script> --}}
+
+    <script>
+    $(function () {
+        $("#transfers").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "ordering": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#transfers_wrapper .col-md-6:eq(0)');
+
+        $('#sales').DataTable({
+        "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "ordering": true,
+        "info": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#sales_wrapper .col-md-6:eq(0)');
+
+        $('#my_sales').DataTable({
+        "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "ordering": true,
+        "info": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        });
+    });
+
+
+    </script>
 
 @endsection

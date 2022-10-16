@@ -381,3 +381,125 @@ else {
             $get_warehouse_records_of_the_product->no_of_crates = (int)$total_crates_from_warehouse - (int)$crates_transfered;
             $get_warehouse_records_of_the_product->no_of_pieces = (int)$total_pieces_from_warehouse - (int)$pieces_transfered;
             $get_warehouse_records_of_the_product->save();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+======================================Home Card ================================
+<section class="content">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Overall Sales Records</h5>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-3">
+                      <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
+
+                        <div class="info-box-content">
+                          <span class="info-box-text">Total Number</span>
+                          <span class="info-box-number">
+                            {{ $total_no_of_items }}
+                            <small></small>
+                          </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                      <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                      <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                          <span class="info-box-text">Total Stock Sold</span>
+                          <span class="info-box-number">{{ $total_quantity_sold }}</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                      <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix hidden-md-up"></div>
+
+                    <div class="col-12 col-sm-6 col-md-3">
+                      <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                        <div class="info-box-content">
+                          <span class="info-box-text">Total Stock Left</span>
+                          <span class="info-box-number">
+                            @php
+                                $total_remaining_items = (double)$total_no_of_items - (double)$total_quantity_sold;
+                                echo $total_remaining_items;
+                            @endphp
+                          </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                      <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                      <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
+
+                        <div class="info-box-content">
+                          <span class="info-box-text">Expected Amount</span>
+                          <span class="info-box-number">
+                            @php
+                                echo 'Gh¢ '.number_format($total_expected_sold_price,2);
+                            @endphp</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                      </div>
+                      <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+                  </div>
+              <!-- /.row -->
+            </div>
+            <!-- ./card-body -->
+            <div class="card-footer">
+
+
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+    </div><!--/. container-fluid -->
+</section>

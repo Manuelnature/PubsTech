@@ -171,7 +171,7 @@
                   <tbody>
                     @foreach ($get_product_records as $records)
                         <tr>
-                            <td>{{ $records->name }}</td>
+                            <td>{{ ucwords(trans($records->name)) }}</td>
                             {{-- <td> {{ $records->quantity_per_crate }}</td> --}}
                             <td>{{ $records->no_of_crates }}</td>
                             <td>{{ $records->no_of_pieces }}</td>
@@ -449,7 +449,7 @@
             "lengthChange": false,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 10, "desc" ]],
+            "order": [[ 9, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
           }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
           $('#example2').DataTable({

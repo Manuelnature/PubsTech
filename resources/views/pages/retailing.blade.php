@@ -375,7 +375,8 @@
                         <tbody>
                         @foreach ($all_sales_records as $sales_record)
                             <tr>
-                                <td>{{ $sales_record->name }}</td>
+
+                                <td>{{ ucwords(trans($sales_record->name)) }}</td>
                                 {{-- <td>{{ $sales_record->original_stock }}</td> --}}
                                 <td>{{ $sales_record->stock_before }}</td>
                                 <td>{{ $sales_record->quantity_sold }}</td>

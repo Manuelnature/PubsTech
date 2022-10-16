@@ -86,7 +86,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">My Sales Records For Today </h5>
+                  <h5 class="card-title">Summary of My Sales Records For Today</h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -163,7 +163,7 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Summary of Transactions</h3>
+                  <h3 class="card-title" style="font-weight: 800;">Breakdown of My Sales For Today</h3>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -175,7 +175,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example2" class="table table-bordered table-striped">
+                  <table id="my_sales" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -216,5 +216,38 @@
 @section('Dashboard_JS')
   <script src="{{ asset('assets/js/dashboard.js') }}" ></script>
 @endsection
+
+
+
+    <!-- DataTables  & Plugins -->
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script src="plugins/jszip/jszip.min.js"></script>
+    <script src="plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    {{-- <script src="dist/js/adminlte.min.js"></script> --}}
+
+    <script>
+        $(function () {
+
+            $('#my_sales').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": false,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+            });
+        });
+    </script>
+
 
 @endsection

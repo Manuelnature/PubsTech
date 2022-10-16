@@ -168,8 +168,8 @@
                   <tbody>
                     @foreach ($all_transfer_records as $transfer_record)
                         <tr>
-                            <td>{{ $transfer_record->name }}</td>
-                            <!-- <td> {{ $transfer_record->original_stock }} </td> -->
+                            <td>{{ ucfirst(trans($transfer_record->name)) }}</td>
+                            {{-- <!-- <td> {{ $transfer_record->original_stock }} </td> --> --}}
                             <td>{{ $transfer_record->stock_before }}</td>
                             <td>{{ $transfer_record->quantity_transfered_in_crates }}</td>
                             <td>{{ $transfer_record->quantity_transfered_in_pieces }}</td>

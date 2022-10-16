@@ -321,6 +321,33 @@
                     </li>
                 @endif
 
+                <li class="nav-header">CAR WASHING BAY</li>
+                <li class="nav-item">
+                    <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
+                        <a href="{{ url('vehicles' )}}" >
+                            <i class="nav-icon fas fa-id-card"></i>
+                            <p>Vehicles</p>
+                        </a>
+                    </li>
+                </li>
+
+                <li class="nav-item">
+                    <li class="nav-link {{ Request::segment(1) === 'services' ? 'active' : null }}">
+                        <a href="{{ url('services' )}}" >
+                            <i class="nav-icon fas fa-id-card"></i>
+                            <p>Services</p>
+                        </a>
+                    </li>
+                </li>
+                <li class="nav-item">
+                    <li class="nav-link {{ Request::segment(1) === 'washers' ? 'active' : null }}">
+                        <a href="{{ url('washers' )}}" >
+                            <i class="nav-icon fas fa-id-card"></i>
+                            <p>Car Washers</p>
+                        </a>
+                    </li>
+                </li>
+
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'logout' ? 'active' : null }}">
                         <a href="{{ url('logout' )}}" >

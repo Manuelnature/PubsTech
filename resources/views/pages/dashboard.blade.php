@@ -82,14 +82,14 @@
         </div><!--/. container-fluid -->
     </section>
 
-    <!-- Main content -->
+    <!-- Overall Sales -->
     <section class="content">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">Overall Sales Records
+                  <h5 class="card-title" style="font-weight: 700; color:blue">Overall Sales Records
                     <span style="margin-left:40px !important">
                         {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
                         <strong> to </strong>
@@ -201,7 +201,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">Summary Of My Sales Records For Today </h5>
+                  <h5 class="card-title" style="font-weight: 700; color:blue">Summary Of My Sales Records For Today </h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -277,7 +277,7 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Breakdown of My Sales For Today</h3>
+                  <h3 class="card-title" style="font-weight: 700; color:blue">Breakdown of My Sales For Today</h3>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -323,7 +323,7 @@
         <!-- /.container-fluid -->
     </section>
 
-
+     <!-- Filtered Sales Records -->
     <section class="content">
         <div class="container-fluid">
           <div class="row">
@@ -331,7 +331,74 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Transfer Transactions</h3>
+                  <h3 class="card-title" style="font-weight: 800; color:blue">Summary of Overall Sales
+                    <span style="margin-left:40px !important">
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
+                        <strong> to </strong>
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
+                    </span>
+                  </h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                          <th>Product Name</th>
+                          <th>Total Quantity Sold</th>
+                          <th>Total Expected Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach (json_decode($filter_sales_data, true) as $sales_record)
+                          <tr>
+                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
+                              <td>
+                                    @php
+                                        echo 'Gh¢ '.number_format($sales_record['total_expected_price_per_product'], 2);
+                                    @endphp
+                             </td>
+                          </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+
+    <!-- Filtered Transfer Records -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title" style="font-weight: 700; color:blue">Summary of Overall Transfer Transactions
+                    <span style="margin-left:40px !important">
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
+                        <strong> to </strong>
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
+                    </span>
+                  </h3>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -355,7 +422,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach (json_decode($all_data, true) as $transfer_record)
+                      @foreach (json_decode($filter_transfer_data, true) as $transfer_record)
                           <tr>
                               <td>{{ $transfer_record['product_name'] }}</td>
                               <td> {{ $transfer_record['original_stock'] }} </td>

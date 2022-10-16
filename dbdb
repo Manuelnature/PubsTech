@@ -334,6 +334,109 @@ purchased_items (text)
 
 
 
+=================   CAR WASH
+tbl_car_washers
+id
+firstname
+lastname
+nickname
+bio
+phone_number
+created_at
+created_by
+updated_at
+updated_by
+
+tbl_vehicles
+id
+name
+type
+description
+created_at
+created_by
+updated_at
+updated_by
+
+CREATE TABLE tbl_vehicles (
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    name varchar(100),
+    type varchar(100),
+    description mediumtext,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by varchar(100),
+    updated_by varchar(100),
+    updated_at varchar(100)
+);
+
+tbl_services
+id
+vehicle_id
+name
+price
+washer_percentage_shares
+description
+created_at
+created_by
+updated_at
+updated_by
+
+CREATE TABLE tbl_services(
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    vehicle_id int,
+    name varchar(100),
+    price varchar(100),
+    washer_percentage varchar(100),
+    description longtext,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by varchar(100),
+    updated_by varchar(100),
+    updated_at varchar(100),
+    CONSTRAINT FK_service_vehicle FOREIGN KEY (vehicle_id)
+    REFERENCES tbl_vehicles(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+
+tbl_transactions
+id
+washers_id
+service_ids (an array of services)
+amount (sum of the prices of all the services )
+description
+washer_commision (the sum of percentage shares on each of the services)
+supervisor
+created_at
+created_by
+updated_at
+updated_by
+
+tbl_washer_debts
+id
+washers_id
+debt_amount
+amount_paid
+amount_left
+payment_status (paid, runaway, not paid)
+paid_to
+paid_on (date)
+created_at
+created_by
+updated_at
+updated_by
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

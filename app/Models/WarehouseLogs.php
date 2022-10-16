@@ -12,7 +12,7 @@ class WarehouseLogs extends Model
     protected $table = 'tbl_warehouse_logs';
 
 
-    public static function select_product(String $product_id){
+    public static function select_product($product_id){
         return  DB::table('tbl_warehouse_logs')
         ->where('product_id', '=', $product_id)
         ->orderBy('id', 'desc')
@@ -45,6 +45,7 @@ class WarehouseLogs extends Model
             echo 'Caught exception';
         }
     }
+
 
     public static function select_all_under_each_product_id($product_id){
         try{

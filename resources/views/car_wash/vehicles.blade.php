@@ -17,12 +17,45 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Products</a></li>
-              {{-- <li class="breadcrumb-item active">Sales / Warehouse</li> --}}
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add-vehicle-type">
+                    Set Vehicle Type
+                </button>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
+
+
+      <div class="modal fade" id="add-vehicle-type" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Add Vehicle Type</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('add_most_purchased') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-md-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary">Submit</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
     </section>
 
     <!-- Main content -->
@@ -31,7 +64,7 @@
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Products </h3>
+            <h3 class="card-title">Vehicles </h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -44,50 +77,54 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form action="{{route('add_product')}}" method="POST">
+            <form action="{{route('add_vehicle')}}" method="POST">
                 @csrf
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_product_name">Product Name</label>
-                            <input type="text" class="form-control" id="txt_product_name" name="txt_product_name" value="{{old('txt_product_name')}}">
+                            <label for="txt_vehicle_name">Vehicle Name</label>
+                            <input type="text" class="form-control" id="txt_vehicle_name" name="txt_vehicle_name" value="{{old('txt_vehicle_name')}}">
                         </div>
-                        <span class="text-danger">@error('txt_product_name') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_vehicle_name') {{ $message }} @enderror</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_vehicle_type">Vehicle Type</label>
+                            <input type="text" class="form-control" id="txt_vehicle_type" name="txt_vehicle_type" value="{{old('txt_vehicle_type')}}">
+                        </div>
+                        <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
                     </div>
 
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_price_per_item">Price Per Item</label>
-                            <input type="number" min="0" step=".01" class="form-control" id="txt_price_per_item" name="txt_price_per_item" value="{{old('txt_price_per_item')}}">
+                            <label for="txt_vehicle_type">Select Vehicle Type</label>
+                            <select class="form-control select2" data-placeholder="Select Vehicle Type" style="width: 100%;" id="txt_vehicle_type"  name="txt_vehicle_type" value="{{ old('txt_vehicle_type') }}" >
+                                <option selected disabled>Vehicle Type</option>
+                                    <option value="SUV">SUV</option>
+                                    <option value="SUV">comin</option>
+                                    <option value="SUV">Vehicle</option>
+                                    <option value="SUV">width</option>
+                                    <option value="SUV">message</option>
+                                    <option value="SUV">add_product</option>
+                                    <option value="SUV">txt_vehicle_name</option>
+                                    <option value="SUV">Vehicle</option>
+                                    <option value="SUV">Vehicle</option>
+                                    <option value="SUV">Vehicle</option>
+                                    <option value="SUV">Vehicle</option>
+                            </select>
+                            <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
                         </div>
-                        <span class="text-danger">@error('txt_price_per_item') {{ $message }} @enderror</span>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txt_quantity_per_crate">Quantity per Crate</label>
-                            <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_quantity_per_crate" name="txt_quantity_per_crate" value="{{old('txt_quantity_per_crate')}}">
-                        </div>
-                        <span class="text-danger">@error('txt_quantity_per_crate') {{ $message }} @enderror</span>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txt_stock_threshold">Stock Threshold</label>
-                            <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_stock_threshold" name="txt_stock_threshold" value="{{old('txt_stock_threshold')}}">
-                        </div>
-                        <span class="text-danger">@error('txt_stock_threshold') {{ $message }} @enderror</span>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- /.row -->
 
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="txt_description">Description</label>
-                            <textarea class="form-control" rows="3" placeholder="Enter product description" name="txt_description">{{old('txt_description')}}</textarea>
+                            <label for="txt_vehicle_description">Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter Vehicle Description" name="txt_vehicle_description">{{old('txt_vehicle_description')}}</textarea>
                         </div>
-                        <span class="text-danger">@error('txt_description') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_vehicle_description') {{ $message }} @enderror</span>
                     </div>
                 </div>
                 <div class="row">
@@ -99,7 +136,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer">
-            Save Product Records
+            Save Vehicle Records
           </div>
         </div>
         <!-- /.card -->
@@ -117,7 +154,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title"> Product Details</h3>
+                <h3 class="card-title"> Vehicle Details</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -132,12 +169,8 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Price per Item</th>
-                        <th>Quantity per Crate</th>
-                        <th>Price per Crate</th>
-                        <th>Stock Threshold</th>
-                        <th>Status</th>
+                        <th>Vehicle Name</th>
+                        <th>Type</th>
                         <th>Description</th>
                         <th>Created By</th>
                         <th>Date Created</th>
@@ -150,52 +183,38 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ( $all_products as $product)
+                    @foreach ( $all_vehicles as $vehicle)
                         <tr>
-                            {{-- <td>{{$product->name}}</td> --}}
-                            <td>{{ ucwords(trans($product->name)) }}</td>
-                            <td>{{$product->price_per_item}}</td>
-                            <td>{{$product->quantity_per_crate}}</td>
-                            <td>{{$product->price_per_crate}}</td>
-                            <td>{{$product->stock_threshold}}</td>
+                            <td>{{$vehicle->name}}</td>
+                            <td>{{$vehicle->type}}</td>
+                            <td>{{$vehicle->description}}</td>
+                            <td>{{$vehicle->created_by}}</td>
+                            <td>{{$vehicle->created_at}}</td>
                             <td>
-                                @if ($product->status == "Active")
-                                    <p class="text-success">{{$product->status}}</p>
-                                @elseif ($product->status == "Inactive")
-                                    <p class="text-danger">{{$product->status}}</p>
-                                @endif
-                            </td>
-                            <td>{{$product->description}}</td>
-                            <td>{{$product->created_by}}</td>
-                            <td>{{$product->created_at}}</td>
-                            <td>
-                                @if ($product->updated_by == "" || $product->updated_by == NULL)
+                                @if ($vehicle->updated_by == "" || $vehicle->updated_by == NULL)
                                     <p>Not updated</p>
                                 @else
-                                    <p>{{$product->updated_by}}</p>
+                                    <p>{{$vehicle->updated_by}}</p>
                                 @endif
                             </td>
                             <td>
-                                @if ($product->updated_at == "" || $product->updated_at == NULL)
+                                @if ($vehicle->updated_at == "" || $vehicle->updated_at == NULL)
                                     <p>Not updated</p>
                                 @else
-                                    <p>{{$product->updated_at}}</p>
+                                    <p>{{$vehicle->updated_at}}</p>
                                 @endif
                             </td>
                             @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
-                                {{-- Edit Button --}}
+
                                 <td class="text-center">
                                     <a class="text-primary"
-                                        onclick="edit_product(this)"
+                                        onclick="edit_vehicle(this)"
                                         data-toggle="modal"
-                                        data-target="#edit-product"
-                                        data-id="{{ $product->id }}"
-                                        data-name="{{ $product->name }}"
-                                        data-status="{{ $product->status }}"
-                                        data-price_per_item="{{ $product->price_per_item }}"
-                                        data-quantity_per_crate="{{ $product->quantity_per_crate }}"
-                                        data-stock_threshold="{{ $product->stock_threshold }}"
-                                        data-description="{{ $product->description }}"
+                                        data-target="#edit_vehicle"
+                                        data-id="{{ $vehicle->id }}"
+                                        data-name="{{ $vehicle->name }}"
+                                        data-type="{{ $vehicle->type }}"
+                                        data-description="{{ $vehicle->description }}"
                                     >
                                     <i class="fas fa-edit"></i>
                                     </a>
@@ -229,7 +248,7 @@
 
 
 
-      <div class="modal fade" id="edit-product" >
+      <div class="modal fade" id="edit_vehicle" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -238,84 +257,46 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('update_product') }}" method="POST">
+            <form action="{{ route('update_vehicle') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="row ">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="hidden" class="form-control" id="product_id" name="product_id">
+                                    <input type="hidden" class="form-control" id="vehicle_id" name="vehicle_id">
 
-                                    <label for="txt_edit_product_name"> Product Name</label>
-                                    <input type="text" class="form-control" id="txt_edit_product_name" name="txt_edit_product_name">
+                                    <label for="txt_edit_vehice_name"> Vehicle Name</label>
+                                    <input type="text" class="form-control" id="txt_edit_vehice_name" name="txt_edit_vehice_name">
 
-                                    <span class="text-danger">@error('txt_edit_product_name') {{ $message }} @enderror</span>
+                                    <span class="text-danger">@error('txt_edit_vehice_name') {{ $message }} @enderror</span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="txt_edit_price_per_item">Price Per Item</label>
-                                    <input type="number" min="0" step=".01" class="form-control" id="txt_edit_price_per_item" name="txt_edit_price_per_item">
+                                    <label for="txt_edit_vehicle_type">Vehicle Type </label>
+                                    <input type="text" class="form-control" id="txt_edit_vehicle_type" name="txt_edit_vehicle_type">
                                 </div>
-                                <span class="text-danger">@error('txt_edit_price_per_item') {{ $message }} @enderror</span>
+                                <span class="text-danger">@error('txt_edit_vehicle_type') {{ $message }} @enderror</span>
                             </div>
                         </div>
 
-                        <div class="row ">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="txt_edit_quantity_per_crate"> Quantity Per Crate</label>
-                                    <input type="number" min="0" oninput="this.value =
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity_per_crate" name="txt_edit_quantity_per_crate">
-
-                                    <span class="text-danger">@error('txt_edit_quantity_per_crate') {{ $message }} @enderror</span>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="txt_edit_stock_threshold">Stock Threshold</label>
-                                    <input type="number" min="0" oninput="this.value =
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_stock_threshold" name="txt_edit_stock_threshold">
-                                </div>
-                                <span class="text-danger">@error('txt_edit_stock_threshold') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
 
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="txt_edit_description">Description</label>
-                                    <textarea class="form-control" rows="3" name="txt_edit_description" id="txt_edit_description"></textarea>
+                                    <label for="txt_edit_vehicle_description">Description</label>
+                                    <textarea class="form-control" rows="3" name="txt_edit_vehicle_description" id="txt_edit_vehicle_description"></textarea>
                                 </div>
-                                <span class="text-danger">@error('txt_edit_description') {{ $message }} @enderror</span>
+                                <span class="text-danger">@error('txt_edit_vehicle_description') {{ $message }} @enderror</span>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="row ">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="txt_edit_status">Status</label>
-                                    <select class="form-control" style="width: 100%;" id="txt_edit_status"  name="txt_edit_status">
-                                        <option selected id="selected"></option>
-                                        <option value="Active">Active</option>
-                                        <option value="Inactive">Inactive</option>
-                                    </select>
-                                    <span class="text-danger">@error('txt_edit_status') {{ $message }} @enderror</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- /.row -->
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-secondary">Update Product</button>
+                    <button type="submit" class="btn btn-secondary">Update Vehicle Info</button>
                 </div>
             </form>
           </div>
@@ -366,27 +347,23 @@
   @endsection
 
   <script>
-    function edit_product() {
-        $('#edit-product').on('shown.bs.modal', function(e) {
+    function edit_vehicle() {
+        $('#edit_vehicle').on('shown.bs.modal', function(e) {
         var link = $(e.relatedTarget) //use this https://api.jquery.com/event.relatedtarget/
             modal = $(this)
-        var product_id = link.data('id')
-        var product_name = link.data('name')
-        var status = link.data('status')
-        var price_per_item = link.data('price_per_item')
-        var quantity_per_crate = link.data('quantity_per_crate')
-        var stock_threshold = link.data('stock_threshold')
+        var vehicle_id = link.data('id')
+        var vehicle_name = link.data('name')
+        var vehicle_type = link.data('type')
         var description = link.data('description')
 
-        modal.find('#product_id').val(product_id);
-        modal.find('#txt_edit_product_name').val(product_name);
-        modal.find('#txt_edit_price_per_item').val(price_per_item);
-        modal.find('#txt_edit_quantity_per_crate').val(quantity_per_crate);
-        modal.find('#txt_edit_stock_threshold').val(stock_threshold);
-        modal.find('#selected').val(status);
-        modal.find('#txt_edit_description').val(description);
-        document.getElementById('selected').innerHTML = status;
-        document.getElementById('title').innerHTML = 'Edit '+ product_name;
+
+        modal.find('#vehicle_id').val(vehicle_id);
+        modal.find('#txt_edit_vehice_name').val(vehicle_name);
+        modal.find('#txt_edit_vehicle_type').val(vehicle_type);
+
+        modal.find('#txt_edit_vehicle_description').val(description);
+
+        document.getElementById('title').innerHTML = 'Edit '+ vehicle_name;
         });
     }
 

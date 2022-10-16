@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// ======= BAR
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RetailingController;
 use App\Http\Controllers\ProfileController;
@@ -10,6 +12,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\DashboardController;
 
+
+// ========= CAR WASH
+use App\Http\Controllers\VehiclesController;
+use App\Http\Controllers\ServicesController;
+use App\Http\Controllers\WashersController;
+
+
+// ==========AUTH
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SetPasswordController;
@@ -46,7 +56,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
 
         // DASHBOARD ======================
         Route::get('home', [HomeController::class, 'index']);
-        Route::post('filter_sales', [HomeController::class, 'filter_sales_records'])->name('filter_sales');
+        Route::post('filter_sales', [HomeController::class, 'filter_records'])->name('filter_sales');
         Route::get('dashboard', [DashboardController::class, 'index']);
         Route::get('retailer_dashboard', [DashboardController::class, 'retailer_dashboard'])->name('retailer_dashboard');
 
@@ -61,7 +71,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
         Route::post('update_product', [ProductController::class, 'update_product'])->name('update_product');
         Route::post('delete_product', [ProductController::class, 'delete_product'])->name('delete_product');
 
-         // RETAIL ======================
+         // SALES ======================
          Route::get('retailing', [RetailingController::class, 'index']);
          Route::post('add_sale', [RetailingController::class, 'add_sale'])->name('add_sale');
          Route::post('add_sale_from_modal', [RetailingController::class, 'add_sale_from_modal'])->name('add_sale_from_modal');
@@ -83,6 +93,24 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('add_user', [UserController::class, 'add_user'])->name('add_user');
          Route::post('update_user', [UserController::class, 'update_user'])->name('update_user');
          Route::post('delete_user', [UserController::class, 'delete_user'])->name('delete_user');
+
+
+        // ======================================= CAR WASH ========================================
+         // VEHICLES ======================
+         Route::get('vehicles', [VehiclesController::class, 'index']);
+         Route::post('add_vehicle', [VehiclesController::class, 'add_vehicle'])->name('add_vehicle');
+         Route::post('update_vehicle', [VehiclesController::class, 'update_vehicle'])->name('update_vehicle');
+
+         // CAR WASH SERVICES ======================
+         Route::get('services', [ServicesController::class, 'index']);
+         Route::post('add_service', [ServicesController::class, 'add_service'])->name('add_service');
+         Route::post('update_service', [ServicesController::class, 'update_service'])->name('update_service');
+
+
+         // CAR WASHERS ======================
+         Route::get('washers', [WashersController::class, 'index']);
+         Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
+         Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
 
          // LOGOUT ======================
          Route::get('logout', [LoginController::class, 'logout_user'])->name('logout');

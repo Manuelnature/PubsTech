@@ -1,0 +1,4 @@
+ISSUES ===================
+
+1. On sales only show current day records
+2.

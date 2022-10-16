@@ -113,7 +113,19 @@ class RetailingController extends Controller
                 // $update_retail->stock_after = $stock_after;
                 $update_retail->save();
             }
-            Alert::toast('Sales Recorded Successfully','success');
+
+
+            // ======== Getting product threshold from the product table ===========
+            $get_product = Products::find($product_id);
+            $product_threshold = $get_product->stock_threshold;
+
+            if ($total_quantity_left <= $product_threshold) {
+                Alert::info('Sales Recorded Successful', 'You are running out of stock, Please restock');
+            }
+            else{
+                Alert::toast('Sales Recorded Successfully','success');
+            }
+
             return redirect()->back();
         }
         else {
@@ -207,7 +219,19 @@ class RetailingController extends Controller
                  // $update_retail->stock_after = $stock_after;
                  $update_retail->save();
              }
-             Alert::toast('Sales Recorded Successfully','success');
+
+
+            // ======== Getting product threshold from the product table ===========
+            $get_product = Products::find($product_id);
+            $product_threshold = $get_product->stock_threshold;
+
+            if ($total_quantity_left <= $product_threshold) {
+                Alert::info('Sales Recorded Successful', 'You are running out of stock, Please restock');
+            }
+            else{
+                Alert::toast('Sales Recorded Successfully','success');
+            }
+            //  Alert::toast('Sales Recorded Successfully','success');
              return redirect()->back();
          }
          else {
@@ -380,7 +404,22 @@ class RetailingController extends Controller
                     $update_sale->updated_at = $current_date_and_time;
                     $update_sale->save();
 
-                    Alert::toast('Records Updated Successfully','success');
+
+
+                    // ======== Getting product threshold from the product table ===========
+                    $get_product = Products::find($product_id);
+                    $product_threshold = $get_product->stock_threshold;
+
+                    if ($new_retail_total_quantity <= $product_threshold) {
+                        Alert::info('Sales Record Updated Successful', 'You are running out of stock, Please restock');
+                    }
+                    else{
+                        Alert::toast('Sales Record Updated Successfully','success');
+                    }
+
+
+
+                    // Alert::toast('Records Updated Successfully','success');
                     return redirect()->back();
                 }
 
@@ -493,7 +532,20 @@ class RetailingController extends Controller
                         Log::channel('my_logs')->info('Oldddddddddddddddddddd Product');
 
 
-                    Alert::toast('Records Updated Successfully','success');
+
+
+                        // ======== Getting product threshold from the product table ===========
+                        $get_product = Products::find($product_id);
+                        $product_threshold = $get_product->stock_threshold;
+
+                        if ($new_product_new_retail_total_quantity <= $product_threshold) {
+                            Alert::info('Sales Recorded Successful', 'You are running out of stock, Please restock');
+                        }
+                        else{
+                            Alert::toast('Sales Recorded Successfully','success');
+                        }
+
+                    // Alert::toast('Records Updated Successfully','success');
                     return redirect()->back();
 
                 }

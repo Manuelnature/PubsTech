@@ -11,6 +11,7 @@ use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
 use Carbon\Carbon;
+use Log;
 
 class TransferController extends Controller
 {
@@ -93,12 +94,13 @@ class TransferController extends Controller
             $stock_before = $current_original_stock;
 
            if (($stock_before - $quantity_transfered) >= 0) {
-                $stock_after =  $stock_before - $quantity_transfered;
+                $stock_after =  (int)$stock_before - (int)$quantity_transfered;
             }
             else {
                 Alert::toast('Quantity left is not up to the transfer requested','warning');
                 return redirect()->back();
             }
+
 
 
             //================ GET CRATES AND PIECES TRANSFERED ==========================
@@ -111,7 +113,6 @@ class TransferController extends Controller
                     }
                 // dump('Pieces Transfered: '.$pieces_transfered);
                 // dd('Crates Transfered: '.$crates_transfered);
-
 
 
            $expected_price = ((double)$stock_before - (double)$stock_after) * (double)$price_per_piece;
@@ -243,7 +244,20 @@ class TransferController extends Controller
             $get_warehouse_records_of_the_product->save();
 
 
-            Alert::toast('Product Transfered Successfully','success');
+            // ======== Getting product threshold from the product table ===========
+            $get_product = Products::find($product_id);
+            $product_threshold = $get_product->stock_threshold;
+
+            if ($total_items_left <= $product_threshold) {
+                Log::channel('my_logs')->info('Threshold met again');
+                Alert::info('Transfer successful', 'You are running out of stock, Please restock');
+                // Alert::toast('You are running out of stock, Please restock','warning');
+            }
+            else{
+                Alert::toast('Product Transfered Successfully','success');
+            }
+
+
             return redirect()->back();
     }
 
@@ -297,6 +311,7 @@ class TransferController extends Controller
             // dump('Pieces Transfered: '.$pieces_transfered);
             // dd('Crates Transfered: '.$crates_transfered);
 
+
             $get_stock_records_form_retail = Retail::where('product_id', $product_id)->get()[0];
             $retail_id = $get_stock_records_form_retail->id;
             $previous_retail_total_quantity = $get_stock_records_form_retail->total_quantity;
@@ -327,20 +342,22 @@ class TransferController extends Controller
                 if ($difference_in_quantity > 0 ) {
                     $new_total = $previous_total_quantity_transfer + $difference_in_quantity;
 
-                    $new_stock_after = $previous_stock_after + $difference_in_quantity;
-
-                    $new_warehouse_total_items = $previous_warehouse_total_items + $difference_in_quantity;
-
-                    $new_retail_total_items = $previous_retail_total_quantity - $difference_in_quantity;
-                }
-                elseif ($difference_in_quantity < 0 ) {
-                    $new_total = $previous_total_quantity_transfer - $difference_in_quantity;
-
                     $new_stock_after = $previous_stock_after - $difference_in_quantity;
 
+                    // $new_warehouse_total_items = $previous_warehouse_total_items + $difference_in_quantity;
                     $new_warehouse_total_items = $previous_warehouse_total_items - $difference_in_quantity;
 
+                    // $new_retail_total_items = $previous_retail_total_quantity - $difference_in_quantity;
                     $new_retail_total_items = $previous_retail_total_quantity + $difference_in_quantity;
+                }
+                elseif ($difference_in_quantity < 0 ) {
+                    $new_total = $previous_total_quantity_transfer - abs($difference_in_quantity);
+
+                    $new_stock_after = $previous_stock_after + abs($difference_in_quantity);
+
+                    $new_warehouse_total_items = $previous_warehouse_total_items + abs($difference_in_quantity);
+
+                    $new_retail_total_items = $previous_retail_total_quantity - abs($difference_in_quantity);
                 }
                 else{
                     $new_total = $previous_total_quantity_transfer;
@@ -424,15 +441,19 @@ class TransferController extends Controller
                 $update_retail->total_amount = $retail_new_total_amount;
                 $update_retail->save();
 
-                Alert::toast('Records Updated Successfully','success');
+
+             // ======== Getting product threshold from the product table ===========
+                $get_product = Products::find($product_id);
+                $product_threshold = $get_product->stock_threshold;
+
+                if ($new_warehouse_total_items <= $product_threshold) {
+                    Alert::info('Records Updated successful', 'You are running out of stock, Please restock');
+                    // Alert::toast('You are running out of stock, Please restock','warning');
+                }else{
+                    Alert::toast('Records Updated Successfully','success');
+                }
+
                 return redirect()->back();
-            // }
-            // else {
-            //    echo 'Youuuuuuuuuu';
-            // }
-
-
-
 
 
         } catch (exception $e) {
