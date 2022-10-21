@@ -3,6 +3,7 @@
 
 @php
     $user_session_details = Session::get('user_session');
+    $current_time =  \Carbon\Carbon::now();
 @endphp
 
 <!-- Content Wrapper. Contains page content -->
@@ -265,7 +266,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="my_sales" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>Product Name</th>
@@ -277,13 +278,13 @@
                         <th>Created By</th>
                         <th>Created At</th>
                         <th>Remarks</th>
-                        <th>Action</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($individual_sales_for_today as $today_sales)
                         <tr>
-                            <td>{{ $today_sales->name }}</td>
+                            <td>{{  ucwords(trans($today_sales->name)) }}</td>
                             {{-- <td>{{ $today_sales->original_stock }}</td> --}}
                             <td>{{ $today_sales->stock_before }}</td>
                             <td>{{ $today_sales->quantity_sold }}</td>
@@ -293,7 +294,7 @@
                                         echo 'Gh¢ '.number_format($today_sales->expected_price, 2);
                                     @endphp
                             </td>
-                            <td>{{ $today_sales->created_by }}</td>
+                            <td>{{ ucwords(trans($today_sales->created_by)) }}</td>
                             <td>{{ $today_sales->created_at }}</td>
                             <td>
                                     @if ($today_sales->remarks == "" || $today_sales->remarks == NULL)
@@ -302,25 +303,25 @@
                                         <p>{{$today_sales->remarks}}</p>
                                     @endif
                             </td>
-
-                            <td>
-                                <a class="text-primary"
-                                onclick="edit_sales_record(this)"
-                                data-toggle="modal"
-                                data-target="#edit_sales_record"
-                                data-sale_id="{{ $today_sales->id }}"
-                                data-product_id="{{ $today_sales->product_id }}"
-                                data-product_name="{{ $today_sales->name }}"
-                                data-quantity_sold="{{ $today_sales->quantity_sold }}"
-                                data-stock_before="{{ $today_sales->stock_before }}"
-                                data-stock_after="{{ $today_sales->stock_after }}"
-                                data-expected_price="{{ $today_sales->expected_price }}"
-                                data-remarks="{{ $today_sales->remarks }}"
-                                >
-                                <i class="fas fa-edit"></i>
-                                </a>
-                            </td>
-
+                                <td>
+                                    @if (($current_time->diffInHours($today_sales->created_at)) < 1)
+                                        <a class="text-primary"
+                                        onclick="edit_sales_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#edit_sales_record"
+                                        data-sale_id="{{ $today_sales->id }}"
+                                        data-product_id="{{ $today_sales->product_id }}"
+                                        data-product_name="{{ $today_sales->name }}"
+                                        data-quantity_sold="{{ $today_sales->quantity_sold }}"
+                                        data-stock_before="{{ $today_sales->stock_before }}"
+                                        data-stock_after="{{ $today_sales->stock_after }}"
+                                        data-expected_price="{{ $today_sales->expected_price }}"
+                                        data-remarks="{{ $today_sales->remarks }}"
+                                        >
+                                        <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
+                                </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -357,7 +358,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                    <table id="example2" class="table table-bordered table-striped">
+                    <table id="all_sales" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>Product Name</th>
@@ -369,13 +370,12 @@
                             <th>Created By</th>
                             <th>Created At</th>
                             <th>Remarks</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach ($all_sales_records as $sales_record)
                             <tr>
-
                                 <td>{{ ucwords(trans($sales_record->name)) }}</td>
                                 {{-- <td>{{ $sales_record->original_stock }}</td> --}}
                                 <td>{{ $sales_record->stock_before }}</td>
@@ -395,24 +395,26 @@
                                             <p>{{$sales_record->remarks}}</p>
                                         @endif
                                 </td>
-                                <td>
-                                    <a class="text-primary"
-                                    onclick="edit_sales_record(this)"
-                                    data-toggle="modal"
-                                    data-target="#edit_sales_record"
-                                    data-sale_id="{{ $sales_record->id }}"
-                                    data-product_id="{{ $sales_record->product_id }}"
-                                    data-product_name="{{ $sales_record->name }}"
-                                    data-quantity_sold="{{ $sales_record->quantity_sold }}"
-                                    data-stock_before="{{ $sales_record->stock_before }}"
-                                    data-stock_after="{{ $sales_record->stock_after }}"
-                                    data-expected_price="{{ $sales_record->expected_price }}"
-                                    data-remarks="{{ $sales_record->remarks }}"
-                                    >
-                                    <i class="fas fa-edit"></i>
-                                    </a>
-                                </td>
 
+                                <td>
+                                    @if (($current_time->diffInHours($sales_record->created_at)) < 1)
+                                        <a class="text-primary"
+                                        onclick="edit_sales_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#edit_sales_record"
+                                        data-sale_id="{{ $sales_record->id }}"
+                                        data-product_id="{{ $sales_record->product_id }}"
+                                        data-product_name="{{ $sales_record->name }}"
+                                        data-quantity_sold="{{ $sales_record->quantity_sold }}"
+                                        data-stock_before="{{ $sales_record->stock_before }}"
+                                        data-stock_after="{{ $sales_record->stock_after }}"
+                                        data-expected_price="{{ $sales_record->expected_price }}"
+                                        data-remarks="{{ $sales_record->remarks }}"
+                                        >
+                                        <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -642,26 +644,26 @@
 
     <script>
         $(function () {
-            $("#example1").DataTable({
+            $("#my_sales").DataTable({
+            "paging": true,
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 7, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#my_sales_wrapper .col-md-6:eq(0)');
 
-            $('#example2').DataTable({
+            $('#all_sales').DataTable({
             "paging": true,
-            "lengthChange": false,
-            "searching": false,
+            "lengthChange": true,
             "ordering": true,
-            "order": [[ 7, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "info": true,
             "autoWidth": false,
             "responsive": true,
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');;
+            }).buttons().container().appendTo('#all_sales_wrapper .col-md-6:eq(0)');
         });
     </script>
 

@@ -152,7 +152,6 @@ class LoginController extends Controller
                 $sales_audit->sales_date = $today_date;
                 $sales_audit->created_by = $active_user;
                 $sales_audit->save();
-
             }
         }
 

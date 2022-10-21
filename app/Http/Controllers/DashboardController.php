@@ -14,9 +14,9 @@ use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index(){
-        return view('pages.dashboard');
-    }
+    // public function index(){
+    //     return view('pages.dashboard');
+    // }
 
     public function retailer_dashboard(){
 
@@ -69,7 +69,6 @@ class DashboardController extends Controller
                 }
 
                 array_push( $get_all_sales, ['product_name' => $product_name, 'original_stock'=> $original_stock, 'total_quantity_sold_per_product'=>$quantity_sold, 'total_expected_price_per_product'=>$expected_price]);
-
             }
 
         }
@@ -86,11 +85,11 @@ class DashboardController extends Controller
         }
         else{
             $all_sales_audit_records = array();
-            $get_warehouse_records  = array();
+            // $get_warehouse_records  = array();
         }
 
-        $get_warehouse_records = Retail::get_each_product_details();
+        $get_retail_records = Retail::get_each_product_details();
 
-        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_warehouse_records'));
+        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_retail_records'));
     }
 }

@@ -1,6 +1,11 @@
 @extends('layouts.base_template')
 @section('content')
 
+@php
+    $user_session_details = Session::get('user_session');
+    $current_time =  \Carbon\Carbon::now();
+@endphp
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -218,32 +223,33 @@
                                 @endif
                             </td>
 
-                            <td class="text-center">
-                                <a class="text-primary"
-                                    onclick="edit_warehouse_record(this)"
-                                    data-toggle="modal"
-                                    data-target="#edit_warehouse_record"
-                                    data-warehouse_id="{{ $records->id }}"
-                                    data-product_id="{{ $records->product_id }}"
-                                    data-product_name="{{ $records->name }}"
-                                    data-no_of_crates="{{ $records->no_of_crates }}"
-                                    data-no_of_pieces="{{ $records->no_of_pieces }}"
-                                    data-description="{{ $records->description }}"
-                                    data-stock_date="{{ $records->stock_date }}"
-                                >
-                                <i class="fas fa-edit"></i>
-                                </a>
-                                {{-- <a  class="text-danger"
-                                    onclick="delete_warehouse_record(this)"
-                                    data-toggle="modal"
-                                    data-target="#delete_warehouse_record"
-                                    data-warehouse_id="{{ $records->id }}"
-                                    data-product_id="{{ $records->product_id }}"
-                                    data-product_name="{{ $records->name }}"
-                                >
-                                <i class="fas fa-trash"></i>
-                                </a> --}}
-                            </td>
+                                <td class="text-center">
+                                    <a class="text-primary"
+                                        onclick="edit_warehouse_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#edit_warehouse_record"
+                                        data-warehouse_id="{{ $records->id }}"
+                                        data-product_id="{{ $records->product_id }}"
+                                        data-product_name="{{ $records->name }}"
+                                        data-no_of_crates="{{ $records->no_of_crates }}"
+                                        data-no_of_pieces="{{ $records->no_of_pieces }}"
+                                        data-description="{{ $records->description }}"
+                                        data-stock_date="{{ $records->stock_date }}"
+                                    >
+                                    <i class="fas fa-edit"></i>
+                                    </a>
+                                    {{-- <a  class="text-danger"
+                                        onclick="delete_warehouse_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#delete_warehouse_record"
+                                        data-warehouse_id="{{ $records->id }}"
+                                        data-product_id="{{ $records->product_id }}"
+                                        data-product_name="{{ $records->name }}"
+                                    >
+                                    <i class="fas fa-trash"></i>
+                                    </a> --}}
+                                </td>
+
                         </tr>
                     @endforeach
                   </tbody>
@@ -446,7 +452,7 @@
         $(function () {
           $("#example1").DataTable({
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
             "order": [[ 9, "desc" ]],
@@ -454,7 +460,7 @@
           }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
           $('#example2').DataTable({
             "paging": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "searching": false,
             "ordering": true,
             "info": true,

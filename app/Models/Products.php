@@ -25,6 +25,7 @@ class Products extends Model
             return  DB::table('tbl_products')
             ->select( 'tbl_products.*')
             ->join('tbl_warehouse', 'tbl_warehouse.product_id', '=', 'tbl_products.id')
+            ->where('tbl_products.status', '=', 'Active')
             ->get();
         } catch (exception $e) {
             echo 'Caught exception';

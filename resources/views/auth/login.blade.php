@@ -4,7 +4,7 @@
 <div class="login-box">
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <a href="" class="h1"><b>Bar</b>Manager</a>
+        <a href="" class="h1"><b>Pubs</b>Tech</a>
       </div>
       <div class="card-body mb-5">
         <p class="login-box-msg">Sign in to get access</p>

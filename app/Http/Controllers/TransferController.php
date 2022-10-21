@@ -28,10 +28,35 @@ class TransferController extends Controller
         // dd($all_products);
         $all_users = User::all();
         $all_transfer_records = WarehouseLogs::get_transfer_details();
-        // dd($all_transfer_records);
-        return view('pages.transfer', compact('all_products', 'all_users', 'all_transfer_records'));
+
+
+        //=========== Latest Transfers ========
+        $latest_transfers = $this->last_product_transfer();
+
+
+        return view('pages.transfer', compact('all_products', 'all_users', 'all_transfer_records', 'latest_transfers'));
     }
 
+
+    public function last_product_transfer(){
+        $all_transfer_records = WarehouseLogs::get_transfer_details_in_group();
+
+        $get_latest_transfers = array();
+
+        if (count($all_transfer_records) > 0) {
+            foreach ($all_transfer_records as $transfer_record) {
+                $product_id = $transfer_record->product_id;
+
+                $get_last_transfer_under_product_id = WarehouseLogs::select_last_transfer_under_each_product_id($product_id);
+                // dump($get_last_transfer_under_product_id);
+                $date_created = $get_last_transfer_under_product_id[0]->created_at;
+                // dump($date_created);
+
+                array_push( $get_latest_transfers, ['product_id' => $product_id, 'created_at'=> $date_created]);
+            }
+            return $get_latest_transfers;
+        }
+    }
 
     public function transfer_stock(Request $request){
         // dd($request->all());
@@ -260,8 +285,6 @@ class TransferController extends Controller
 
             return redirect()->back();
     }
-
-
 
 
 

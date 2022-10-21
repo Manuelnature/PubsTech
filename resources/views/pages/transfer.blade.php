@@ -1,6 +1,11 @@
 @extends('layouts.base_template')
 @section('content')
 
+@php
+    $user_session_details = Session::get('user_session');
+    $current_time =  \Carbon\Carbon::now();
+@endphp
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -48,7 +53,7 @@
                           <select class="form-control" data-placeholder="Select Product" style="width: 100%;" name="txt_product_id" value="{{ old('txt_product_id') }}" >
                                 <option selected disabled>Select Product</option>
                                 @foreach ($all_products as $product)
-                                    <option value="{{$product->id}}">{{$product->name}}</option>
+                                    <option value="{{$product->id}}">{{ucwords(trans($product->name))}}</option>
                                 @endforeach
                           </select>
                           <span class="text-danger">@error('txt_product_id') {{ $message }} @enderror</span>
@@ -80,7 +85,7 @@
                             <select class="form-control" data-placeholder="Select User" style="width: 100%;" name="txt_collected_by" value="{{ old('txt_collected_by') }}" >
                                 <option selected disabled>Select User</option>
                                 @foreach ($all_users as $user)
-                                    <option value="{{$user->first_name}} {{$user->last_name}}">{{$user->first_name}} {{$user->last_name}}</option>
+                                    <option value="{{$user->first_name}} {{$user->last_name}}">{{ucwords(trans($user->first_name))}} {{ucwords(trans($user->last_name))}}</option>
                                 @endforeach
                           </select>
                         </div>
@@ -162,13 +167,13 @@
                         <th>Remarks</th>
                         <th>Created By</th>
                         <th>Created At</th>
-                        <th>Action</th>
+                        <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($all_transfer_records as $transfer_record)
                         <tr>
-                            <td>{{ ucfirst(trans($transfer_record->name)) }}</td>
+                            <td>{{ ucwords(trans($transfer_record->name)) }}</td>
                             {{-- <!-- <td> {{ $transfer_record->original_stock }} </td> --> --}}
                             <td>{{ $transfer_record->stock_before }}</td>
                             <td>{{ $transfer_record->quantity_transfered_in_crates }}</td>
@@ -187,38 +192,63 @@
                             <td>{{ $transfer_record->created_by }}</td>
                             <td>{{ $transfer_record->created_at }}</td>
                             <td>
-                                <a class="text-primary"
-                                    onclick="edit_transfer_record(this)"
-                                    data-toggle="modal"
-                                    data-target="#edit_transfer_record"
-                                    data-transfer_id="{{ $transfer_record->id }}"
-                                    data-product_id="{{ $transfer_record->product_id }}"
-                                    data-product_name="{{ $transfer_record->name }}"
-                                    data-price_per_piece="{{ $transfer_record->price_per_piece }}"
-                                    data-quantity_transfered_in_crates="{{ $transfer_record->quantity_transfered_in_crates }}"
-                                    data-quantity_transfered_in_pieces="{{ $transfer_record->quantity_transfered_in_pieces }}"
-                                    data-total_quantity_transfered="{{ $transfer_record->total_quantity_transfered }}"
-                                    data-stock_before="{{ $transfer_record->stock_before }}"
-                                    data-stock_after="{{ $transfer_record->stock_after }}"
-                                    data-expected_price="{{ $transfer_record->expected_price }}"
-                                    data-collected_at="{{ $transfer_record->collected_at }}"
-                                    data-collected_by="{{ $transfer_record->collected_by }}"
-                                    data-remarks="{{ $transfer_record->remarks }}"
-                                >
-                                <i class="fas fa-edit"></i>
-                                </a>
-                                {{-- <a  class="text-danger"
-                                    onclick="delete_transfer_record(this)"
-                                    data-toggle="modal"
-                                    data-target="#delete_transfer_record"
-                                    data-transfer_id="{{ $transfer_record->id }}"
-                                    data-product_id="{{ $transfer_record->product_id }}"
-                                    data-product_name="{{ $transfer_record->name }}"
-                                >
-                                <i class="fas fa-trash"></i>
-                                </a> --}}
+                                {{-- @if (($current_time->diffInHours($transfer_record->created_at)) < 1) --}}
+                                @foreach ($latest_transfers as $latest_transfer)
+                                    @if ($latest_transfer['product_id'] ==  $transfer_record->product_id && $latest_transfer['created_at'] == $transfer_record->created_at )
+                                        <a class="text-primary"
+                                            onclick="edit_transfer_record(this)"
+                                            data-toggle="modal"
+                                            data-target="#edit_transfer_record"
+                                            data-transfer_id="{{ $transfer_record->id }}"
+                                            data-product_id="{{ $transfer_record->product_id }}"
+                                            data-product_name="{{ $transfer_record->name }}"
+                                            data-price_per_piece="{{ $transfer_record->price_per_piece }}"
+                                            data-quantity_transfered_in_crates="{{ $transfer_record->quantity_transfered_in_crates }}"
+                                            data-quantity_transfered_in_pieces="{{ $transfer_record->quantity_transfered_in_pieces }}"
+                                            data-total_quantity_transfered="{{ $transfer_record->total_quantity_transfered }}"
+                                            data-stock_before="{{ $transfer_record->stock_before }}"
+                                            data-stock_after="{{ $transfer_record->stock_after }}"
+                                            data-expected_price="{{ $transfer_record->expected_price }}"
+                                            data-collected_at="{{ $transfer_record->collected_at }}"
+                                            data-collected_by="{{ $transfer_record->collected_by }}"
+                                            data-remarks="{{ $transfer_record->remarks }}"
+                                        >
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endif
+                                @endforeach
+                                    {{-- <a class="text-primary"
+                                        onclick="edit_transfer_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#edit_transfer_record"
+                                        data-transfer_id="{{ $transfer_record->id }}"
+                                        data-product_id="{{ $transfer_record->product_id }}"
+                                        data-product_name="{{ $transfer_record->name }}"
+                                        data-price_per_piece="{{ $transfer_record->price_per_piece }}"
+                                        data-quantity_transfered_in_crates="{{ $transfer_record->quantity_transfered_in_crates }}"
+                                        data-quantity_transfered_in_pieces="{{ $transfer_record->quantity_transfered_in_pieces }}"
+                                        data-total_quantity_transfered="{{ $transfer_record->total_quantity_transfered }}"
+                                        data-stock_before="{{ $transfer_record->stock_before }}"
+                                        data-stock_after="{{ $transfer_record->stock_after }}"
+                                        data-expected_price="{{ $transfer_record->expected_price }}"
+                                        data-collected_at="{{ $transfer_record->collected_at }}"
+                                        data-collected_by="{{ $transfer_record->collected_by }}"
+                                        data-remarks="{{ $transfer_record->remarks }}"
+                                    >
+                                    <i class="fas fa-edit"></i>
+                                    </a> --}}
+                                    {{-- <a  class="text-danger"
+                                        onclick="delete_transfer_record(this)"
+                                        data-toggle="modal"
+                                        data-target="#delete_transfer_record"
+                                        data-transfer_id="{{ $transfer_record->id }}"
+                                        data-product_id="{{ $transfer_record->product_id }}"
+                                        data-product_name="{{ $transfer_record->name }}"
+                                    >
+                                    <i class="fas fa-trash"></i>
+                                    </a> --}}
+                                {{-- @endif --}}
                             </td>
-
                         </tr>
                     @endforeach
                   </tbody>
@@ -463,7 +493,7 @@
         $(function () {
           $("#example1").DataTable({
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
             "order": [[ 10, "desc" ]],

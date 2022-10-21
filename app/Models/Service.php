@@ -17,9 +17,21 @@ class Service extends Model
             ->select( 'tbl_vehicles.*', 'tbl_services.*')
             ->join('tbl_services', 'tbl_services.vehicle_id', '=', 'tbl_vehicles.id')
             ->get();
-
         }catch(exception $e){
             echo 'Caught exception';
         }
     }
+
+    // public static function get_all_services(){
+    //     try{
+    //         return  DB::table('tbl_services')
+    //         ->select( 'tbl_services.vehicle_id')
+    //         // ->join('tbl_services', 'tbl_services.vehicle_id', '=', 'tbl_vehicles.id')
+    //         ->groupBy('vehicle_id')
+    //         ->get();
+
+    //     }catch(exception $e){
+    //         echo 'Caught exception';
+    //     }
+    // }
 }

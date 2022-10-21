@@ -8,10 +8,10 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1>Dashboard</h1>
           </div><!-- /.col -->
           <div class="col-sm-3">
             <ol class="breadcrumb float-sm-right">
@@ -22,9 +22,10 @@
           </div><!-- /.col -->
           <div class="col-sm-3">
             <ol class="breadcrumb float-sm-right">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_stocks_left">
+                {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_stocks_left">
                     Stock At Login
-                </button>
+                </button> --}}
+                <a class="btn btn-info" href="{{ url('login_stock') }}"> Stock At Login </a>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -44,7 +45,7 @@
 
                 <div class="modal-body">
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="current_stock" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                               <tr>
                                   <th>Product Name</th>
@@ -54,9 +55,9 @@
                               </tr>
                             </thead>
                             <tbody>
-                                @foreach ($get_warehouse_records as $audit_record)
+                                @foreach ($get_retail_records as $audit_record)
                                 <tr>
-                                    <td>{{ $audit_record->name }}</td>
+                                    <td>{{ ucwords(trans($audit_record->name)) }}</td>
                                     <td>{{ $audit_record->price_per_item }}</td>
                                     <td>{{ $audit_record->total_quantity}}</td>
                                     <td>
@@ -98,7 +99,24 @@
 
                 <div class="modal-body">
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <form action="{{ route('filter_sales') }}" method="POST">
+                            @csrf
+                            <div class="row mb-3">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <label for="txt_stock_date">Select Date</label>
+                                        <input type="date" class="form-control" id="txt_stock_date" name="txt_stock_date" value="{{ old('txt_stock_date') }}">
+                                    </div>
+                                    <span class="text-danger">@error('txt_stock_date') {{ $message }} @enderror</span>
+                                </div>
+                                <div class="col-md-2" style="padding-top:30px !important;">
+                                    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <table id="stock_left" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                               <tr>
                                   <th>Product Name</th>
@@ -111,7 +129,7 @@
                                 @if (count($all_sales_audit_records) > 0)
                                         @foreach ($all_sales_audit_records as $audit_record)
                                         <tr>
-                                            <td>{{ $audit_record->name }}</td>
+                                            <td>{{ ucwords(trans($audit_record->name)) }}</td>
                                             <td>{{ $audit_record->price_per_item }}</td>
                                             <td>{{ $audit_record->starting_stock}}</td>
                                             <td>
@@ -311,7 +329,7 @@
 
     @endif
 
-    <!-- Overall Sales -->
+    <!-- Overall Info -->
     <section class="content">
         <div class="container-fluid">
 
@@ -319,7 +337,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">Overall Sales Records</h5>
+                  <h5 class="card-title"></h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -352,11 +370,11 @@
                         <!-- /.col -->
                         <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
-                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
 
                             <div class="info-box-content">
                               <span class="info-box-text">Number of Users</span>
-                              <span class="info-box-number">{{ $total_quantity_sold }}</span>
+                              <span class="info-box-number">{{ $total_number_of_users }}</span>
                             </div>
                             <!-- /.info-box-content -->
                           </div>
@@ -367,34 +385,13 @@
                         <!-- fix for small devices only -->
                         <div class="clearfix hidden-md-up"></div>
 
-                        {{-- <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Total Stock Left</span>
-                              <span class="info-box-number">
-                                @php
-                                    // $total_remaining_items = (double)$total_no_of_items - (double)$total_quantity_sold;
-                                    // echo $total_remaining_items;
-                                @endphp
-                              </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
-                        </div> --}}
-                        <!-- /.col -->
                         <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
-                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
 
                             <div class="info-box-content">
                               <span class="info-box-text">Number of Car Washers</span>
-                              <span class="info-box-number">
-                                @php
-                                    echo 'Gh¢ '.number_format($total_expected_sold_price,2);
-                                @endphp</span>
+                              <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
                             </div>
                             <!-- /.info-box-content -->
                           </div>
@@ -526,7 +523,7 @@
                     <tbody>
                       @foreach (json_decode($individual_all_sales_data, true) as $sales_record)
                           <tr>
-                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ ucwords(trans($sales_record['product_name'])) }}</td>
                               <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
                               <td>
                                     @php
@@ -586,7 +583,7 @@
                     <tbody>
                       @foreach (json_decode($overall_sales_record, true) as $sales_record)
                           <tr>
-                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ ucwords(trans($sales_record['product_name'])) }}</td>
                               <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
                               <td>
                                     @php
@@ -648,7 +645,7 @@
                     <tbody>
                       @foreach (json_decode($overall_transfer_record, true) as $transfer_record)
                           <tr>
-                              <td>{{ $transfer_record['product_name'] }}</td>
+                              <td>{{ ucwords(trans($transfer_record['product_name'])) }}</td>
                               <td> {{ $transfer_record['original_stock'] }} </td>
                               <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
                               <td>
@@ -729,6 +726,24 @@
         "info": true,
         "buttons": ["csv", "excel", "pdf", "print", "colvis"]
         });
+
+        $('#current_stock').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#current_stock_wrapper .col-md-6:eq(0)');
+
+            $('#stock_left').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#stock_left_wrapper .col-md-6:eq(0)');
     });
 
 

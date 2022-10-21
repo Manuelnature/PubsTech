@@ -82,44 +82,37 @@
         </div><!--/. container-fluid -->
     </section>
 
-    <!-- Overall Sales -->
+    <!-- Overall Info -->
     <section class="content">
         <div class="container-fluid">
+
           <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title" style="font-weight: 700; color:blue">Overall Sales Records
-                    <span style="margin-left:40px !important">
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
-                        <strong> to </strong>
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
-                    </span>
-                  </h5>
+                  <h5 class="card-title"></h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
                     </button>
+
                     <button type="button" class="btn btn-tool" data-card-widget="remove">
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
                 </div>
                 <!-- /.card-header -->
-
-                {{-- @json_decode($filter_result) --}}
-
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box">
                             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Total Stocks</span>
+                              <span class="info-box-text">Number of Products</span>
                               <span class="info-box-number">
-                                {{ $all_filter_records[0]['total_quantity_of_stocks'] }}
+                                {{ $total_number_of_products }}
                                 <small></small>
                               </span>
                             </div>
@@ -128,13 +121,13 @@
                           <!-- /.info-box -->
                         </div>
                         <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
-                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Total Stocks Sold</span>
-                              <span class="info-box-number">{{ $all_filter_records[0]['total_quantity_sold'] }}</span>
+                              <span class="info-box-text">Number of Users</span>
+                              <span class="info-box-number">{{ $total_number_of_users }}</span>
                             </div>
                             <!-- /.info-box-content -->
                           </div>
@@ -145,30 +138,13 @@
                         <!-- fix for small devices only -->
                         <div class="clearfix hidden-md-up"></div>
 
-                        <div class="col-12 col-sm-6 col-md-3">
+                        <div class="col-12 col-sm-6 col-md-4">
                           <div class="info-box mb-3">
-                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
 
                             <div class="info-box-content">
-                              <span class="info-box-text">Total Stocks Left</span>
-                              <span class="info-box-number">{{ $all_filter_records[0]['total_stock_left'] }}</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-dollar-sign"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Expected Amount</span>
-                              <span class="info-box-number">
-                                @php
-                                    echo 'Gh¢ '.number_format($all_filter_records[0]['total_expected_price'], 2);
-                                @endphp
-                              </span>
+                              <span class="info-box-text">Number of Car Washers</span>
+                              <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
                             </div>
                             <!-- /.info-box-content -->
                           </div>
@@ -193,7 +169,6 @@
 
         </div><!--/. container-fluid -->
     </section>
-
 
     <section class="content">
         <div class="container-fluid">
@@ -289,7 +264,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="my_sales" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -300,7 +275,7 @@
                     <tbody>
                       @foreach (json_decode($individual_all_sales_data, true) as $sales_record)
                           <tr>
-                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ ucwords(trans($sales_record['product_name'])) }}</td>
                               <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
                               <td>
                                     @php
@@ -349,7 +324,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="sales" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -360,7 +335,7 @@
                     <tbody>
                       @foreach (json_decode($filter_sales_data, true) as $sales_record)
                           <tr>
-                              <td>{{ $sales_record['product_name'] }}</td>
+                              <td>{{ ucwords(trans($sales_record['product_name'] ))}}</td>
                               <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
                               <td>
                                     @php
@@ -410,7 +385,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="transfers" class="table table-bordered table-striped">
                     <thead>
                       <tr>
                           <th>Product Name</th>
@@ -424,7 +399,7 @@
                     <tbody>
                       @foreach (json_decode($filter_transfer_data, true) as $transfer_record)
                           <tr>
-                              <td>{{ $transfer_record['product_name'] }}</td>
+                              <td>{{  ucwords(trans($transfer_record['product_name'] ))}}</td>
                               <td> {{ $transfer_record['original_stock'] }} </td>
                               <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
                               <td>
@@ -460,5 +435,71 @@
 @section('Dashboard_JS')
   <script src="{{ asset('assets/js/dashboard.js') }}" ></script>
 @endsection
+
+    <!-- DataTables  & Plugins -->
+    <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script src="plugins/jszip/jszip.min.js"></script>
+    <script src="plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    {{-- <script src="dist/js/adminlte.min.js"></script> --}}
+
+    <script>
+    $(function () {
+        $("#transfers").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "ordering": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#transfers_wrapper .col-md-6:eq(0)');
+
+        $('#sales').DataTable({
+        "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "ordering": true,
+        "info": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#sales_wrapper .col-md-6:eq(0)');
+
+        $('#my_sales').DataTable({
+        "responsive": true,
+        "paging": true,
+        "lengthChange": false,
+        "ordering": true,
+        "info": true,
+        "buttons": ["csv", "excel", "pdf", "print", "colvis"]
+        });
+
+        $('#current_stock').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#current_stock_wrapper .col-md-6:eq(0)');
+
+            $('#stock_left').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#stock_left_wrapper .col-md-6:eq(0)');
+    });
+
+
+    </script>
 
 @endsection

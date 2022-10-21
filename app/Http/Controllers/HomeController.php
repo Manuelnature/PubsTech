@@ -10,6 +10,8 @@ use App\Models\Sales;
 use App\Models\SalesAudit;
 use App\Models\Dashboard;
 use App\Models\Retail;
+use App\Models\CarWasher;
+use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
 use Carbon\Carbon;
@@ -18,7 +20,16 @@ class HomeController extends Controller
 {
     public function index(){
         $get_all_products = Products::all();
+        $total_number_of_products = count($get_all_products);
+
         $get_all_warehouse_records = Warehouse::all();
+
+        $get_all_washers = CarWasher::all();
+        $total_number_of_car_washers = count($get_all_washers);
+
+
+        $get_all_users = User::all();
+        $total_number_of_users = count($get_all_users);
 
         // $total_no_of_items = 0;
 
@@ -29,32 +40,31 @@ class HomeController extends Controller
         // }
 
 
-        $total_price_of_items = 0;
-        if(count($get_all_warehouse_records) > 0){
-            foreach ($get_all_warehouse_records as $warehouse_record) {
-                $total_price_of_items = $total_price_of_items + $warehouse_record->total_price;
-            }
-        }
+        // $total_price_of_items = 0;
+        // if(count($get_all_warehouse_records) > 0){
+        //     foreach ($get_all_warehouse_records as $warehouse_record) {
+        //         $total_price_of_items = $total_price_of_items + $warehouse_record->total_price;
+        //     }
+        // }
 
 
-        $total_number_of_products = count($get_all_products);
 
         $get_sales_records = Sales::all();
 
-        $total_quantity_sold = 0;
+        // $total_quantity_sold = 0;
 
-        if(count($get_sales_records) > 0){
-            foreach ($get_sales_records as $sales_record) {
-                $total_quantity_sold = $total_quantity_sold + $sales_record->quantity_sold;
-            }
-        }
+        // if(count($get_sales_records) > 0){
+        //     foreach ($get_sales_records as $sales_record) {
+        //         $total_quantity_sold = $total_quantity_sold + $sales_record->quantity_sold;
+        //     }
+        // }
 
-        $total_expected_sold_price = 0;
-        if(count($get_sales_records) > 0){
-            foreach ($get_sales_records as $sales_record) {
-                $total_expected_sold_price = $total_expected_sold_price + $sales_record->expected_price;
-            }
-        }
+        // $total_expected_sold_price = 0;
+        // if(count($get_sales_records) > 0){
+        //     foreach ($get_sales_records as $sales_record) {
+        //         $total_expected_sold_price = $total_expected_sold_price + $sales_record->expected_price;
+        //     }
+        // }
 
 
 
@@ -75,10 +85,10 @@ class HomeController extends Controller
         }
         else{
             $all_sales_audit_records = array();
-            $get_warehouse_records  = array();
+            // $get_warehouse_records  = array();
         }
 
-        $get_warehouse_records = Retail::get_each_product_details();
+        $get_retail_records = Retail::get_each_product_details();
 
 
 
@@ -101,7 +111,7 @@ class HomeController extends Controller
 
         array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
 
-        return view('pages.home', compact('total_number_of_products', 'total_quantity_sold', 'total_expected_sold_price', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_warehouse_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
+        return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
     }
 
 
@@ -217,6 +227,7 @@ class HomeController extends Controller
 
     public function overall_transfer_record(){
         $all_transfer_records = WarehouseLogs::get_transfer_details_in_group();
+        // dd( $all_transfer_records);
 
         $total_quantity_transfered = 0;
         $total_expected_price = 0;
@@ -372,6 +383,16 @@ class HomeController extends Controller
         $date_from = $request->get('txt_date_from');
         $date_to = $request->get('txt_date_to');
 
+        $get_all_products = Products::all();
+        $total_number_of_products = count($get_all_products);
+
+        $get_all_washers = CarWasher::all();
+        $total_number_of_car_washers = count($get_all_washers);
+
+
+        $get_all_users = User::all();
+        $total_number_of_users = count($get_all_users);
+
 
         $all_filter_records = array();
 
@@ -414,7 +435,7 @@ class HomeController extends Controller
         $filter_transfer_data = $this->filter_transfer_records($date_from, $date_to);
 
 
-        return view('pages.dashboard', compact('all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+        return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
     }
 
 }

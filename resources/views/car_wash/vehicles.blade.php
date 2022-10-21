@@ -17,7 +17,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add-vehicle-type">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add_vehicle_type">
                     Set Vehicle Type
                 </button>
             </ol>
@@ -26,7 +26,7 @@
       </div><!-- /.container-fluid -->
 
 
-      <div class="modal fade" id="add-vehicle-type" >
+      <div class="modal fade" id="add_vehicle_type" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -35,13 +35,26 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('add_most_purchased') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('add_vehicle_type') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="row ">
                             <div class="col-md-12">
-
+                                <div class="form-group">
+                                    <label for="txt_vehicle_type_name">Name of Vehicle Type</label>
+                                    <input type="text" class="form-control" id="txt_vehicle_type_name" name="txt_vehicle_type_name" value="{{old('txt_vehicle_type_name')}}">
+                                </div>
+                                <span class="text-danger">@error('txt_vehicle_type_name') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_vehicle_type_description">Description</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter Vehicle Description" name="txt_vehicle_type_description">{{old('txt_vehicle_type_description')}}</textarea>
+                                </div>
+                                <span class="text-danger">@error('txt_vehicle_type_description') {{ $message }} @enderror</span>
                             </div>
                         </div>
                     </div>
@@ -90,31 +103,18 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txt_vehicle_type">Vehicle Type</label>
-                            <input type="text" class="form-control" id="txt_vehicle_type" name="txt_vehicle_type" value="{{old('txt_vehicle_type')}}">
-                        </div>
-                        <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
-                    </div>
-
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txt_vehicle_type">Select Vehicle Type</label>
-                            <select class="form-control select2" data-placeholder="Select Vehicle Type" style="width: 100%;" id="txt_vehicle_type"  name="txt_vehicle_type" value="{{ old('txt_vehicle_type') }}" >
-                                <option selected disabled>Vehicle Type</option>
-                                    <option value="SUV">SUV</option>
-                                    <option value="SUV">comin</option>
-                                    <option value="SUV">Vehicle</option>
-                                    <option value="SUV">width</option>
-                                    <option value="SUV">message</option>
-                                    <option value="SUV">add_product</option>
-                                    <option value="SUV">txt_vehicle_name</option>
-                                    <option value="SUV">Vehicle</option>
-                                    <option value="SUV">Vehicle</option>
-                                    <option value="SUV">Vehicle</option>
-                                    <option value="SUV">Vehicle</option>
+                            {{-- <input type="text" class="form-control" id="txt_vehicle_type" name="txt_vehicle_type" value="{{old('txt_vehicle_type')}}"> --}}
+                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_type"  name="txt_vehicle_type">
+                                <option selected id="txt_vehicle_type"> </option>
+                                @foreach ($all_vehicle_types as $vehicle_type )
+                                    <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
+                                @endforeach
                             </select>
                             <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
                         </div>
-                    </div> --}}
+
+                    </div>
+
                 </div>
                 <!-- /.row -->
 
@@ -166,7 +166,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="vehicles" class="table table-bordered table-striped">
                   <thead>
                     <tr>
                         <th>Vehicle Name</th>
@@ -185,9 +185,9 @@
                   <tbody>
                     @foreach ( $all_vehicles as $vehicle)
                         <tr>
-                            <td>{{$vehicle->name}}</td>
-                            <td>{{$vehicle->type}}</td>
-                            <td>{{$vehicle->description}}</td>
+                            <td>{{$vehicle->vehicle_name}}</td>
+                            <td>{{$vehicle->vehicle_type_name}}</td>
+                            <td>{{$vehicle->vehicle_description}}</td>
                             <td>{{$vehicle->created_by}}</td>
                             <td>{{$vehicle->created_at}}</td>
                             <td>
@@ -211,10 +211,11 @@
                                         onclick="edit_vehicle(this)"
                                         data-toggle="modal"
                                         data-target="#edit_vehicle"
-                                        data-id="{{ $vehicle->id }}"
-                                        data-name="{{ $vehicle->name }}"
-                                        data-type="{{ $vehicle->type }}"
-                                        data-description="{{ $vehicle->description }}"
+                                        data-id="{{ $vehicle->vehicle_id }}"
+                                        data-name="{{ $vehicle->vehicle_name }}"
+                                        data-vehicle_type_name="{{ $vehicle->vehicle_type_name }}"
+                                        data-vehicle_type_id="{{ $vehicle->vehicle_type_id }}"
+                                        data-description="{{ $vehicle->vehicle_description }}"
                                     >
                                     <i class="fas fa-edit"></i>
                                     </a>
@@ -266,19 +267,24 @@
                                 <div class="form-group">
                                     <input type="hidden" class="form-control" id="vehicle_id" name="vehicle_id">
 
-                                    <label for="txt_edit_vehice_name"> Vehicle Name</label>
-                                    <input type="text" class="form-control" id="txt_edit_vehice_name" name="txt_edit_vehice_name">
+                                    <label for="txt_edit_vehicle_name"> Vehicle Name</label>
+                                    <input type="text" class="form-control" id="txt_edit_vehicle_name" name="txt_edit_vehicle_name">
 
-                                    <span class="text-danger">@error('txt_edit_vehice_name') {{ $message }} @enderror</span>
+                                    <span class="text-danger">@error('txt_edit_vehicle_name') {{ $message }} @enderror</span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_vehicle_type">Vehicle Type </label>
-                                    <input type="text" class="form-control" id="txt_edit_vehicle_type" name="txt_edit_vehicle_type">
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_type"  name="txt_edit_vehicle_type">
+                                        <option selected id="selected_vehicle_type"> </option>
+                                        @foreach ($all_vehicle_types as $vehicle_type )
+                                            <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('txt_edit_vehicle_type') {{ $message }} @enderror</span>
                                 </div>
-                                <span class="text-danger">@error('txt_edit_vehicle_type') {{ $message }} @enderror</span>
                             </div>
                         </div>
 
@@ -338,6 +344,146 @@
 
     </section>
 
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"> Vehicle Types</h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="vehicle_type" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                          <th>Vehicle Type Name</th>
+                          <th>Description</th>
+                          <th>Created By</th>
+                          <th>Date Created</th>
+                          <th>Updated By</th>
+                          <th>Updated At</th>
+
+                          @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+                          <th>Action</th>
+                          @endif
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ( $all_vehicle_types as $vehicle_type)
+                          <tr>
+                              <td>{{$vehicle_type->name}}</td>
+                              <td>{{$vehicle_type->description}}</td>
+                              <td>{{$vehicle_type->created_by}}</td>
+                              <td>{{$vehicle_type->created_at}}</td>
+                              <td>
+                                  @if ($vehicle_type->updated_by == "" || $vehicle_type->updated_by == NULL)
+                                      <p>Not updated</p>
+                                  @else
+                                      <p>{{$vehicle_type->updated_by}}</p>
+                                  @endif
+                              </td>
+                              <td>
+                                  @if ($vehicle_type->updated_at == "" || $vehicle_type->updated_at == NULL)
+                                      <p>Not updated</p>
+                                  @else
+                                      <p>{{$vehicle_type->updated_at}}</p>
+                                  @endif
+                              </td>
+                              @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+
+                                    <td class="text-center">
+                                        <a class="text-primary"
+                                            onclick="edit_vehicle_type(this)"
+                                            data-toggle="modal"
+                                            data-target="#edit_vehicle_type"
+                                            data-id="{{ $vehicle_type->id }}"
+                                            data-vehicle_type_name="{{ $vehicle_type->name }}"
+                                            data-vehicle_type_description="{{ $vehicle_type->description }}"
+                                        >
+                                        <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                              @endif
+                          </tr>
+                      @endforeach
+
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+
+
+
+        <div class="modal fade" id="edit_vehicle_type" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="{{ route('update_vehicle_type') }}" method="POST">
+                  @csrf
+                  <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="hidden" name="vehicle_type_id" id="vehicle_type_id">
+
+                                    <label for="txt_edit_vehicle_type_name">Name of Vehicle Type</label>
+                                    <input type="text" class="form-control" id="txt_edit_vehicle_type_name" name="txt_edit_vehicle_type_name" value="{{old('txt_edit_vehicle_type_name')}}">
+                                </div>
+                                <span class="text-danger">@error('txt_edit_vehicle_type_name') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_edit_vehicle_type_description">Description</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter Vehicle Type Description" name="txt_edit_vehicle_type_description" id="txt_edit_vehicle_type_description"></textarea>
+                                </div>
+                                <span class="text-danger">@error('txt_edit_vehicle_type_description') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-secondary">Update Vehicle Info</button>
+                  </div>
+              </form>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+
+    </section>
+
+
+
 
 </div>
   <!-- /.content-wrapper -->
@@ -353,17 +499,41 @@
             modal = $(this)
         var vehicle_id = link.data('id')
         var vehicle_name = link.data('name')
-        var vehicle_type = link.data('type')
+        // var vehicle_type = link.data('type')
+        var vehicle_type_id = link.data('vehicle_type_id')
+        var vehicle_type_name = link.data('vehicle_type_name')
         var description = link.data('description')
 
 
         modal.find('#vehicle_id').val(vehicle_id);
-        modal.find('#txt_edit_vehice_name').val(vehicle_name);
-        modal.find('#txt_edit_vehicle_type').val(vehicle_type);
+        modal.find('#txt_edit_vehicle_name').val(vehicle_name);
+        // modal.find('#txt_edit_vehicle_type').val(vehicle_type);
+
+        modal.find('#selected_vehicle_type').val(vehicle_type_id);
 
         modal.find('#txt_edit_vehicle_description').val(description);
 
+        document.getElementById('selected_vehicle_type').innerHTML = vehicle_type_name;
+
         document.getElementById('title').innerHTML = 'Edit '+ vehicle_name;
+        });
+    }
+
+
+    function edit_vehicle_type() {
+        $('#edit_vehicle_type').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget) //use this https://api.jquery.com/event.relatedtarget/
+            modal = $(this)
+        var vehicle_type__id = link.data('id')
+        var vehicle_type_name = link.data('vehicle_type_name')
+        var description = link.data('vehicle_type_description')
+
+
+        modal.find('#vehicle_type_id').val(vehicle_type__id);
+        modal.find('#txt_edit_vehicle_type_name').val(vehicle_type_name);
+        modal.find('#txt_edit_vehicle_type_description').val(description);
+
+        document.getElementById('title').innerHTML = 'Edit '+ vehicle_type_name;
         });
     }
 
@@ -405,23 +575,25 @@
 
       <script>
         $(function () {
-          $("#example1").DataTable({
+          $("#vehicles").DataTable({
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
+            "searching": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 8, "desc" ]],
+            "order": [[ 3, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-          $('#example2').DataTable({
+          }).buttons().container().appendTo('#vehicles_wrapper .col-md-6:eq(0)');
+          $('#vehicle_type').DataTable({
             "paging": true,
-            "lengthChange": false,
-            "searching": false,
+            "lengthChange": true,
+            "searching": true,
             "ordering": true,
-            "info": true,
+            // "info": true,
             "autoWidth": false,
             "responsive": true,
-          });
+            "order": [[ 3, "desc" ]],
+          }).buttons().container().appendTo('#vehicle_type_wrapper .col-md-6:eq(0)');
         });
       </script>
 

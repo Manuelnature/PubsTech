@@ -10,17 +10,77 @@
           <div class="col-sm-6">
             <h1 class="m-0">Dashboard</h1>
           </div><!-- /.col -->
-          <div class="col-sm-6">
+          <div class="col-sm-3">
             <ol class="breadcrumb float-sm-right">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_stocks_left">
-                    Views All Stocks Left
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_current_stock">
+                    View Current Stock
                 </button>
+            </ol>
+          </div><!-- /.col -->
+          <div class="col-sm-3">
+            <ol class="breadcrumb float-sm-right">
+                {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#view_stocks_left">
+                    Views All Stocks Left
+                </button> --}}
+                <a class="btn btn-info" href="{{ url('login_stock') }}"> Stock At Login </a>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
+    <div class="modal fade" id="view_current_stock" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Current Stock</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <table id="current_stock" class="table table-bordered table-striped" style="width: 100%">
+                            <thead>
+                              <tr>
+                                  <th>Product Name</th>
+                                  <th>Price Per Item</th>
+                                  <th>Stock Left</th>
+                                  <th>Expected Price</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($get_retail_records as $audit_record)
+                                <tr>
+                                    <td>{{ ucwords(trans($audit_record->name)) }}</td>
+                                    <td>{{ $audit_record->price_per_item }}</td>
+                                    <td>{{ $audit_record->total_quantity}}</td>
+                                    <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($audit_record->total_amount, 2);
+                                        @endphp
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                          </table>
+                    </div>
+
+                    <div class="card-footer">
+                        These are the Sales Records before you took over
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                </div>
+            </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 
     <div class="modal fade" id="view_stocks_left" >
@@ -35,7 +95,7 @@
 
                 <div class="modal-body">
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="stock_left" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                             <tr>
                                 <th>Product Name</th>
@@ -48,7 +108,7 @@
 
                             @foreach ($all_sales_audit_records as $audit_record)
                                 <tr>
-                                    <td>{{ $audit_record->name }}</td>
+                                    <td>{{ ucwords(trans($audit_record->name)) }}</td>
                                     <td>{{ $audit_record->price_per_item }}</td>
                                     <td>{{ $audit_record->starting_stock}}</td>
                                     <td>
@@ -237,15 +297,32 @@
 
     <script>
         $(function () {
-
             $('#my_sales').DataTable({
             "responsive": true,
             "paging": true,
-            "lengthChange": false,
+            "lengthChange": true,
             "ordering": true,
             "info": true,
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
-            });
+            }).buttons().container().appendTo('#my_sales_wrapper .col-md-6:eq(0)');
+
+            $('#current_stock').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#current_stock_wrapper .col-md-6:eq(0)');
+
+            $('#stock_left').DataTable({
+            "responsive": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "buttons": ["csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#stock_left_wrapper .col-md-6:eq(0)');
         });
     </script>
 

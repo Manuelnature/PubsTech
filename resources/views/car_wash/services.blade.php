@@ -59,29 +59,6 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_vehicle_type">Vehicle Type</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_type"  name="txt_vehicle_type" value="{{ old('txt_vehicle_type') }}" >
-                                <option selected disabled>Vehicle Type</option>
-                                @foreach ($all_vehicles as $vehicle )
-                                    <option value="{{ $vehicle->id }}">{{ $vehicle->type }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txt_service_price">Price</label>
-                            <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
-                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
                             <label for="txt_washer_percentage">Washer Percentage (%)</label>
                             <input type="number" min="0" step=".01" class="form-control" id="txt_washer_percentage" name="txt_washer_percentage" >                        </div>
                         <span class="text-danger">@error('txt_washer_percentage') {{ $message }} @enderror</span>
@@ -136,12 +113,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
+                <table id="services" class="table table-bordered table-striped">
                   <thead>
                     <tr>
                         <th>Vehicle Name</th>
-                        <th>Vehicle Type</th>
-                        <th>Price </th>
                         <th>Washer %</th>
                         <th>Description</th>
                         <th>Created By</th>
@@ -158,8 +133,6 @@
                     @foreach ( $all_services as $service)
                         <tr>
                             <td>{{ucwords(trans($service->name)) }}</td>
-                            <td>{{ucwords(trans($service->type)) }}</td>
-                            <td>GH¢ {{number_format($service->price, 2 ) }}</td>
                             <td>{{$service->washer_percentage}} %</td>
                             <td>{{ucfirst(trans($service->description)) }}</td>
                             <td>{{$service->created_by}}</td>
@@ -187,9 +160,9 @@
                                         data-target="#edit_service"
                                         data-id="{{ $service->id }}"
                                         data-name="{{ $service->name }}"
-                                        data-vehicle_id="{{ $service->vehicle_id }}"
+                                        {{-- data-vehicle_id="{{ $service->vehicle_id }}"
                                         data-vehicle_type="{{ $service->type }}"
-                                        data-price="{{ $service->price }}"
+                                        data-price="{{ $service->price }}" --}}
                                         data-washer_percentage="{{ $service->washer_percentage }}"
                                         data-description="{{ $service->description }}"
                                     >
@@ -251,7 +224,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <label for="txt_edit_vehicle_type">Vehicle Type</label>
                                 <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_type"  name="txt_edit_vehicle_type">
                                     <option selected id="txt_vehicle_id"> </option>
@@ -260,10 +233,19 @@
                                     @endforeach
                                 </select>
                                 <span class="text-danger">@error('txt_edit_vehicle_type') {{ $message }} @enderror</span>
+                            </div> --}}
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_washer_percentage">Washer Percentage</label>
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_washer_percentage" name="txt_edit_washer_percentage">
+                                </div>
+                                <span class="text-danger">@error('txt_edit_washer_percentage') {{ $message }} @enderror</span>
                             </div>
                         </div>
 
-                        <div class="row ">
+                        {{-- <div class="row ">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_sevice_price"> Price</label>
@@ -282,7 +264,7 @@
                                 </div>
                                 <span class="text-danger">@error('txt_edit_washer_percentage') {{ $message }} @enderror</span>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row">
                             <div class="col-md-12">
@@ -298,7 +280,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-secondary">Update Product</button>
+                    <button type="submit" class="btn btn-secondary">Update Service Info</button>
                 </div>
             </form>
           </div>
@@ -344,9 +326,9 @@
 </div>
   <!-- /.content-wrapper -->
 
-  @section('Extra_JS')
-  <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
-  @endsection
+  {{-- @section('Extra_JS')
+    <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+  @endsection --}}
 
   <script>
     function edit_service() {
@@ -355,22 +337,21 @@
             modal = $(this)
         var service_id = link.data('id')
         var service_name = link.data('name')
-        var vehicle_id = link.data('vehicle_id')
-        var vehicle_type = link.data('vehicle_type')
-        var price = link.data('price')
+        // var vehicle_id = link.data('vehicle_id')
+        // var vehicle_type = link.data('vehicle_type')
+        // var price = link.data('price')
         var washer_percentage = link.data('washer_percentage')
         var description = link.data('description')
 
         modal.find('#service_id').val(service_id);
-        modal.find('#vehicle_id').val(vehicle_id);
+        // modal.find('#vehicle_id').val(vehicle_id);
         modal.find('#txt_edit_service_name').val(service_name);
         // modal.find('#txt_edit_vehicle_type').val(vehicle_type);
-        modal.find('#txt_edit_sevice_price').val(price);
+        // modal.find('#txt_edit_sevice_price').val(price);
         modal.find('#txt_edit_washer_percentage').val(washer_percentage);
-        modal.find('#txt_vehicle_id').val(vehicle_id);
+        // modal.find('#txt_vehicle_id').val(vehicle_id);
         modal.find('#txt_edit_service_description').val(description);
-        console.log(vehicle_type);
-        document.getElementById('txt_vehicle_id').innerHTML = vehicle_type;
+        // document.getElementById('txt_vehicle_id').innerHTML = vehicle_type;
         document.getElementById('title').innerHTML = 'Edit '+ service_name;
         });
     }
@@ -413,18 +394,19 @@
 
       <script>
         $(function () {
-          $("#example1").DataTable({
+          $("#services").DataTable({
             "responsive": true,
-            "lengthChange": false,
+            "lengthChange": true,
+            "searching": true,
             "autoWidth": false,
             "ordering": true,
             "order": [[ 8, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+          }).buttons().container().appendTo('#services_wrapper .col-md-6:eq(0)');
           $('#example2').DataTable({
             "paging": true,
-            "lengthChange": false,
-            "searching": false,
+            "lengthChange": true,
+            "searching": true,
             "ordering": true,
             "info": true,
             "autoWidth": false,

@@ -11,12 +11,15 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginStockController;
 
 
 // ========= CAR WASH
 use App\Http\Controllers\VehiclesController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\WashersController;
+use App\Http\Controllers\WashingTransactionController;
+use App\Http\Controllers\PricingController;
 
 
 // ==========AUTH
@@ -94,6 +97,10 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('update_user', [UserController::class, 'update_user'])->name('update_user');
          Route::post('delete_user', [UserController::class, 'delete_user'])->name('delete_user');
 
+         // USERS ======================
+         Route::get('login_stock', [LoginStockController::class, 'index']);
+         Route::post('filter_login_stock', [LoginStockController::class, 'filter_login_stock'])->name('filter_login_stock');
+
 
         // ======================================= CAR WASH ========================================
          // VEHICLES ======================
@@ -101,16 +108,33 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('add_vehicle', [VehiclesController::class, 'add_vehicle'])->name('add_vehicle');
          Route::post('update_vehicle', [VehiclesController::class, 'update_vehicle'])->name('update_vehicle');
 
+         Route::post('add_vehicle_type', [VehiclesController::class, 'add_vehicle_type'])->name('add_vehicle_type');
+         Route::post('update_vehicle_type', [VehiclesController::class, 'update_vehicle_type'])->name('update_vehicle_type');
+
          // CAR WASH SERVICES ======================
          Route::get('services', [ServicesController::class, 'index']);
          Route::post('add_service', [ServicesController::class, 'add_service'])->name('add_service');
          Route::post('update_service', [ServicesController::class, 'update_service'])->name('update_service');
+
+         // CAR WASH PRICING ======================
+         Route::get('pricing', [PricingController::class, 'index']);
+         Route::post('set_price', [PricingController::class, 'set_price'])->name('set_price');
+         Route::post('update_price', [PricingController::class, 'update_price'])->name('update_price');
+
 
 
          // CAR WASHERS ======================
          Route::get('washers', [WashersController::class, 'index']);
          Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
          Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
+
+         // CAR WASHING TRANSACTION ======================
+         Route::get('washing_transaction', [WashingTransactionController::class, 'index']);
+         Route::post('add_transaction', [WashingTransactionController::class, 'add_transaction'])->name('add_transaction');
+         Route::get('edit_transaction/{id}', [WashingTransactionController::class, 'edit_transaction'])->name('edit_transaction');
+         Route::get('update_transaction/{id}', [WashingTransactionController::class, 'update_transaction'])->name('update_transaction');
+
+
 
          // LOGOUT ======================
          Route::get('logout', [LoginController::class, 'logout_user'])->name('logout');
