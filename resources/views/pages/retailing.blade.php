@@ -304,7 +304,7 @@
                                     @endif
                             </td>
                                 <td>
-                                    @if (($current_time->diffInHours($today_sales->created_at)) < 1)
+                                    @if (($current_time->diffInMinutes($today_sales->created_at)) < 5)
                                         <a class="text-primary"
                                         onclick="edit_sales_record(this)"
                                         data-toggle="modal"
@@ -336,6 +336,80 @@
         <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+
+        <div class="modal fade" id="edit_sales_record" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h4 class="modal-title" id="edit_title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <form action="{{ route('update_sale') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row ">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+
+                                            <input type="hidden" class="form-control" id="txt_sale_id" name="txt_sale_id">
+                                            {{-- <input type="hidden" class="form-control" id="txt_product_id" name="txt_product_id"> --}}
+
+                                            <label for="txt_edit_product_id"> Product Name</label>
+                                            <select class="form-control" data-placeholder="Select Product" style="width: 100%;" name="txt_edit_product_id" id="txt_edit_product_id" >
+                                                <option selected id="product_name"></option>
+                                                @foreach ($all_products as $product)
+                                                    <option value="{{$product->id}}">{{$product->name}}</option>
+                                                @endforeach
+                                        </select>
+
+                                            <span class="text-danger">@error('txt_edit_product_id') {{ $message }} @enderror</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="txt_edit_quantity">Quantity</label>
+                                            <input type="number" min="0" oninput="this.value =
+                                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_quantity" name="txt_edit_quantity" >
+                                        </div>
+                                        <span class="text-danger">@error('txt_edit_quantity') {{ $message }} @enderror</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="txt_edit_total">Total</label>
+                                            <input type="number" class="form-control" id="txt_edit_total" name="txt_edit_total" readonly>
+                                        </div>
+                                        <span class="text-danger">@error('txt_edit_total') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="txt_edit_remarks">Remarks</label>
+                                            <textarea class="form-control" rows="3" name="txt_edit_remarks" id="txt_edit_remarks"></textarea>
+                                        </div>
+                                        <span class="text-danger">@error('txt_edit_remarks') {{ $message }} @enderror</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-secondary">Update Sale</button>
+                        </div>
+                    </form>
+                </div>
+            <!-- /.modal-content -->
+            </div>
+        <!-- /.modal-dialog -->
+        </div>
+
     </section>
 
     @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
