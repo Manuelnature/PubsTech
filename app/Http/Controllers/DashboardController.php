@@ -91,6 +91,7 @@ class DashboardController extends Controller
         $get_retail_records = Retail::get_each_product_details();
 
 
+        $all_transaction_dates = array();
         $overall_sales_record = $this->overall_sales_record();
 
         $get_sales_start_date = Dashboard::sales_start_date();
@@ -108,7 +109,9 @@ class DashboardController extends Controller
             $sales_end_date = "";
         }
 
-        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record'));
+        array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date]);
+
+        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'all_transaction_dates'));
     }
 
 
