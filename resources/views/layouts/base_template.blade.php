@@ -322,39 +322,41 @@
                 @endif
 
                 <li class="nav-header">CAR WASHING BAY</li>
-                <li class="nav-item">
-                    <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
-                        <a href="{{ url('vehicles' )}}" >
-                            <i class="nav-icon fas fa-id-card"></i>
-                            <p>Vehicles</p>
-                        </a>
+                @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+                    <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
+                            <a href="{{ url('vehicles' )}}" >
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>Vehicles</p>
+                            </a>
+                        </li>
                     </li>
-                </li>
 
-                <li class="nav-item">
-                    <li class="nav-link {{ Request::segment(1) === 'services' ? 'active' : null }}">
-                        <a href="{{ url('services' )}}" >
-                            <i class="nav-icon fas fa-id-card"></i>
-                            <p>Services</p>
-                        </a>
+                    <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'services' ? 'active' : null }}">
+                            <a href="{{ url('services' )}}" >
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>Services</p>
+                            </a>
+                        </li>
                     </li>
-                </li>
-                <li class="nav-item">
-                    <li class="nav-link {{ Request::segment(1) === 'pricing' ? 'active' : null }}">
-                        <a href="{{ url('pricing' )}}" >
-                            <i class="nav-icon fas fa-id-card"></i>
-                            <p>Pricing</p>
-                        </a>
+                    <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'pricing' ? 'active' : null }}">
+                            <a href="{{ url('pricing' )}}" >
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>Pricing</p>
+                            </a>
+                        </li>
                     </li>
-                </li>
-                <li class="nav-item">
-                    <li class="nav-link {{ Request::segment(1) === 'washers' ? 'active' : null }}">
-                        <a href="{{ url('washers' )}}" >
-                            <i class="nav-icon fas fa-id-card"></i>
-                            <p>Car Washers</p>
-                        </a>
+                    <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'washers' ? 'active' : null }}">
+                            <a href="{{ url('washers' )}}" >
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>Car Washers</p>
+                            </a>
+                        </li>
                     </li>
-                </li>
+                @endif
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'washing_transaction' ? 'active' : null }}">
                         <a href="{{ url('washing_transaction' )}}" >
