@@ -329,6 +329,65 @@
         <!-- /.container-fluid -->
     </section>
 
+    <!-- Overall Sales Records -->
+    <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Sales</h3>
+                        <span style="margin-left:40px !important">
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('F j, Y')}}
+                            <strong> to </strong>
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('F j, Y')}}
+                        </span>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="sales" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                          <th>Product Name</th>
+                          <th>Total Quantity Sold</th>
+                          <th>Total Expected Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach (json_decode($overall_sales_record, true) as $sales_record)
+                          <tr>
+                              <td>{{ ucwords(trans($sales_record['product_name'])) }}</td>
+                              <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
+                              <td>
+                                    @php
+                                        echo 'Gh¢ '.number_format($sales_record['total_expected_price_per_product'], 2);
+                                    @endphp
+                             </td>
+                          </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
 
 </div>
 

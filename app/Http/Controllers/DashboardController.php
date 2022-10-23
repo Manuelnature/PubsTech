@@ -90,6 +90,72 @@ class DashboardController extends Controller
 
         $get_retail_records = Retail::get_each_product_details();
 
-        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_retail_records'));
+
+        $overall_sales_record = $this->overall_sales_record();
+
+        $get_sales_start_date = Dashboard::sales_start_date();
+        if (count($get_sales_start_date) > 0) {
+            $sales_start_date = $get_sales_start_date[0]->created_at;
+        } else {
+            $sales_start_date = Carbon::now()->format('Y-m-d');
+        }
+
+
+        $get_sales_end_date = Dashboard::sales_end_date();
+        if (count($get_sales_end_date) > 0) {
+            $sales_end_date = $get_sales_end_date[0]->created_at;
+        } else {
+            $sales_end_date = "";
+        }
+
+        return view('pages.retailer_dashboard', compact('total_quantity_sold', 'total_expected_price', 'all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record'));
+    }
+
+
+    public function overall_sales_record(){
+        $user_session = Session::get('user_session');
+        $active_user = $user_session->first_name." ".$user_session->last_name;
+        $firstname = $user_session->first_name;
+        $last_name = $user_session->last_name;
+
+
+        // ============ GETTING TABLE RECORDS=================
+        $all_sales_records = Dashboard::get_all_sales_details_in_group();
+
+        $total_quantity_sold_per_product = 0;
+        $total_expected_price_per_product = 0;
+        $get_all_sales = array();
+
+        if (count($all_sales_records) > 0) {
+
+            foreach ($all_sales_records as $sales_record) {
+                $product_id = $sales_record->product_id;
+
+                $get_all_sales_under_each_product = Dashboard::get_all_sales_detail_of_each_product($product_id);
+
+                $product_name = $get_all_sales_under_each_product[0]->name;
+                // $original_stock = $get_all_sales_under_each_product[0]->original_stock;
+
+                $count_product_ids_array = count($get_all_sales_under_each_product);
+
+                $quantity_sold = 0;
+                $expected_price = 0;
+
+                for ($i=0; $i < $count_product_ids_array; $i++) {
+                    $quantity_sold = $quantity_sold + $get_all_sales_under_each_product[$i]->quantity_sold;
+                    $expected_price = (double)$expected_price + (double)$get_all_sales_under_each_product[$i]->expected_price;
+                }
+
+                array_push( $get_all_sales, ['product_name' => $product_name, 'total_quantity_sold_per_product'=>$quantity_sold, 'total_expected_price_per_product'=>$expected_price]);
+            }
+
+        }
+        else {
+            array_push( $get_all_sales, ['product_name' => '', 'total_quantity_sold_per_product'=> 0, 'total_expected_price_per_product'=> 0]);
+        }
+
+        $overall_sales_data = json_encode($get_all_sales);
+
+        return $overall_sales_data;
     }
 }
