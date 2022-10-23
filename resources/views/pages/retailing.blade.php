@@ -274,7 +274,7 @@
                         <th>Stock Before</th>
                         <th>Quantity Sold</th>
                         <th>Stock After</th>
-                        <th>Expected Amount</th>
+                        <th>Amount</th>
                         <th>Created By</th>
                         <th>Created At</th>
                         <th>Remarks</th>
@@ -366,7 +366,7 @@
                             <th>Stock Before</th>
                             <th>Quantity Sold</th>
                             <th>Stock After</th>
-                            <th>Expected Amount</th>
+                            <th>Amount</th>
                             <th>Created By</th>
                             <th>Created At</th>
                             <th>Remarks</th>

@@ -497,7 +497,7 @@
             "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 10, "desc" ]],
+            "order": [[ 12, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
           }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
           $('#example2').DataTable({

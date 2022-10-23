@@ -554,7 +554,7 @@ CREATE TABLE tbl_washer_debts(
     created_by varchar(100),
     updated_by varchar(100),
     updated_at varchar(100),
-    CONSTRAINT FK_washer_debt FOREIGN KEY (washers_id)
+    CONSTRAINT FK_washer_debt FOREIGN KEY (washer_id)
     REFERENCES tbl_car_washers(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE

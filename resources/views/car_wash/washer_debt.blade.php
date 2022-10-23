@@ -51,45 +51,53 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_service_id">Select Service</label>
+                            <label for="txt_service_id">Select Washer</label>
                             <select class="form-control select2" style="width: 100%;" id="txt_service_id"  name="txt_service_id" value="{{ old('txt_service_id') }}" >
                                 <option selected disabled>Service Type</option>
-                                @foreach ($all_services as $service )
-                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @foreach ($all_washers as $washer )
+                                    <option value="{{ $washer->id }}">{{ $washer->name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">@error('txt_service_id') {{ $message }} @enderror</span>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_vehicle_id">Vehicle Type</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_id"  name="txt_vehicle_id" value="{{ old('txt_vehicle_id') }}" >
-                                <option selected disabled>Vehicle Type</option>
-                                @foreach ($all_vehicles_types as $vehicle_type )
-                                    <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-danger">@error('txt_vehicle_id') {{ $message }} @enderror</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txt_service_price">Price</label>
+                            <label for="txt_service_price">Debt Amount</label>
                             <input type="number" min="0" oninput="this.value =
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
                         <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
                     </div>
 
+                    {{-- <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_vehicle_id">Vehicle Type</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_id"  name="txt_vehicle_id" value="{{ old('txt_vehicle_id') }}" >
+                                <option selected disabled>Vehicle Type</option>
+                                @foreach ($all_vehicles as $vehicle_type )
+                                    <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">@error('txt_vehicle_id') {{ $message }} @enderror</span>
+                        </div>
+                    </div> --}}
+                </div>
+
+                <div class="row mb-3">
+
                     <div class="col-md-6">
-                        {{-- <div class="form-group">
-                            <label for="txt_washer_percentage">Washer Percentage (%)</label>
-                            <input type="number" min="0" step=".01" class="form-control" id="txt_washer_percentage" name="txt_washer_percentage" >                        </div>
-                        <span class="text-danger">@error('txt_washer_percentage') {{ $message }} @enderror</span> --}}
+                        <div class="form-group">
+                            <label for="txt_service_price">Amount </label>
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
+                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_service_price">Debt Amount</label>
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
+                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
                     </div>
                 </div>
 
@@ -161,9 +169,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ( $all_pricing as $pricing)
+                    {{-- @foreach ( $all_pricing as $pricing)
                         <tr>
-                            {{-- <td>{{ucwords(trans($pricing->vehicle_name)) }}</td> --}}
                             <td>{{ucwords(trans($pricing->vehicle_type_name)) }}</td>
                             <td>{{ucwords(trans($pricing->service_name)) }}</td>
                             <td>GH¢ {{number_format($pricing->price, 2 ) }}</td>
@@ -203,20 +210,10 @@
                                     >
                                     <i class="fas fa-edit"></i>
                                     </a>
-
-                                    {{-- <a class="text-danger"
-                                        onclick="delete_product(this)"
-                                        data-toggle="modal"
-                                        data-target="#delete-product"
-                                        data-product_id="{{ $product->id }}"
-                                        data-product_name="{{ $product->name }}"
-                                    >
-                                    <i class="fas fa-trash"></i>
-                                    </a> --}}
                                 </td>
                             @endif
                         </tr>
-                    @endforeach
+                    @endforeach --}}
 
                   </tbody>
                 </table>
@@ -266,7 +263,7 @@
                                 <label for="txt_edit_vehicle_id">Vehicle Type</label>
                                 <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_id"  name="txt_edit_vehicle_id">
                                     <option selected id="txt_selected_vehicle"> </option>
-                                    @foreach ($all_vehicles_types as $vehicle_type )
+                                    @foreach ($all_vehicles as $vehicle_type )
                                         <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
                                     @endforeach
                                 </select>

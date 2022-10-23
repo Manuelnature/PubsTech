@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class WasherDebts extends Model
 {
-    use HasFactory;
+    protected $table = 'tbl_washer_debts';
+    public $timestamps = false;
 }

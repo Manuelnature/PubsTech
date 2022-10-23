@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginStockController;
+use App\Http\Controllers\WasherDebtsController;
 
 
 // ========= CAR WASH
@@ -127,6 +128,13 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::get('washers', [WashersController::class, 'index']);
          Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
          Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
+
+
+         // CAR WASHER DEBT ======================
+         Route::get('washer_debt', [WasherDebtsController::class, 'index']);
+        //  Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
+        //  Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
+
 
          // CAR WASHING TRANSACTION ======================
          Route::get('washing_transaction', [WashingTransactionController::class, 'index']);
