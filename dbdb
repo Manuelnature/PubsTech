@@ -541,6 +541,25 @@ created_by
 updated_at
 updated_by
 
+CREATE TABLE tbl_washer_debts(
+    id int not null PRIMARY KEY AUTO_INCREMENT,
+    washer_id int,
+    debt_amount varchar(200),
+    amount_paid int,
+    amount_left varchar(100),
+    payment_status varchar(100),
+    paid_to varchar(100),
+    paid_on varchar(100),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by varchar(100),
+    updated_by varchar(100),
+    updated_at varchar(100),
+    CONSTRAINT FK_washer_debt FOREIGN KEY (washers_id)
+    REFERENCES tbl_car_washers(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
 
 
 
