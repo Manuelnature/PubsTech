@@ -132,7 +132,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
 
          // CAR WASHER DEBT ======================
          Route::get('washer_debt', [WasherDebtsController::class, 'index']);
-        //  Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
+         Route::post('add_washer_debt', [WasherDebtsController::class, 'add_washer_debt'])->name('add_washer_debt');
         //  Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
 
 

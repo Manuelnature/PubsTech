@@ -46,27 +46,27 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form action="{{route('set_price')}}" method="POST">
+            <form action="{{route('add_washer_debt')}}" method="POST">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_service_id">Select Washer</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_service_id"  name="txt_service_id" value="{{ old('txt_service_id') }}" >
-                                <option selected disabled>Service Type</option>
+                            <label for="txt_washer_id">Car Washer</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_washer_id"  name="txt_washer_id" value="{{ old('txt_washer_id') }}" >
+                                <option selected disabled>Select Washer</option>
                                 @foreach ($all_washers as $washer )
-                                    <option value="{{ $washer->id }}">{{ $washer->name }}</option>
+                                    <option value="{{ $washer->id }}">{{ $washer->firstname }} {{ $washer->lastname }}</option>
                                 @endforeach
                             </select>
-                            <span class="text-danger">@error('txt_service_id') {{ $message }} @enderror</span>
+                            <span class="text-danger">@error('txt_washer_id') {{ $message }} @enderror</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_service_price">Debt Amount</label>
+                            <label for="txt_debt_amount">Debt Amount</label>
                             <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
-                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_debt_amount" name="txt_debt_amount" >                        </div>
+                        <span class="text-danger">@error('txt_debt_amount') {{ $message }} @enderror</span>
                     </div>
 
                     {{-- <div class="col-md-6">
@@ -87,17 +87,77 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_service_price">Amount </label>
+                            <label for="txt_amount_paid">Amount Paid</label>
                             <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
-                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_paid" name="txt_amount_paid" >                        </div>
+                        <span class="text-danger">@error('txt_amount_paid') {{ $message }} @enderror</span>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_service_price">Debt Amount</label>
+                            <label for="txt_amount_left">Amount Left</label>
                             <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_service_price" name="txt_service_price" >                        </div>
-                        <span class="text-danger">@error('txt_service_price') {{ $message }} @enderror</span>
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_left" name="txt_amount_left" >                        </div>
+                        <span class="text-danger">@error('txt_amount_left') {{ $message }} @enderror</span>
+                    </div>
+                </div>
+
+                {{-- <div class="row mb-3">
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txt_payment_status">Payment Status</label>
+                                <select class="form-control select2" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
+                                    <option selected disabled>Select Status</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Not Paid">Not Paid</option>
+                                    <option value="Runaway">Runaway</option>
+                                </select>
+                                <span class="text-danger">@error('txt_payment_status') {{ $message }} @enderror</span>
+                            </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_amount_left">Amount Left</label>
+                            <input type="number" min="0" oninput="this.value =
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_left" name="txt_amount_left" >                        </div>
+                        <span class="text-danger">@error('txt_amount_left') {{ $message }} @enderror</span>
+                    </div>
+                </div> --}}
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_payment_status">Payment Status</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
+                                <option selected disabled>Select Status</option>
+                                <option value="Paid">Fully Paid</option>
+                                <option value="Paid">Partly Paid</option>
+                                <option value="Not Paid">Not Paid</option>
+                                <option value="Runaway">Runaway</option>
+                            </select>
+                            <span class="text-danger">@error('txt_payment_status') {{ $message }} @enderror</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_paid_to">Paid To</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_paid_to"  name="txt_paid_to" value="{{ old('txt_paid_to') }}" >
+                                <option selected disabled>Select Here</option>
+                                @foreach ($all_users as $users)
+                                <option value="{{ $users->first_name }} {{ $users->last_name }}">{{ $users->first_name }} {{ $users->last_name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">@error('txt_paid_to') {{ $message }} @enderror</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_paid_on">Paid On</label>
+                            <input type="date" class="form-control" id="txt_paid_on" name="txt_paid_on" >
+                            <span class="text-danger">@error('txt_paid_on') {{ $message }} @enderror</span>
+                        </div>
+
                     </div>
                 </div>
 

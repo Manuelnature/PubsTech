@@ -359,75 +359,77 @@
     </section>
 
 
+    @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
     <!-- Filtered Transfer Records -->
-    <section class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-12">
+        <section class="content">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
 
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 700; color:blue">Summary of Overall Transfer Transactions
-                    <span style="margin-left:40px !important">
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
-                        <strong> to </strong>
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
-                    </span>
-                  </h3>
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title" style="font-weight: 700; color:blue">Summary of Overall Transfer Transactions
+                        <span style="margin-left:40px !important">
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
+                            <strong> to </strong>
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
+                        </span>
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                    <table id="transfers" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Original Stock</th>
+                            <th>Total Quantity Transfered</th>
+                            <th>Total Expected Amount</th>
+                            <th>Total Stock Left</th>
+                            {{-- <th>Remaining Expected Price</th> --}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (json_decode($filter_transfer_data, true) as $transfer_record)
+                            <tr>
+                                <td>{{  ucwords(trans($transfer_record['product_name'] ))}}</td>
+                                <td> {{ $transfer_record['original_stock'] }} </td>
+                                <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
+                                <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($transfer_record['total_expected_price'], 2);
+                                        @endphp
+                                </td>
+                                <td>
+                                        @php
+                                            $total_stock_left = (double)($transfer_record['original_stock']) - (double)($transfer_record['total_quantity_transfered']);
+                                            echo $total_stock_left;
+                                        @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <table id="transfers" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                          <th>Product Name</th>
-                          <th>Original Stock</th>
-                          <th>Total Quantity Transfered</th>
-                          <th>Total Expected Amount</th>
-                          <th>Total Stock Left</th>
-                          {{-- <th>Remaining Expected Price</th> --}}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach (json_decode($filter_transfer_data, true) as $transfer_record)
-                          <tr>
-                              <td>{{  ucwords(trans($transfer_record['product_name'] ))}}</td>
-                              <td> {{ $transfer_record['original_stock'] }} </td>
-                              <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
-                              <td>
-                                    @php
-                                        echo 'Gh¢ '.number_format($transfer_record['total_expected_price'], 2);
-                                    @endphp
-                             </td>
-                              <td>
-                                    @php
-                                        $total_stock_left = (double)($transfer_record['original_stock']) - (double)($transfer_record['total_quantity_transfered']);
-                                        echo $total_stock_left;
-                                    @endphp
-                              </td>
-                          </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                <!-- /.card -->
                 </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </section>
+            <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    @endif
 
 </div>
 
