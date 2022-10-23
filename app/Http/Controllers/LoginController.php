@@ -105,45 +105,14 @@ class LoginController extends Controller
         $date_and_time_now = Carbon::now()->toDateTimeString();
         $today_date = Carbon::now()->format('Y-m-d');
 
+        $get_all_from_retail = Retail::all();
 
-        // $all_sales_records_for_audit = Sales::get_sales_details_in_group();
-        // if (count($all_sales_records_for_audit) > 0) {
-        //     foreach ($all_sales_records_for_audit as $sales_record) {
-        //         $product_id = $sales_record->product_id;
+        if (count($get_all_from_retail) > 0) {
+            foreach ($get_all_from_retail as $retail_details) {
+                $product_id = $retail_details->product_id;
 
-        //         $last_sale_under_each_product_id = Sales::select_last_sale_under_each_product_id($product_id, $date_and_time_now);
-        //         if(count($last_sale_under_each_product_id) > 0){
-        //             foreach ($last_sale_under_each_product_id as $last_sale) {
-        //                 $main_product_id = $last_sale->product_id;
-        //                 $product_name = $last_sale->name;
-        //                 $price_per_item = $last_sale->price_per_item;
-        //                 $stock_left = $last_sale->stock_after;
-
-
-        //                     $sales_audit = new SalesAudit();
-        //                     $sales_audit->user_id = $current_user_id;
-        //                     $sales_audit->product_id = $main_product_id;
-        //                     $sales_audit->starting_stock = $stock_left;
-        //                     $sales_audit->sales_date = $today_date;
-        //                     // $sales_audit->created_by = $today_date;
-        //                     $sales_audit->save();
-        //                 // array_push( $sales_audit_records, ['product_name' => $product_name, 'price_per_item'=> $price_per_item, 'stock_left'=>$stock_left]);
-        //             }
-        //         }
-
-        //     }
-        // }
-
-        $get_all_from_warehouse = Retail::all();
-
-        if (count($get_all_from_warehouse) > 0) {
-            foreach ($get_all_from_warehouse as $warehouse_details) {
-                $product_id = $warehouse_details->product_id;
-                // $product_name = $warehouse_details->name;
-                $price_per_item = $warehouse_details->price_per_piece;
-                // $stock_left = $warehouse_details->total_items;
-                $stock_left = $warehouse_details->total_quantity;
-
+                $price_per_item = $retail_details->price_per_piece;
+                $stock_left = $retail_details->total_quantity;
 
                 $sales_audit = new SalesAudit();
                 $sales_audit->user_id = $current_user_id;
@@ -161,42 +130,12 @@ class LoginController extends Controller
 
 
     public function logout_user(Request $request){
-
-
         $date_and_time_now = Carbon::now()->toDateTimeString();
-        // $all_sales_records_for_audit = Sales::get_sales_details_in_group();
-        // if (count($all_sales_records_for_audit) > 0) {
-        //     foreach ($all_sales_records_for_audit as $sales_record) {
-        //         $product_id = $sales_record->product_id;
-
-        //         $last_sale_under_each_product_id = Sales::select_last_sale_under_each_product_id($product_id, $date_and_time_now);
-        //         if(count($last_sale_under_each_product_id) > 0){
-        //             foreach ($last_sale_under_each_product_id as $last_sale) {
-        //                 $main_product_id = $last_sale->product_id;
-        //                 $product_name = $last_sale->name;
-        //                 $price_per_item = $last_sale->price_per_item;
-        //                 $stock_left = $last_sale->stock_after;
-
-        //                 $sales_audit = SalesAudit::find($main_product_id);
-
-
-        //                 $starting_stock = $sales_audit->starting_stock;
-        //                 $difference_in_stock = (int)$starting_stock - (int)$stock_left;
-        //                 $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
-
-        //                 $sales_audit->ending_stock = $stock_left;
-        //                 $sales_audit->expected_amount = $expected_amount;
-        //                 $sales_audit->save();
-        //             }
-        //         }
-
-        //     }
-        // }
-
 
         $user_session = Session::get('user_session');
         Log::channel('my_logs')->info('SESSION FOUND ');
         Log::channel('my_logs')->info($user_session );
+        $active_user = $user_session->first_name." ".$user_session->last_name;
         $current_user_id = $user_session->id;
 
         Log::channel('my_logs')->info('SESSION assigned ');
@@ -210,31 +149,72 @@ class LoginController extends Controller
         Log::channel('my_logs')->info('RETAIL ARRAY FOUND ');
         Log::channel('my_logs')->info(count($get_all_from_retail));
         $my_variable = 0;
+
         if (count($get_all_from_retail) > 0) {
             Log::channel('my_logs')->info('EEEEEEEEEEEEEEEE IN IF STATEMENT');
             foreach ($get_all_from_retail as $retail_details) {
                 $my_variable = $my_variable + 1;
-
+                Log::channel('my_logs')->info('FOREACHHHHHHHHHHHHH');
                 $product_id = $retail_details->product_id;
+
                 // $product_name = $retail_details->name;
                 $price_per_item = $retail_details->price_per_piece;
                 $stock_left = $retail_details->total_quantity;
-
+                Log::channel('my_logs')->info('PRODUCT ID FOUND');
 
                 $get_sales_records = SalesAudit::sales_audit_record_for_user($current_user_id, $product_id);
+                Log::channel('my_logs')->info('SALES AUDIT FOUND');
                 // dd($get_sales_records);
-                $audit_id = $get_sales_records[0]->id;
-                // dd($audit_id);
+                                    // ============================= THE PROBLEM WAS HERE NO IF Statement initially=================
+                if (count($get_sales_records) > 0) {
+                    $audit_id = $get_sales_records[0]->id;
+                    Log::channel('my_logs')->info('AUDIT ID FOUND');
 
-                $sales_audit = SalesAudit::find($audit_id);
+                    $sales_audit = SalesAudit::find($audit_id);
 
-                $starting_stock = $sales_audit->starting_stock;
-                $difference_in_stock = (int)$starting_stock - (int)$stock_left;
-                $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
+                    $starting_stock = $sales_audit->starting_stock;
+                    $difference_in_stock = (int)$starting_stock - (int)$stock_left;
+                    $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
 
-                $sales_audit->ending_stock = $stock_left;
-                $sales_audit->expected_amount = $expected_amount;
-                $sales_audit->save();
+                    $sales_audit->ending_stock = $stock_left;
+                    $sales_audit->expected_amount = $expected_amount;
+                    $sales_audit->save();
+                }
+                else {
+                    Log::channel('my_logs')->info('Audit ID was not found ---------------------------');
+                    $get_retail_records = Retail::get_each_product_details();
+
+                    Log::channel('my_logs')->info('BACK TO get RETAIL DATA again---------------------');
+                    // dd($get_retail_records);
+
+                    if(count($get_retail_records) > 0){
+                        foreach ($get_retail_records as $retail_details) {
+                            Log::channel('my_logs')->info('RETAIL DATA FOUND ');
+                            $product_id = $retail_details->product_id;
+
+                            $price_per_item = $retail_details->price_per_piece;
+                            $starting_stock = $retail_details->total_quantity;
+                            $ending_stock = $retail_details->total_quantity;
+                            // $expected_amount = $retail_details->total_amount;
+                            $expected_amount = (double)($price_per_item * $starting_stock) - (double)($price_per_item * $ending_stock);
+                            Log::channel('my_logs')->info('RETAIL FIELDS FOUND');
+
+                            Log::channel('my_logs')->info('ABOUT TO INSERT INTO SALESAUDIT');
+                            $sales_audit = new SalesAudit();
+                            $sales_audit->user_id = $current_user_id;
+                            $sales_audit->product_id = $product_id;
+                            $sales_audit->starting_stock = $starting_stock;
+                            $sales_audit->ending_stock = $ending_stock;
+                            $sales_audit->expected_amount = $expected_amount;
+                            $sales_audit->sales_date = $today_date;
+                            $sales_audit->created_by = $active_user;
+                            $sales_audit->save();
+                            Log::channel('my_logs')->info('SAVED IN SALES AUDIT');
+                        }
+                    }
+
+                }
+
             }
             Log::channel('my_logs')->info('My variable is : '.$my_variable);
         }

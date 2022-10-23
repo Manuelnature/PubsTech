@@ -12,7 +12,6 @@ class Retail extends Model
     public $timestamps = false;
 
     public static function get_each_product_details(){
-
         try{
             return  DB::table('tbl_products')
             ->select( 'tbl_products.*', 'tbl_retail.*')

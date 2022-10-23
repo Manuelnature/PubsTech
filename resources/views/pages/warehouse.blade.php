@@ -50,10 +50,10 @@
                     <div class="col-md-4">
                         <div class="form-group">
                           <label for="txt_product_name">Products</label>
-                          <select class="form-control   " data-placeholder="Select Product" style="width: 100%;" name="txt_product_name" value="{{ old('txt_product_name') }}" >
+                          <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" name="txt_product_name" value="{{ old('txt_product_name') }}" >
                             <option selected disabled>Select Product</option>
                             @foreach ($all_products as $product)
-                                <option value="{{$product->id}}">{{$product->name}}</option>
+                                <option value="{{$product->id}}">{{ucwords(trans($product->name))}}</option>
                             @endforeach
                           </select>
                           <span class="text-danger">@error('txt_product_name') {{ $message }} @enderror</span>

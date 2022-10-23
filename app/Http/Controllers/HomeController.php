@@ -20,16 +20,33 @@ class HomeController extends Controller
 {
     public function index(){
         $get_all_products = Products::all();
-        $total_number_of_products = count($get_all_products);
+        if (count($get_all_products) > 0) {
+            $total_number_of_products = count($get_all_products);
+        } else {
+            $total_number_of_products = 0;
+        }
 
-        $get_all_warehouse_records = Warehouse::all();
+        // $total_number_of_products = count($get_all_products);
+
+        // $get_all_warehouse_records = Warehouse::all();
+
 
         $get_all_washers = CarWasher::all();
-        $total_number_of_car_washers = count($get_all_washers);
+        if (count($get_all_washers) > 0) {
+            $total_number_of_car_washers = count($get_all_washers);
+        } else {
+            $total_number_of_car_washers = 0;
+        }
+        // $total_number_of_car_washers = count($get_all_washers);
 
 
         $get_all_users = User::all();
-        $total_number_of_users = count($get_all_users);
+        if (count($get_all_users) > 0) {
+            $total_number_of_users = count($get_all_users);
+        } else {
+            $total_number_of_users = 0;
+        }
+        // $total_number_of_users = count($get_all_users);
 
         // $total_no_of_items = 0;
 
@@ -49,7 +66,7 @@ class HomeController extends Controller
 
 
 
-        $get_sales_records = Sales::all();
+        // $get_sales_records = Sales::all();
 
         // $total_quantity_sold = 0;
 
@@ -89,7 +106,11 @@ class HomeController extends Controller
         }
 
         $get_retail_records = Retail::get_each_product_details();
-
+        if (count($get_retail_records) > 0) {
+            $get_retail_records = $get_retail_records;
+        } else {
+            $get_retail_records = array();
+        }
 
 
         $all_transaction_dates = array();
@@ -97,17 +118,39 @@ class HomeController extends Controller
         $overall_sales_record = $this->overall_sales_record();
 
         $get_sales_start_date = Dashboard::sales_start_date();
-        $sales_start_date = $get_sales_start_date[0]->created_at;
+        if (count($get_sales_start_date) > 0) {
+            $sales_start_date = $get_sales_start_date[0]->created_at;
+        } else {
+            $sales_start_date = Carbon::now()->format('Y-m-d');
+        }
+
+
         $get_sales_end_date = Dashboard::sales_end_date();
-        $sales_end_date = $get_sales_end_date[0]->created_at;
+        if (count($get_sales_end_date) > 0) {
+            $sales_end_date = $get_sales_end_date[0]->created_at;
+        } else {
+            $sales_end_date = "";
+        }
+
+
 
 
         $overall_transfer_record = $this->overall_transfer_record();
 
         $get_transfer_start_date = Dashboard::transfer_start_date();
-        $transfer_start_date = $get_transfer_start_date[0]->created_at;
+        if (count($get_transfer_start_date) > 0) {
+            $transfer_start_date = $get_transfer_start_date[0]->created_at;
+        } else {
+            $transfer_start_date = Carbon::now()->format('Y-m-d');
+        }
+        // $transfer_start_date = $get_transfer_start_date[0]->created_at;
         $get_transfer_end_date = Dashboard::transfer_end_date();
-        $transfer_end_date = $get_transfer_end_date[0]->created_at;
+        if (count($get_transfer_end_date) > 0) {
+            $transfer_end_date = $get_transfer_end_date[0]->created_at;
+        } else {
+            $transfer_end_date = "";
+        }
+        // $transfer_end_date = $get_transfer_end_date[0]->created_at;
 
         array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
 
@@ -167,6 +210,9 @@ class HomeController extends Controller
                 array_push( $get_all_sales, ['product_name' => $product_name, 'original_stock'=> $original_stock, 'total_quantity_sold_per_product'=>$quantity_sold, 'total_expected_price_per_product'=>$expected_price]);
             }
 
+        }
+        else{
+            array_push( $get_all_sales, ['product_name' => '', 'original_stock'=> 0, 'total_quantity_sold_per_product'=>0, 'total_expected_price_per_product'=>0]);
         }
 
         $all_sales_data = json_encode($get_all_sales);

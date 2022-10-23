@@ -69,11 +69,22 @@
 
                                 @foreach (json_decode($transaction_to_edit->service_ids, true) as $service_id )
                                     @foreach ( $all_services as $service )
-                                        @if ($service_id == $service->id)
-                                            <option selected value="{{ $service_id }}">{{ $service->name }}</option>
+                                        @if ($service->id == $service_id)
+                                            <option selected value="{{ $service->id }}">{{ $service->name }}</option>
                                         @endif
                                     @endforeach
                                 @endforeach
+                                {{-- <option selected value="">
+                                    @php
+                                        foreach (json_decode($transaction_to_edit->service_ids, true) as $service_id) {
+                                            foreach ( $all_services as $service ){
+                                                if ($service->id == $service_id){
+                                                    echo $service->name;
+                                                }
+                                            }
+                                        }
+                                     @endphp
+                                </option> --}}
 
                                 @foreach ($all_services as $service )
                                     <option value="{{ $service->id }}">{{ $service->name }}</option>

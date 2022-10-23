@@ -32,7 +32,7 @@ class LoginStockController extends Controller
 
         $get_retail_records = Retail::get_each_product_details();
 
-        return view('pages.login_stock', compact('all_sales_audit_records', 'date'));
+        return view('pages.login_stock', compact('all_sales_audit_records', 'date', 'get_retail_records'));
     }
 
 
@@ -55,8 +55,9 @@ class LoginStockController extends Controller
             return redirect('login_stock');
         }
         // dd($all_sales_audit_records);
+        $get_retail_records = Retail::get_each_product_details();
 
-        return view('pages.login_stock', compact('all_sales_audit_records', 'date'));
+        return view('pages.login_stock', compact('all_sales_audit_records', 'date', 'get_retail_records'));
     }
 
 }

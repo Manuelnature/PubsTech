@@ -50,7 +50,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                           <label for="txt_product_id">Products Name</label>
-                          <select class="form-control" data-placeholder="Select Product" style="width: 100%;" name="txt_product_id" value="{{ old('txt_product_id') }}" >
+                          <select class="form-control select2" data-placeholder="Select Product" style="width: 100%;" name="txt_product_id" value="{{ old('txt_product_id') }}" >
                                 <option selected disabled>Select Product</option>
                                 @foreach ($all_products as $product)
                                     <option value="{{$product->id}}">{{ucwords(trans($product->name))}}</option>
@@ -82,7 +82,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txt_collected_by">Collected By</label>
-                            <select class="form-control" data-placeholder="Select User" style="width: 100%;" name="txt_collected_by" value="{{ old('txt_collected_by') }}" >
+                            <select class="form-control select2" data-placeholder="Select User" style="width: 100%;" name="txt_collected_by" value="{{ old('txt_collected_by') }}" >
                                 <option selected disabled>Select User</option>
                                 @foreach ($all_users as $user)
                                     <option value="{{$user->first_name}} {{$user->last_name}}">{{ucwords(trans($user->first_name))}} {{ucwords(trans($user->last_name))}}</option>

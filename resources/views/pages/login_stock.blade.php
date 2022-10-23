@@ -80,7 +80,7 @@
                     </thead>
                     <tbody>
                         @if (count($all_sales_audit_records) > 0)
-                                @foreach ($all_sales_audit_records as $audit_record)
+                            @foreach ($all_sales_audit_records as $audit_record)
                                 <tr>
                                     <td>{{ ucwords(trans($audit_record->name)) }}</td>
                                     <td>{{ $audit_record->price_per_item }}</td>
@@ -94,14 +94,27 @@
                                     <td>{{ $audit_record->created_at}}</td>
                                 </tr>
                             @endforeach
-
                         @else
-                            <tr>
+                            @foreach ($get_retail_records as $retail_details)
+                                <tr>
+                                    <td>{{ ucwords(trans($retail_details->name)) }}</td>
+                                    <td>{{ $retail_details->price_per_piece }}</td>
+                                    <td>{{ $retail_details->total_quantity}}</td>
+                                    <td>
+                                        @php
+                                            // $expected_amount = (double)$retail_details->starting_stock * (double)$retail_details->price_per_item;
+                                            echo 'Gh¢ '.number_format($total_amount, 2);
+                                        @endphp
+                                    </td>
+                                    <td>{{ $audit_record->created_at}}</td>
+                                </tr>
+                            @endforeach
+                            {{-- <tr>
                                 <td>-</td>
                                 <td>0</td>
                                 <td>00</td>
                                 <td>0.00<td>
-                            </tr>
+                            </tr> --}}
                         @endif
                     </tbody>
                   </table>
