@@ -304,7 +304,7 @@
                                     @endif
                             </td>
                                 <td>
-                                    @if (($current_time->diffInMinutes($today_sales->created_at)) < 5)
+                                    @if (($current_time->diffInHours($today_sales->created_at)) < 1)
                                         <a class="text-primary"
                                         onclick="edit_sales_record(this)"
                                         data-toggle="modal"
