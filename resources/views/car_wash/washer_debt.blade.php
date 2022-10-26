@@ -68,19 +68,6 @@
                             !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_debt_amount" name="txt_debt_amount" >                        </div>
                         <span class="text-danger">@error('txt_debt_amount') {{ $message }} @enderror</span>
                     </div>
-
-                    {{-- <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txt_vehicle_id">Vehicle Type</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_id"  name="txt_vehicle_id" value="{{ old('txt_vehicle_id') }}" >
-                                <option selected disabled>Vehicle Type</option>
-                                @foreach ($all_vehicles as $vehicle_type )
-                                    <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-danger">@error('txt_vehicle_id') {{ $message }} @enderror</span>
-                        </div>
-                    </div> --}}
                 </div>
 
                 <div class="row mb-3">
@@ -101,36 +88,14 @@
                     </div>
                 </div>
 
-                {{-- <div class="row mb-3">
-                    <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="txt_payment_status">Payment Status</label>
-                                <select class="form-control select2" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
-                                    <option selected disabled>Select Status</option>
-                                    <option value="Paid">Paid</option>
-                                    <option value="Not Paid">Not Paid</option>
-                                    <option value="Runaway">Runaway</option>
-                                </select>
-                                <span class="text-danger">@error('txt_payment_status') {{ $message }} @enderror</span>
-                            </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txt_amount_left">Amount Left</label>
-                            <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_left" name="txt_amount_left" >                        </div>
-                        <span class="text-danger">@error('txt_amount_left') {{ $message }} @enderror</span>
-                    </div>
-                </div> --}}
-
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txt_payment_status">Payment Status</label>
                             <select class="form-control select2" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
                                 <option selected disabled>Select Status</option>
-                                <option value="Paid">Fully Paid</option>
-                                <option value="Paid">Partly Paid</option>
+                                <option value="Fully Paid">Fully Paid</option>
+                                <option value="Partly Paid">Partly Paid</option>
                                 <option value="Not Paid">Not Paid</option>
                                 <option value="Runaway">Runaway</option>
                             </select>
@@ -143,7 +108,7 @@
                             <select class="form-control select2" style="width: 100%;" id="txt_paid_to"  name="txt_paid_to" value="{{ old('txt_paid_to') }}" >
                                 <option selected disabled>Select Here</option>
                                 @foreach ($all_users as $users)
-                                <option value="{{ $users->first_name }} {{ $users->last_name }}">{{ $users->first_name }} {{ $users->last_name }}</option>
+                                    <option value="{{ $users->username }}">{{ $users->first_name }} {{ $users->last_name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">@error('txt_paid_to') {{ $message }} @enderror</span>
@@ -164,10 +129,10 @@
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="txt_pricing_description">Description</label>
-                            <textarea class="form-control" rows="3" placeholder="Enter Pricing Description" name="txt_pricing_description">{{old('txt_pricing_description')}}</textarea>
+                            <label for="txt_debt_description">Remark</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter Description" name="txt_debt_description">{{old('txt_debt_description')}}</textarea>
                         </div>
-                        <span class="text-danger">@error('txt_pricing_description') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_debt_description') {{ $message }} @enderror</span>
                     </div>
                 </div>
                 <div class="row">
@@ -213,15 +178,17 @@
                   <thead>
                     <tr>
                         {{-- <th>Vehicle Name</th> --}}
-                        <th>Vehicle Type</th>
-                        <th>Service</th>
-                        <th>Price </th>
-                        <th>Washer %</th>
-                        <th>Description</th>
-                        <th>Created By</th>
-                        <th>Date Created</th>
-                        <th>Updated By</th>
+                        <th>Washer Name</th>
+                        <th>Amount Owed </th>
+                        <th>Payment Status</th>
+                        <th>Amount Paid</th>
+                        <th>Amount Left</th>
+                        <th>Collected On</th>
+                        <th>Paid On</th>
+                        <th>Paid To</th>
+                        <th>Remarks</th>
                         <th>Updated At</th>
+                        <th>Updated By</th>
 
                         @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
                         <th>Action</th>
@@ -229,51 +196,81 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {{-- @foreach ( $all_pricing as $pricing)
-                        <tr>
-                            <td>{{ucwords(trans($pricing->vehicle_type_name)) }}</td>
-                            <td>{{ucwords(trans($pricing->service_name)) }}</td>
-                            <td>GH¢ {{number_format($pricing->price, 2 ) }}</td>
-                            <td>{{$pricing->washer_percentage}} %</td>
-                            <td>{{ucfirst(trans($pricing->description)) }}</td>
-                            <td>{{$pricing->created_by}}</td>
-                            <td>{{$pricing->created_at}}</td>
+                    @foreach ( $all_washer_debts as $debts)
+                        <tr class="text-center">
+                            <td>{{ucwords(trans($debts->firstname)) }} {{ucwords(trans($debts->lastname)) }}</td>
+                            <td>GH¢ {{number_format($debts->debt_amount, 2 ) }}</td>
+                            <td>{{$debts->payment_status}}</td>
                             <td>
-                                @if ($pricing->updated_by == "" || $pricing->updated_by == NULL)
-                                    <p>Not updated</p>
+                                @if ($debts->amount_paid == "" || $debts->amount_paid == NULL)
+                                    <p>-</p>
                                 @else
-                                    <p>{{$pricing->updated_by}}</p>
+                                    <p>{{number_format($debts->amount_paid, 2)}}</p>
                                 @endif
                             </td>
                             <td>
-                                @if ($pricing->updated_at == "" || $pricing->updated_at == NULL)
+                                @if ($debts->amount_left == "" || $debts->amount_left == NULL)
+                                    <p>-</p>
+                                @else
+                                    <p>{{number_format($debts->amount_left, 2)}}</p>
+                                @endif
+                            </td>
+                            <td>{{$debts->created_at}}</td>
+                            <td>
+                                @if ($debts->paid_on == "" || $debts->paid_on == NULL)
+                                    <p>-</p>
+                                @else
+                                    <p>{{$debts->paid_on}}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($debts->paid_to == "" || $debts->paid_to == NULL)
+                                    <p>-</p>
+                                @else
+                                    <p>{{$debts->paid_to}}</p>
+                                @endif
+                            </td>
+                            <td>{{ ucfirst($debts->remark) }}</td>
+                            <td>
+                                @if ($debts->updated_by == "" || $debts->updated_by == NULL)
                                     <p>Not updated</p>
                                 @else
-                                    <p>{{$pricing->updated_at}}</p>
+                                    <p>{{$debts->updated_by}}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($debts->updated_at == "" || $debts->updated_at == NULL)
+                                    <p>Not updated</p>
+                                @else
+                                    <p>{{$debts->updated_at}}</p>
                                 @endif
                             </td>
                             @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
 
                                 <td class="text-center">
                                     <a class="text-primary"
-                                        onclick="edit_pricing(this)"
+                                        onclick="edit_debts(this)"
                                         data-toggle="modal"
-                                        data-target="#edit_pricing"
-                                        data-id="{{ $pricing->id }}"
-                                        data-vehicle_id="{{ $pricing->vehicle_id }}"
-                                        data-vehicle_name="{{ $pricing->vehicle_name }}"
-                                        data-vehicle_type_name="{{ $pricing->vehicle_type_name }}"
-                                        data-service_id="{{ $pricing->service_id }}"
-                                        data-service_name="{{ $pricing->service_name }}"
-                                        data-price="{{ $pricing->price }}"
-                                        data-description="{{ $pricing->description }}"
+                                        data-target="#edit_debts"
+                                        data-id="{{ $debts->debt_id }}"
+                                        data-washer_id="{{ $debts->washer_id }}"
+                                        data-washer_firstname="{{ $debts->firstname }}"
+                                        data-washer_lastname="{{ $debts->lastname }}"
+                                        data-nickname="{{ $debts->nickname }}"
+                                        data-debt_amount="{{ $debts->debt_amount }}"
+                                        data-amount_paid="{{ $debts->amount_paid }}"
+                                        data-amount_left="{{ $debts->amount_left }}"
+                                        data-payment_status="{{ $debts->payment_status }}"
+                                        data-paid_on="{{ $debts->paid_on }}"
+                                        data-paid_to="{{ $debts->paid_to }}"
+                                        data-remark="{{ $debts->remark }}"
                                     >
                                     <i class="fas fa-edit"></i>
                                     </a>
                                 </td>
                             @endif
                         </tr>
-                    @endforeach --}}
+                    @endforeach
 
                   </tbody>
                 </table>
@@ -290,7 +287,7 @@
 
 
 
-      <div class="modal fade" id="edit_pricing" >
+      <div class="modal fade" id="edit_debts" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -299,65 +296,103 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('update_price') }}" method="POST">
+            <form action="{{ route('update_washer_debt') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="card-body">
-                        <div class="row ">
+                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="hidden" class="form-control" id="pricing_id" name="pricing_id">
+                                    <input type="hidden" name="debt_id" id="debt_id">
 
-                                    <label for="txt_edit_service_id">Select Service</label>
-                                    <select class="form-control" style="width: 100%;" id="txt_edit_service_id"  name="txt_edit_service_id" value="{{ old('txt_edit_service_id') }}" >
-                                        <option selected id="txt_selected_service"></option>
-                                        @foreach ($all_services as $service )
-                                            <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                    <label for="txt_edit_washer_id">Car Washer</label>
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_washer_id"  name="txt_edit_washer_id" >
+                                        <option selected id="selected_washer"></option>
+                                        @foreach ($all_washers as $washer )
+                                            <option value="{{ $washer->id }}">{{ $washer->firstname }} {{ $washer->lastname }}</option>
                                         @endforeach
                                     </select>
-                                    <span class="text-danger">@error('txt_edit_service_id') {{ $message }} @enderror</span>
+                                    <span class="text-danger">@error('txt_edit_washer_id') {{ $message }} @enderror</span>
                                 </div>
                             </div>
-
                             <div class="col-md-6">
-                                <label for="txt_edit_vehicle_id">Vehicle Type</label>
-                                <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_id"  name="txt_edit_vehicle_id">
-                                    <option selected id="txt_selected_vehicle"> </option>
-                                    @foreach ($all_vehicles as $vehicle_type )
-                                        <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger">@error('txt_edit_vehicle_id') {{ $message }} @enderror</span>
-                            </div>
-                        </div>
-
-                        <div class="row ">
-                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="txt_edit_sevice_price"> Price</label>
+                                    <label for="txt_edit_debt_amount">Debt Amount</label>
                                     <input type="number" min="0" oninput="this.value =
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_sevice_price" name="txt_edit_sevice_price">
-
-                                    <span class="text-danger">@error('txt_edit_sevice_price') {{ $message }} @enderror</span>
-                                </div>
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_debt_amount" name="txt_edit_debt_amount" >                        </div>
+                                <span class="text-danger">@error('txt_edit_debt_amount') {{ $message }} @enderror</span>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_amount_paid">Amount Paid</label>
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_amount_paid" name="txt_edit_amount_paid" >                        </div>
+                                <span class="text-danger">@error('txt_edit_amount_paid') {{ $message }} @enderror</span>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_amount_left">Amount Left</label>
+                                    <input type="number" min="0" oninput="this.value =
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_amount_left" name="txt_edit_amount_left" >                        </div>
+                                <span class="text-danger">@error('txt_edit_amount_left') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_payment_status">Payment Status</label>
+                                    <select class="form-control " style="width: 100%;" id="txt_edit_payment_status"  name="txt_edit_payment_status" >
+                                        <option selected id="selected_payment_status"></option>
+                                        <option value="Fully Paid">Fully Paid</option>
+                                        <option value="Partly Paid">Partly Paid</option>
+                                        <option value="Not Paid">Not Paid</option>
+                                        <option value="Runaway">Runaway</option>
+                                    </select>
+                                    <span class="text-danger">@error('txt_edit_payment_status') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_paid_to">Paid To</label>
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_paid_to"  name="txt_paid_to" value="{{ old('txt_edit_paid_to') }}" >
+                                        <option selected id="selected_paid_to"></option>
+                                        @foreach ($all_users as $users)
+                                            <option value="{{ $users->username }}">{{ $users->first_name }} {{ $users->last_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('txt_edit_paid_to') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_paid_on">Paid On</label>
+                                    <input type="date" class="form-control" id="txt_edit_paid_on" name="txt_edit_paid_on" >
+                                    <span class="text-danger">@error('txt_edit_paid_on') {{ $message }} @enderror</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="txt_edit_pricing_description">Description</label>
-                                    <textarea class="form-control" rows="3" name="txt_edit_pricing_description" id="txt_edit_pricing_description"></textarea>
+                                    <label for="txt_edit_debt_description">Remark</label>
+                                    <textarea class="form-control" rows="3" placeholder="Enter Description" name="txt_edit_debt_description" id="txt_edit_debt_description"></textarea>
                                 </div>
-                                <span class="text-danger">@error('txt_edit_pricing_description') {{ $message }} @enderror</span>
+                                <span class="text-danger">@error('txt_edit_debt_description') {{ $message }} @enderror</span>
                             </div>
                         </div>
-                    </div>
-
+                      </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-secondary">Update Product</button>
+                    <button type="submit" class="btn btn-secondary">Update Debt</button>
                 </div>
             </form>
           </div>
@@ -408,28 +443,38 @@
   @endsection
 
   <script>
-    function edit_pricing() {
-        $('#edit_pricing').on('shown.bs.modal', function(e) {
-        var link = $(e.relatedTarget) //use this https://api.jquery.com/event.relatedtarget/
+    function edit_debts() {
+        $('#edit_debts').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget)
             modal = $(this)
-        var pricing_id = link.data('id')
-        var service_id = link.data('service_id')
-        var service_name = link.data('service_name')
-        var vehicle_id = link.data('vehicle_id')
-        var vehicle_name = link.data('vehicle_name')
-        var vehicle_type_name = link.data('vehicle_type_name')
-        var price = link.data('price')
-        var description = link.data('description')
+        var debt_id = link.data('id')
+        var washer_id = link.data('washer_id')
+        var washer_firstname = link.data('washer_firstname')
+        var washer_lastname = link.data('washer_lastname')
+        var nickname = link.data('nickname')
+        var debt_amount = link.data('debt_amount')
+        var amount_paid = link.data('amount_paid')
+        var amount_left = link.data('amount_left')
+        var payment_status = link.data('payment_status')
+        var paid_on = link.data('paid_on')
+        var paid_to = link.data('paid_to')
+        var remark = link.data('remark')
 
-        modal.find('#pricing_id').val(pricing_id);
-        // modal.find('#vehicle_id').val(vehicle_id);
-        modal.find('#txt_selected_service').val(service_id);
-        modal.find('#txt_selected_vehicle').val(vehicle_id);
-        modal.find('#txt_edit_sevice_price').val(price);
-        modal.find('#txt_edit_pricing_description').val(description);
-        document.getElementById('txt_selected_service').innerHTML = service_name;
-        document.getElementById('txt_selected_vehicle').innerHTML = vehicle_type_name;
-        // document.getElementById('title').innerHTML = 'Edit '+ service_name;
+
+        modal.find('#debt_id').val(debt_id);
+        modal.find('#selected_washer').val(washer_id);
+        modal.find('#txt_edit_debt_amount').val(debt_amount);
+        modal.find('#txt_edit_amount_paid').val(amount_paid);
+        modal.find('#txt_edit_amount_left').val(amount_left);
+        modal.find('#selected_payment_status').val(payment_status);
+        modal.find('#selected_paid_to').val(paid_to);
+        modal.find('#txt_edit_paid_on').val(paid_on);
+        modal.find('#txt_edit_debt_description').val(remark);
+        document.getElementById('selected_washer').innerHTML = washer_firstname+' '+washer_lastname;
+        document.getElementById('selected_payment_status').innerHTML = payment_status;
+        document.getElementById('selected_paid_to').innerHTML = paid_to;
+        // document.getElementById('txt_edit_debt_description').innerHTML = remark;
+        document.getElementById('title').innerHTML = 'Edit '+ washer_firstname+' '+washer_lastname+'\s debt';
         });
     }
 

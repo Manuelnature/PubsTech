@@ -50,14 +50,17 @@ class LoginController extends Controller
 
                         $user_session = Session::get('user_session');
 
-                        if ($user_session->role == 'Retailer') {
-                             $this->get_sales_audit();
-                            return redirect('retailer_dashboard');
-                        }
-                        else {
-                            $this->get_sales_audit();
+                        $this->get_sales_audit();
                             return redirect('home');
-                        }
+
+                        // if ($user_session->role == 'Retailer') {
+                        //      $this->get_sales_audit();
+                        //     return redirect('retailer_dashboard');
+                        // }
+                        // else {
+                        //     $this->get_sales_audit();
+                        //     return redirect('home');
+                        // }
                     }
                     else{
                         Alert::toast('Password Incorrect','warning');

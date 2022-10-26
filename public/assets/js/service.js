@@ -5,7 +5,7 @@ function setServiceList(all_pricing){
     console.log(price_list);
 }
 
-$('#txt_vehicle_id').change(function(e) {
+$('#txt_vehicle_type_id').change(function(e) {
     e.preventDefault();
     calculatePriceForServices();
 });
@@ -21,12 +21,12 @@ $('#txt_service_id').change(function(e) {
 });
 
 function calculatePriceForServices(){
-    var vehicle_id = $('#txt_vehicle_id').val();
+    var vehicle_type_id = $('#txt_vehicle_type_id').val();
 
     var service_ids = $('#txt_service_id').val();
 
     // const service_ids = [$('#txt_service_id').val()];
-    console.log('vehicle_id '+ vehicle_id);
+    console.log('vehicle_type_id '+ vehicle_type_id);
     console.log('service_ids '+service_ids);
 
     if(service_ids.length == 0){
@@ -39,12 +39,12 @@ function calculatePriceForServices(){
     var total_washer_percentage_price = 0;
 
     price_list.forEach(function(pricing) {
-        // console.log(service["price"]);
+
         service_ids.forEach(function(service_id){
             // services["id"] == service_id &&
             // var service =
 
-            if(pricing["vehicle_id"] == vehicle_id && pricing["service_id"] == service_id){
+            if(pricing["vehicle_type_id"] == vehicle_type_id && pricing["service_id"] == service_id){
                 var amount = pricing["price"];
                 var washer_percentage = pricing["washer_percentage"];
                 total_amount = parseInt(total_amount) + parseInt(amount);
@@ -77,7 +77,7 @@ function calculatePriceForServices(){
 
 
 
-$('#txt_edit_vehicle_id').change(function(e) {
+$('#txt_edit_vehicle_type_id').change(function(e) {
     e.preventDefault();
     calculateEditPriceForServices();
 });
@@ -93,12 +93,12 @@ $('#txt_edit_service_id').change(function(e) {
 });
 
 function calculateEditPriceForServices(){
-    var vehicle_id = $('#txt_edit_vehicle_id').val();
+    var vehicle_type_id = $('#txt_edit_vehicle_type_id').val();
 
     var service_ids = $('#txt_edit_service_id').val();
 
     // const service_ids = [$('#txt_service_id').val()];
-    console.log('vehicle_id '+ vehicle_id);
+    console.log('vehicle_type_id '+ vehicle_type_id);
     console.log('service_ids '+service_ids);
 
     if(service_ids.length == 0){
@@ -116,7 +116,7 @@ function calculateEditPriceForServices(){
             // services["id"] == service_id &&
             // var service =
 
-            if(pricing["vehicle_id"] == vehicle_id && pricing["service_id"] == service_id){
+            if(pricing["vehicle_type_id"] == vehicle_type_id && pricing["service_id"] == service_id){
                 var amount = pricing["price"];
                 var washer_percentage = pricing["washer_percentage"];
                 total_amount = parseInt(total_amount) + parseInt(amount);

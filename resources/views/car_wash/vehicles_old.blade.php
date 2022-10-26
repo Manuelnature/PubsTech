@@ -17,16 +17,16 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                {{-- <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add_vehicle_type">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#add_vehicle_type">
                     Set Vehicle Type
-                </button> --}}
+                </button>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
 
 
-      {{-- <div class="modal fade" id="add_vehicle_type" >
+      <div class="modal fade" id="add_vehicle_type" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -68,7 +68,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div> --}}
+      </div>
     </section>
 
     <!-- Main content -->
@@ -77,7 +77,7 @@
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Vehicles Types</h3>
+            <h3 class="card-title">Vehicles </h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -88,26 +88,42 @@
               </button>
             </div>
           </div>
-
+          <!-- /.card-header -->
           <div class="card-body">
-            <form action="{{route('add_vehicle_type')}}" method="POST">
+            <form action="{{route('add_vehicle')}}" method="POST">
                 @csrf
-                <div class="row ">
-                    <div class="col-md-12">
+                <div class="row mb-3">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_vehicle_type_name">Name of Vehicle Type</label>
-                            <input type="text" class="form-control" id="txt_vehicle_type_name" name="txt_vehicle_type_name" value="{{old('txt_vehicle_type_name')}}">
+                            <label for="txt_vehicle_name">Vehicle Name</label>
+                            <input type="text" class="form-control" id="txt_vehicle_name" name="txt_vehicle_name" value="{{old('txt_vehicle_name')}}">
                         </div>
-                        <span class="text-danger">@error('txt_vehicle_type_name') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_vehicle_name') {{ $message }} @enderror</span>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txt_vehicle_type">Vehicle Type</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_type"  name="txt_vehicle_type">
+                                <option selected id="txt_vehicle_type"> </option>
+                                @foreach ($all_vehicle_types as $vehicle_type )
+                                    <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-danger">@error('txt_vehicle_type') {{ $message }} @enderror</span>
+                        </div>
+
+                    </div>
+
                 </div>
+                <!-- /.row -->
+
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="txt_vehicle_type_description">Description</label>
-                            <textarea class="form-control" rows="3" placeholder="Enter Vehicle Description" name="txt_vehicle_type_description">{{old('txt_vehicle_type_description')}}</textarea>
+                            <label for="txt_vehicle_description">Description</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter Vehicle Description" name="txt_vehicle_description">{{old('txt_vehicle_description')}}</textarea>
                         </div>
-                        <span class="text-danger">@error('txt_vehicle_type_description') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_vehicle_description') {{ $message }} @enderror</span>
                     </div>
                 </div>
                 <div class="row">
@@ -117,10 +133,9 @@
                 </div>
             </form>
           </div>
-
           <!-- /.card-body -->
           <div class="card-footer">
-            Save Vehicle Types
+            Save Vehicle Records
           </div>
         </div>
         <!-- /.card -->
@@ -130,6 +145,203 @@
 
     </section>
 
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title"> Vehicle Details</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="vehicles" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                        <th>Vehicle Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Created By</th>
+                        <th>Date Created</th>
+                        <th>Updated By</th>
+                        <th>Updated At</th>
+
+                        @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+                        <th>Action</th>
+                        @endif
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach ( $all_vehicles as $vehicle)
+                        <tr>
+                            <td>{{$vehicle->vehicle_name}}</td>
+                            <td>{{$vehicle->vehicle_type_name}}</td>
+                            <td>{{$vehicle->vehicle_description}}</td>
+                            <td>{{$vehicle->created_by}}</td>
+                            <td>{{$vehicle->created_at}}</td>
+                            <td>
+                                @if ($vehicle->updated_by == "" || $vehicle->updated_by == NULL)
+                                    <p>Not updated</p>
+                                @else
+                                    <p>{{$vehicle->updated_by}}</p>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($vehicle->updated_at == "" || $vehicle->updated_at == NULL)
+                                    <p>Not updated</p>
+                                @else
+                                    <p>{{$vehicle->updated_at}}</p>
+                                @endif
+                            </td>
+                            @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+
+                                <td class="text-center">
+                                    <a class="text-primary"
+                                        onclick="edit_vehicle(this)"
+                                        data-toggle="modal"
+                                        data-target="#edit_vehicle"
+                                        data-id="{{ $vehicle->vehicle_id }}"
+                                        data-name="{{ $vehicle->vehicle_name }}"
+                                        data-vehicle_type_name="{{ $vehicle->vehicle_type_name }}"
+                                        data-vehicle_type_id="{{ $vehicle->vehicle_type_id }}"
+                                        data-description="{{ $vehicle->vehicle_description }}"
+                                    >
+                                    <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    {{-- <a class="text-danger"
+                                        onclick="delete_product(this)"
+                                        data-toggle="modal"
+                                        data-target="#delete-product"
+                                        data-product_id="{{ $product->id }}"
+                                        data-product_name="{{ $product->name }}"
+                                    >
+                                    <i class="fas fa-trash"></i>
+                                    </a> --}}
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+
+
+
+      <div class="modal fade" id="edit_vehicle" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="title"></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ route('update_vehicle') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="vehicle_id" name="vehicle_id">
+
+                                    <label for="txt_edit_vehicle_name"> Vehicle Name</label>
+                                    <input type="text" class="form-control" id="txt_edit_vehicle_name" name="txt_edit_vehicle_name">
+
+                                    <span class="text-danger">@error('txt_edit_vehicle_name') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txt_edit_vehicle_type">Vehicle Type </label>
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_type"  name="txt_edit_vehicle_type">
+                                        <option selected id="selected_vehicle_type"> </option>
+                                        @foreach ($all_vehicle_types as $vehicle_type )
+                                            <option value="{{ $vehicle_type->id}}">{{ $vehicle_type->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="text-danger">@error('txt_edit_vehicle_type') {{ $message }} @enderror</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txt_edit_vehicle_description">Description</label>
+                                    <textarea class="form-control" rows="3" name="txt_edit_vehicle_description" id="txt_edit_vehicle_description"></textarea>
+                                </div>
+                                <span class="text-danger">@error('txt_edit_vehicle_description') {{ $message }} @enderror</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary">Update Vehicle Info</button>
+                </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      {{-- <div class="modal fade" id="delete-product" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <form action="{{ route('delete_product') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="product_id" name="product_id">
+                        </div>
+                        <h5 class="text-center mb-4">Are you sure you want to delete </h5>
+                        <h4 id="product_name" class="text-center text-bold mb-4"></h4>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger pl-3 pr-3">Yes</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div> --}}
+
+
+
+    </section>
 
     <section class="content">
         <div class="container-fluid">

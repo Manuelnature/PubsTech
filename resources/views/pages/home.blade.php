@@ -168,9 +168,8 @@
     </div>
 
 
-    @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
-        <!-- Main content -->
 
+        <!-- Main content -->
 
         <section class="content">
             <div class="container-fluid">
@@ -327,95 +326,96 @@
             </div> --}}
             <!-- /.row -->
 
-    @endif
 
-    <!-- Overall Info -->
-    <section class="content">
-        <div class="container-fluid">
+        @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+            <!-- Overall Info -->
+            <section class="content">
+                <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-title"></h5>
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                        <h5 class="card-title"></h5>
 
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                            </button>
 
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box">
-                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Products</span>
-                              <span class="info-box-number">
-                                {{ $total_number_of_products }}
-                                <small></small>
-                              </span>
-                            </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                        <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Users</span>
-                              <span class="info-box-number">{{ $total_number_of_users }}</span>
-                            </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
                         </div>
-                        <!-- /.col -->
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <div class="info-box">
+                                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
 
-                        <!-- fix for small devices only -->
-                        <div class="clearfix hidden-md-up"></div>
+                                    <div class="info-box-content">
+                                    <span class="info-box-text">Number of Products</span>
+                                    <span class="info-box-number">
+                                        {{ $total_number_of_products }}
+                                        <small></small>
+                                    </span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <div class="info-box mb-3">
+                                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
 
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
+                                    <div class="info-box-content">
+                                    <span class="info-box-text">Number of Users</span>
+                                    <span class="info-box-number">{{ $total_number_of_users }}</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
 
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Car Washers</span>
-                              <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
+                                <!-- fix for small devices only -->
+                                <div class="clearfix hidden-md-up"></div>
+
+                                <div class="col-12 col-sm-6 col-md-4">
+                                <div class="info-box mb-3">
+                                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
+
+                                    <div class="info-box-content">
+                                    <span class="info-box-text">Number of Car Washers</span>
+                                    <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                                </div>
+                                <!-- /.col -->
                             </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
+                        <!-- /.row -->
                         </div>
-                        <!-- /.col -->
-                      </div>
-                  <!-- /.row -->
+                        <!-- ./card-body -->
+                        <div class="card-footer">
+
+
+                        </div>
+                        <!-- /.card-footer -->
+                    </div>
+                    <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
                 </div>
-                <!-- ./card-body -->
-                <div class="card-footer">
+                <!-- /.row -->
 
-
-                </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
-            </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-
-        </div><!--/. container-fluid -->
-    </section>
+                </div><!--/. container-fluid -->
+            </section>
+        @endif
 
 
     <section class="content">
@@ -557,9 +557,9 @@
                 <div class="card-header">
                   <h3 class="card-title" style="font-weight: 800;">Summary of Overall Sales</h3>
                         <span style="margin-left:40px !important">
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('F j, Y')}}
-                            <strong> to </strong>
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('F j, Y')}}
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('j F, Y')}}
+                            <strong> &nbsp;-&nbsp; </strong>
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('j F, Y')}}
                         </span>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -606,74 +606,76 @@
         <!-- /.container-fluid -->
     </section>
 
-     <!-- Overall Transfer Records -->
-    <section class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-12">
+    @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+        <!-- Overall Transfer Records -->
+        <section class="content">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
 
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Summary of Overall Transfer Transactions</h3>
-                    <span style="margin-left:40px !important">
-                        {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_start_date'])->format('F j, Y')}}
-                        <strong> to </strong>
-                        {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_end_date'])->format('F j, Y')}}
-                    </span>
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
+                <div class="card">
+                    <div class="card-header">
+                    <h3 class="card-title" style="font-weight: 800;">Summary of Overall Transfer Transactions</h3>
+                        <span style="margin-left:40px !important">
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_start_date'])->format('j F, Y')}}
+                            <strong> &nbsp;-&nbsp; </strong>
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['transfer_end_date'])->format('j F, Y')}}
+                        </span>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                    <table id="transfers" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Original Stock</th>
+                            <th>Total Quantity Transfered</th>
+                            <th>Total Expected Amount</th>
+                            <th>Total Stock Left</th>
+                            {{-- <th>Remaining Expected Price</th> --}}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (json_decode($overall_transfer_record, true) as $transfer_record)
+                            <tr>
+                                <td>{{ ucwords(trans($transfer_record['product_name'])) }}</td>
+                                <td> {{ $transfer_record['original_stock'] }} </td>
+                                <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
+                                <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($transfer_record['total_expected_price'], 2);
+                                        @endphp
+                                </td>
+                                <td>
+                                        @php
+                                            $total_stock_left = (double)($transfer_record['original_stock']) - (double)($transfer_record['total_quantity_transfered']);
+                                            echo $total_stock_left;
+                                        @endphp
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <table id="transfers" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                          <th>Product Name</th>
-                          <th>Original Stock</th>
-                          <th>Total Quantity Transfered</th>
-                          <th>Total Expected Amount</th>
-                          <th>Total Stock Left</th>
-                          {{-- <th>Remaining Expected Price</th> --}}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach (json_decode($overall_transfer_record, true) as $transfer_record)
-                          <tr>
-                              <td>{{ ucwords(trans($transfer_record['product_name'])) }}</td>
-                              <td> {{ $transfer_record['original_stock'] }} </td>
-                              <td>{{ $transfer_record['total_quantity_transfered'] }}</td>
-                              <td>
-                                    @php
-                                        echo 'Gh¢ '.number_format($transfer_record['total_expected_price'], 2);
-                                    @endphp
-                             </td>
-                              <td>
-                                    @php
-                                        $total_stock_left = (double)($transfer_record['original_stock']) - (double)($transfer_record['total_quantity_transfered']);
-                                        echo $total_stock_left;
-                                    @endphp
-                              </td>
-                          </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                <!-- /.card -->
                 </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.card -->
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </section>
+            <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    @endif
 
 </div>
 
@@ -681,6 +683,12 @@
 @section('Dashboard_JS')
   <script src="{{ asset('assets/js/dashboard.js') }}" ></script>
 @endsection
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+</script>
 
 
     <!-- DataTables  & Plugins -->

@@ -16,15 +16,14 @@ use Log;
 class PricingController extends Controller
 {
     public function index(){
-        $all_vehicles = Vehicle::all();
+        // $all_vehicles = Vehicle::all();
         // $all_vehicles = Vehicle::select_all_vehicles();
         // $all_services = Service::get_all_services();
         $all_services = Service::all();
         $all_pricing = Pricing::select_all_pricing();
-        // dd($all_vehicles);
         // dd($all_pricing);
         $all_vehicles_types = VehicleType::all();
-        return view('car_wash.pricing', compact('all_vehicles','all_services', 'all_pricing', 'all_vehicles_types'));
+        return view('car_wash.pricing', compact('all_services', 'all_pricing', 'all_vehicles_types'));
     }
 
 
@@ -40,7 +39,7 @@ class PricingController extends Controller
                 'txt_service_price.required' => 'Service Price is required',
             ]);
             $service_id= $request->get('txt_service_id');
-            $vehicle_id= $request->get('txt_vehicle_id');
+            $vehicle_type_id= $request->get('txt_vehicle_id');
             $price = $request->get('txt_service_price');
             $description = Str::ucfirst($request->get('txt_pricing_description'));
             $user_session = Session::get('user_session');
@@ -48,7 +47,7 @@ class PricingController extends Controller
 
             $add_pricing = new Pricing();
             $add_pricing->service_id = $service_id;
-            $add_pricing->vehicle_id = $vehicle_id;
+            $add_pricing->vehicle_type_id = $vehicle_type_id;
             $add_pricing->price = $price;
             $add_pricing->description = $description;
             $add_pricing->created_by = $active_user;
@@ -75,7 +74,7 @@ class PricingController extends Controller
             ]);
             $pricing_id= $request->get('pricing_id');
             $service_id= $request->get('txt_edit_service_id');
-            $vehicle_id= $request->get('txt_edit_vehicle_id');
+            $vehicle_type_id= $request->get('txt_edit_vehicle_id');
             $price = $request->get('txt_edit_sevice_price');
             $description = Str::ucfirst($request->get('txt_edit_pricing_description'));
             $user_session = Session::get('user_session');
@@ -84,7 +83,7 @@ class PricingController extends Controller
 
             $update_pricing = Pricing::find($pricing_id);
             $update_pricing->service_id = $service_id;
-            $update_pricing->vehicle_id = $vehicle_id;
+            $update_pricing->vehicle_type_id = $vehicle_type_id;
             $update_pricing->price = $price;
             $update_pricing->description = $description;
             $update_pricing->updated_by = $active_user;

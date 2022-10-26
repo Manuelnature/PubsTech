@@ -45,20 +45,20 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <form action="{{route('update_transaction', $transaction_to_edit->id)}}" method="POST">
+            <form action="{{route('update_transaction', $transaction_to_edit->transaction_id)}}" method="POST">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_edit_vehicle_id">Vehicle Name</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_edit_vehicle_id"  name="txt_edit_vehicle_id" >
-                                <option selected value="{{ $transaction_to_edit->vehicle_id }}">{{ $transaction_to_edit->vehicle_name }}</option>
-                                @foreach ($all_vehicles as $vehicle )
-                                    <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                            <label for="txt_edit_vehicle_type_id">Vehicle Name</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_edit_vehicle_type_id"  name="txt_edit_vehicle_type_id" >
+                                <option selected value="{{ $transaction_to_edit->vehicle_type_id }}">{{ $transaction_to_edit->vehicle_type_name }}</option>
+                                @foreach ($all_vehicles_types as $vehicle_type )
+                                    <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <span class="text-danger">@error('txt_edit_vehicle_id') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_edit_vehicle_type_id') {{ $message }} @enderror</span>
                     </div>
 
 

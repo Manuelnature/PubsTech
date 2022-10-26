@@ -155,6 +155,8 @@ class HomeController extends Controller
         array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
 
         return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
+
+        // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
     }
 
 
@@ -416,14 +418,20 @@ class HomeController extends Controller
 
     }
 
+    public function dashboard_view(){
+        return view('pages.dashboard');
+    }
+
 
     public function filter_records (Request $request){
         $request->validate([
-            'txt_date_from' => 'required',
-            'txt_date_to' => 'required',
+            'txt_date_from' => 'required|before_or_equal:today',
+            'txt_date_to' => 'required|before_or_equal:today',
             ], [
             'txt_date_from.required' => 'Start Date is required for filter',
             'txt_date_to.required' => 'End Date is required for filter',
+            'txt_date_from.before_or_equal' => 'Date from cannot be after today',
+            'txt_date_to.before_or_equal' => 'Date to cannot be after today',
         ]);
 
         $date_from = $request->get('txt_date_from');
@@ -481,7 +489,15 @@ class HomeController extends Controller
         $filter_transfer_data = $this->filter_transfer_records($date_from, $date_to);
 
 
-        return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+
+
+        // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+
+
+        // return redirect('pages.dashboard')->with(['total_number_of_products' => $total_number_of_products, 'total_number_of_car_washers' => $total_number_of_car_washers, 'total_number_of_users' => $total_number_of_users, 'all_filter_records' => $all_filter_records, 'filter_transfer_data' => $filter_transfer_data, 'filter_sales_data' => $filter_sales_data, 'individual_total_quantity_sold' => $individual_total_quantity_sold, 'individual_total_expected_price' => $individual_total_expected_price, 'individual_all_sales_data' => $individual_all_sales_data]);
+
+        return redirect('dashboard')->with(compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+
     }
 
 }

@@ -1,6 +1,22 @@
 @extends('layouts.base_template')
 @section('content')
 
+@php
+    $user_session_details = Session::get('user_session');
+@endphp
+
+<?php
+    $total_number_of_products = Session::get('total_number_of_products');
+    $total_number_of_car_washers = Session::get('total_number_of_car_washers');
+    $total_number_of_users = Session::get('total_number_of_users');
+    $all_filter_records = Session::get('all_filter_records');
+    $filter_transfer_data = Session::get('filter_transfer_data');
+    $filter_sales_data = Session::get('filter_sales_data');
+    $individual_total_quantity_sold = Session::get('individual_total_quantity_sold');
+    $individual_total_expected_price = Session::get('individual_total_expected_price');
+    $individual_all_sales_data = Session::get('individual_all_sales_data');
+?>
+
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -83,92 +99,94 @@
     </section>
 
     <!-- Overall Info -->
-    <section class="content">
-        <div class="container-fluid">
+    @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+        <section class="content">
+            <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-title"></h5>
+            <div class="row">
+                <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                    <h5 class="card-title"></h5>
 
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                      <i class="fas fa-minus"></i>
-                    </button>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                        </button>
 
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box">
-                            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-box"></i></span>
 
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Products</span>
-                              <span class="info-box-number">
-                                {{ $total_number_of_products }}
-                                <small></small>
-                              </span>
+                                <div class="info-box-content">
+                                <span class="info-box-text">Number of Products</span>
+                                <span class="info-box-number">
+                                    {{ $total_number_of_products }}
+                                    <small></small>
+                                </span>
+                                </div>
+                                <!-- /.info-box-content -->
                             </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Users</span>
-                              <span class="info-box-number">{{ $total_number_of_users }}</span>
+                            <!-- /.info-box -->
                             </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
+                            <!-- /.col -->
+                            <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box mb-3">
+                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-users"></i></span>
 
-                        <!-- fix for small devices only -->
-                        <div class="clearfix hidden-md-up"></div>
-
-                        <div class="col-12 col-sm-6 col-md-4">
-                          <div class="info-box mb-3">
-                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
-
-                            <div class="info-box-content">
-                              <span class="info-box-text">Number of Car Washers</span>
-                              <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
+                                <div class="info-box-content">
+                                <span class="info-box-text">Number of Users</span>
+                                <span class="info-box-number">{{ $total_number_of_users }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
                             </div>
-                            <!-- /.info-box-content -->
-                          </div>
-                          <!-- /.info-box -->
+                            <!-- /.info-box -->
+                            </div>
+                            <!-- /.col -->
+
+                            <!-- fix for small devices only -->
+                            <div class="clearfix hidden-md-up"></div>
+
+                            <div class="col-12 col-sm-6 col-md-4">
+                            <div class="info-box mb-3">
+                                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-car"></i></span>
+
+                                <div class="info-box-content">
+                                <span class="info-box-text">Number of Car Washers</span>
+                                <span class="info-box-number">{{ $total_number_of_car_washers }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                            </div>
+                            <!-- /.col -->
                         </div>
-                        <!-- /.col -->
-                      </div>
-                  <!-- /.row -->
-                </div>
-                <!-- ./card-body -->
-                <div class="card-footer">
+                    <!-- /.row -->
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
 
 
+                    </div>
+                    <!-- /.card-footer -->
                 </div>
-                <!-- /.card-footer -->
-              </div>
-              <!-- /.card -->
+                <!-- /.card -->
+                </div>
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-          </div>
-          <!-- /.row -->
+            <!-- /.row -->
 
-        </div><!--/. container-fluid -->
-    </section>
+            </div><!--/. container-fluid -->
+        </section>
+    @endif
 
     <section class="content">
         <div class="container-fluid">
@@ -176,7 +194,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title" style="font-weight: 700; color:blue">Summary Of My Sales Records For Today </h5>
+                  <h5 class="card-title" style="font-weight: 700; color:#0096FF">Summary Of My Sales Records For Today </h5>
 
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -252,7 +270,7 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 700; color:blue">Breakdown of My Sales For Today</h3>
+                  <h3 class="card-title" style="font-weight: 700; color:#0096FF">Breakdown of My Sales For Today</h3>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>
@@ -274,6 +292,7 @@
                     </thead>
                     <tbody>
                       @foreach (json_decode($individual_all_sales_data, true) as $sales_record)
+                      {{-- @foreach ($individual_all_sales_data as $sales_record) --}}
                           <tr>
                               <td>{{ ucwords(trans($sales_record['product_name'])) }}</td>
                               <td>{{ $sales_record['total_quantity_sold_per_product'] }}</td>
@@ -306,11 +325,11 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800; color:blue">Summary of Overall Sales
+                  <h3 class="card-title" style="font-weight: 800; color:#0096FF">Summary of Overall Sales
                     <span style="margin-left:40px !important">
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
-                        <strong> to </strong>
-                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('j F, Y')}}
+                        <strong> &nbsp;-&nbsp;</strong>
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('j F, Y')}}
                     </span>
                   </h3>
                   <div class="card-tools">
@@ -368,11 +387,11 @@
 
                 <div class="card">
                     <div class="card-header">
-                    <h3 class="card-title" style="font-weight: 700; color:blue">Summary of Overall Transfer Transactions
+                    <h3 class="card-title" style="font-weight: 700; color:#0096FF">Summary of Overall Transfer Transactions
                         <span style="margin-left:40px !important">
-                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('F j, Y')}}
-                            <strong> to </strong>
-                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('F j, Y')}}
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('j F, Y')}}
+                            <strong> &nbsp;-&nbsp; </strong>
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('j F, Y')}}
                         </span>
                     </h3>
                     <div class="card-tools">
@@ -437,6 +456,12 @@
 @section('Dashboard_JS')
   <script src="{{ asset('assets/js/dashboard.js') }}" ></script>
 @endsection
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+</script>
 
     <!-- DataTables  & Plugins -->
     <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>

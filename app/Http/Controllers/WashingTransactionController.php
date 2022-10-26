@@ -8,6 +8,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Service;
 use App\Models\CarWasher;
 use App\Models\Vehicle;
+use App\Models\VehicleType;
 use App\Models\Pricing;
 use App\Models\User;
 use App\Models\WashingTransaction;
@@ -19,7 +20,8 @@ class WashingTransactionController extends Controller
 {
     public function index(){
         $all_washers = CarWasher::all();
-        $all_vehicles = Vehicle::all();
+        // $all_vehicles = Vehicle::all();
+        $all_vehicles_types = VehicleType::all();
         $all_users = User::all();
         $all_services = Service::all();
         // $all_pricing = Pricing::all();
@@ -28,21 +30,21 @@ class WashingTransactionController extends Controller
         $all_washing_transactions = WashingTransaction::select_all_washing_transactions();
         // dd($all_washing_transactions);
 
-        return view('car_wash.washing_transactions', compact('all_washers', 'all_vehicles', 'all_services', 'all_pricing', 'all_users', 'all_washing_transactions'));
+        return view('car_wash.washing_transactions', compact('all_washers', 'all_vehicles_types', 'all_services', 'all_pricing', 'all_users', 'all_washing_transactions'));
     }
 
     public function add_transaction(Request $request){
         // dd($request->all());
         try {
             $request->validate([
-                'txt_vehicle_id' => 'required',
+                'txt_vehicle_type_id' => 'required',
                 'txt_service_id' => 'required',
                 'txt_washer_id' => 'required',
                 'txt_supervisor' => 'required',
                 'txt_total_price' => 'required',
                 'txt_washer_commission' => 'required',
             ], [
-                'txt_vehicle_id.required' => 'Vehicle Name is required',
+                'txt_vehicle_type_id.required' => 'Vehicle Name is required',
                 'txt_service_id.required' => 'Service Name is required',
                 'txt_washer_id.required' => 'Washer Name is required',
                 'txt_supervisor.required' => 'Washer Name is required',
@@ -54,7 +56,7 @@ class WashingTransactionController extends Controller
             $service_ids = json_encode($service_id);
 
             // dd($service_ids);
-            $vehicle_id= $request->get('txt_vehicle_id');
+            $vehicle_type_id= $request->get('txt_vehicle_type_id');
             $washer_id= $request->get('txt_washer_id');
             $supervisor= ucwords($request->get('txt_supervisor'));
             $total_amount = $request->get('txt_total_price');
@@ -64,7 +66,7 @@ class WashingTransactionController extends Controller
             $active_user = $user_session->first_name." ".$user_session->last_name;
 
             $add_transaction = new WashingTransaction();
-            $add_transaction->vehicle_id = $vehicle_id;
+            $add_transaction->vehicle_type_id = $vehicle_type_id;
             $add_transaction->service_ids = $service_ids;
             $add_transaction->washer_id = $washer_id;
             $add_transaction->amount = $total_amount;
@@ -90,13 +92,15 @@ class WashingTransactionController extends Controller
             // dd($transaction_to_edit);
 
             $all_washers = CarWasher::all();
-            $all_vehicles = Vehicle::all();
+            // $all_vehicles = Vehicle::all();
+
+            $all_vehicles_types = VehicleType::all();
             $all_users = User::all();
             $all_services = Service::all();
             // dd($all_services);
             $all_pricing = Pricing::select_all_pricing();
 
-            return view('car_wash.edit_transaction', compact('transaction_to_edit', 'all_users', 'all_vehicles', 'all_washers', 'all_services', 'all_pricing'));
+            return view('car_wash.edit_transaction', compact('transaction_to_edit', 'all_users', 'all_vehicles_types', 'all_washers', 'all_services', 'all_pricing'));
 
         } catch (exception $e) {
             echo 'Caught exception';
@@ -109,15 +113,15 @@ class WashingTransactionController extends Controller
         // dd($request->all());
         try {
             $request->validate([
-                'txt_edit_vehicle_id' => 'required',
-                'txt_edit_service_id' => 'required',
+                'txt_washer_id' => 'required',
+                'txt_debt_amount' => 'required',
                 'txt_edit_washer_id' => 'required',
                 'txt_edit_supervisor' => 'required',
                 'txt_edit_total_price' => 'required',
                 'txt_edit_washer_commission' => 'required',
             ], [
-                'txt_edit_vehicle_id.required' => 'Vehicle Name is required',
-                'txt_edit_service_id.required' => 'Service Name is required',
+                'txt_washer_id.required' => 'Vehicle Name is required',
+                'txt_debt_amount.required' => 'Service Name is required',
                 'txt_edit_washer_id.required' => 'Washer Name is required',
                 'txt_edit_supervisor.required' => 'Washer Name is required',
                 'txt_edit_total_price.required' => 'Total Price is required',
@@ -129,7 +133,8 @@ class WashingTransactionController extends Controller
             $service_ids = json_encode($service_id);
 
             // dd($service_ids);
-            $vehicle_id= $request->get('txt_edit_vehicle_id');
+            $vehicle_type_id= $request->get('txt_edit_vehicle_type_id');
+            // dd($vehicle_type_id);
             $washer_id= $request->get('txt_edit_washer_id');
             $supervisor= ucwords($request->get('txt_edit_supervisor'));
             $total_amount = $request->get('txt_edit_total_price');
@@ -139,7 +144,7 @@ class WashingTransactionController extends Controller
             $active_user = $user_session->first_name." ".$user_session->last_name;
 
             $update_transaction = WashingTransaction::find($transaction_id);
-            $update_transaction->vehicle_id = $vehicle_id;
+            $update_transaction->vehicle_type_id = $vehicle_type_id;
             $update_transaction->service_ids = $service_ids;
             $update_transaction->washer_id = $washer_id;
             $update_transaction->amount = $total_amount;
@@ -150,7 +155,7 @@ class WashingTransactionController extends Controller
             $update_transaction->save();
 
             Alert::toast('Transaction entered successfully','success');
-            return back();
+            return redirect('washing_transaction');
 
         } catch (exception $e) {
             echo 'Caught exception';

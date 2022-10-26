@@ -163,7 +163,6 @@
                   <tbody>
                     @foreach ( $all_pricing as $pricing)
                         <tr>
-                            {{-- <td>{{ucwords(trans($pricing->vehicle_name)) }}</td> --}}
                             <td>{{ucwords(trans($pricing->vehicle_type_name)) }}</td>
                             <td>{{ucwords(trans($pricing->service_name)) }}</td>
                             <td>GH¢ {{number_format($pricing->price, 2 ) }}</td>
@@ -193,8 +192,8 @@
                                         data-toggle="modal"
                                         data-target="#edit_pricing"
                                         data-id="{{ $pricing->id }}"
-                                        data-vehicle_id="{{ $pricing->vehicle_id }}"
-                                        data-vehicle_name="{{ $pricing->vehicle_name }}"
+                                        data-vehicle_id="{{ $pricing->vehicle_type_id }}"
+                                        {{-- data-vehicle_name="{{ $pricing->vehicle_name }}" --}}
                                         data-vehicle_type_name="{{ $pricing->vehicle_type_name }}"
                                         data-service_id="{{ $pricing->service_id }}"
                                         data-service_name="{{ $pricing->service_name }}"
@@ -300,7 +299,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-secondary">Update Product</button>
+                    <button type="submit" class="btn btn-secondary">Update Pricing</button>
                 </div>
             </form>
           </div>
@@ -359,7 +358,7 @@
         var service_id = link.data('service_id')
         var service_name = link.data('service_name')
         var vehicle_id = link.data('vehicle_id')
-        var vehicle_name = link.data('vehicle_name')
+        // var vehicle_name = link.data('vehicle_name')
         var vehicle_type_name = link.data('vehicle_type_name')
         var price = link.data('price')
         var description = link.data('description')

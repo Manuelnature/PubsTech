@@ -356,6 +356,14 @@
                             </a>
                         </li>
                     </li>
+                    <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'washer_debt' ? 'active' : null }}">
+                            <a href="{{ url('washer_debt' )}}" >
+                                <i class="nav-icon fas fa-id-card"></i>
+                                <p>Car Washer Debts</p>
+                            </a>
+                        </li>
+                    </li>
                 @endif
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'washing_transaction' ? 'active' : null }}">

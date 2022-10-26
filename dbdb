@@ -432,30 +432,12 @@ CREATE TABLE tbl_services(
     updated_at varchar(100)
 );
 
-later deleted
-CREATE TABLE tbl_services(
-    id int not null PRIMARY KEY AUTO_INCREMENT,
-    vehicle_id int,
-    name varchar(100),
-    price varchar(100),
-    washer_percentage varchar(100),
-    description longtext,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by varchar(100),
-    updated_by varchar(100),
-    updated_at varchar(100),
-    CONSTRAINT FK_service_vehicle FOREIGN KEY (vehicle_id)
-    REFERENCES tbl_vehicles(id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
 
 tbl_pricing
 CREATE TABLE tbl_pricing(
     id int not null PRIMARY KEY AUTO_INCREMENT,
     service_id int,
-    vehicle_id int,
+    vehicle_type_id int,
     price varchar(100),
     description longtext,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -464,8 +446,8 @@ CREATE TABLE tbl_pricing(
     updated_at varchar(100),
     CONSTRAINT FK_pricing_service FOREIGN KEY (service_id)
     REFERENCES tbl_services(id),
-    CONSTRAINT FK_pricing_vehicle FOREIGN KEY (vehicle_id)
-    REFERENCES tbl_vehicles(id)
+    CONSTRAINT FK_pricing_vehicle FOREIGN KEY (vehicle_type_id)
+    REFERENCES tbl_vehicle_type(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -505,10 +487,10 @@ CREATE TABLE tbl_washing_transactions(
     ON UPDATE CASCADE
 );
 
--- =============New
+-- =============New Correct
 CREATE TABLE tbl_washing_transactions(
     id int not null PRIMARY KEY AUTO_INCREMENT,
-    vehicle_id int,
+    vehicle_type_id int,
     service_ids varchar(200),
     washer_id int,
     amount varchar(100),
@@ -521,8 +503,8 @@ CREATE TABLE tbl_washing_transactions(
     updated_at varchar(100),
     CONSTRAINT FK_washer_transaction FOREIGN KEY (washers_id)
     REFERENCES tbl_car_washers(id),
-    CONSTRAINT FK_vehicle_transaction FOREIGN KEY (vehicle_id)
-    REFERENCES tbl_vehicles(id)
+    CONSTRAINT FK_vehicle_transaction FOREIGN KEY (vehicle_type_id)
+    REFERENCES tbl_vehicle_type(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -550,6 +532,7 @@ CREATE TABLE tbl_washer_debts(
     payment_status varchar(100),
     paid_to varchar(100),
     paid_on varchar(100),
+    remark longtext,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by varchar(100),
     updated_by varchar(100),

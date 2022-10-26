@@ -50,15 +50,15 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txt_vehicle_id">Vehicle Name</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_id"  name="txt_vehicle_id" >
-                                <option selected disabled>Select Vehicle</option>
-                                @foreach ($all_vehicles as $vehicle )
-                                    <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                            <label for="txt_vehicle_type_id">Vehicle Type Name</label>
+                            <select class="form-control select2" style="width: 100%;" id="txt_vehicle_type_id"  name="txt_vehicle_type_id" >
+                                <option selected disabled>Select Vehicle Type</option>
+                                @foreach ($all_vehicles_types as $vehicle_type )
+                                    <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <span class="text-danger">@error('txt_vehicle_id') {{ $message }} @enderror</span>
+                        <span class="text-danger">@error('txt_vehicle_type_id') {{ $message }} @enderror</span>
                     </div>
 
                     <div class="col-md-6">
@@ -167,7 +167,6 @@
                 <table id="transaction" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Vehicle Name</th>
                         <th>Vehicle Type</th>
                         <th>Services</th>
                         <th>Washer </th>
@@ -188,7 +187,6 @@
                   <tbody>
                     @foreach ( $all_washing_transactions as $washing_transaction)
                         <tr>
-                            <td>{{ucwords(trans($washing_transaction->vehicle_name)) }}</td>
                             <td>{{ucwords(trans($washing_transaction->vehicle_type_name)) }}</td>
                             {{-- <td>{{$washing_transaction->service_ids}}</td> --}}
                             <td>
@@ -242,7 +240,7 @@
 
                                 <td class="text-center">
 
-                                    <a  href="{{ url('edit_transaction', $washing_transaction->id)}}" class="text-primary"><i class="fas fa-edit"></i></a>
+                                    <a  href="{{ url('edit_transaction', $washing_transaction->transaction_id)}}" class="text-primary"><i class="fas fa-edit"></i></a>
                                     {{-- <a class="text-primary"
                                         onclick="edit_transaction(this)"
                                         data-toggle="modal"
@@ -505,7 +503,7 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            setServiceList( @json($all_pricing) );
+            setServiceList( @json($all_pricing));
         });
     </script>
     @endsection

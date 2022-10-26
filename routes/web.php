@@ -60,8 +60,9 @@ Route::group(['middleware' => 'disable_back_button'], function () {
 
         // DASHBOARD ======================
         Route::get('home', [HomeController::class, 'index']);
+        Route::get('dashboard', [HomeController::class, 'dashboard_view'])->name('dashboard');
         Route::post('filter_sales', [HomeController::class, 'filter_records'])->name('filter_sales');
-        Route::get('dashboard', [DashboardController::class, 'index']);
+        // Route::get('dashboard', [DashboardController::class, 'index']);
         Route::get('retailer_dashboard', [DashboardController::class, 'retailer_dashboard'])->name('retailer_dashboard');
 
         // PROFILE ======================
@@ -133,14 +134,14 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          // CAR WASHER DEBT ======================
          Route::get('washer_debt', [WasherDebtsController::class, 'index']);
          Route::post('add_washer_debt', [WasherDebtsController::class, 'add_washer_debt'])->name('add_washer_debt');
-        //  Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
+         Route::post('update_washer_debt', [WasherDebtsController::class, 'update_washer_debt'])->name('update_washer_debt');
 
 
          // CAR WASHING TRANSACTION ======================
          Route::get('washing_transaction', [WashingTransactionController::class, 'index']);
          Route::post('add_transaction', [WashingTransactionController::class, 'add_transaction'])->name('add_transaction');
          Route::get('edit_transaction/{id}', [WashingTransactionController::class, 'edit_transaction'])->name('edit_transaction');
-         Route::get('update_transaction/{id}', [WashingTransactionController::class, 'update_transaction'])->name('update_transaction');
+         Route::post('update_transaction/{id}', [WashingTransactionController::class, 'update_transaction'])->name('update_transaction');
 
 
 
