@@ -45,7 +45,7 @@
                                     <select class="form-control" data-placeholder="Select Product" style="width: 100%;" id="txt_modal_product_id"  name="txt_modal_product_id" value="{{ old('txt_modal_product_id') }}" >
                                         <option selected disabled>Select Product</option>
                                         @foreach ($all_products as $product)
-                                            <option value="{{$product->id}}">{{$product->name}}</option>
+                                            <option value="{{$product->id}}">{{ucwords(trans($product->name))}}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger">@error('txt_modal_product_id') {{ $message }} @enderror</span>
@@ -158,6 +158,8 @@
                                 @foreach ($most_purchased_products as $most_purchased)
                                 <td class="col-md-3">
                                     <img src="assets/img/products/{{ $most_purchased->photo }}" class="img-thumbnail"  data-toggle="modal"
+                                    data-bs-toggle="tooltip"
+                                    title="{{ $most_purchased->name }}"
                                     onclick="enter_product(this)"
                                     data-target="#product_modal"
                                     data-id="{{ $most_purchased->id }}"
@@ -432,6 +434,30 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        <form action="{{ route('filter_sale') }}" method="POST">
+                            @csrf
+                            <div class="row mb-3">
+
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="txt_date_from">Start Date</label>
+                                        <input type="date" class="form-control" id="txt_date_from" name="txt_date_from" value="{{ old('txt_date_from') }}">
+                                    </div>
+                                    <span class="text-danger">@error('txt_date_from') {{ $message }} @enderror</span>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="txt_date_to">End Date</label>
+                                        <input type="date" class="form-control" id="txt_date_to" name="txt_date_to" value="{{ old('txt_date_to') }}">
+                                    </div>
+                                    <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
+                                </div>
+                                <div class="col-md-2" style="padding-top:30px !important;">
+                                    <button type="submit" class="btn btn-secondary btn-block">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+
                     <table id="all_sales" class="table table-bordered table-striped">
                         <thead>
                         <tr>
@@ -585,7 +611,17 @@
 </div>
 <!-- /.content-wrapper -->
 
+{{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> --}}
+<script>
 
+    // const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    // const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+//     $('a[data-toggle="tooltip"]').tooltip({
+//     animated: 'fade',
+//     placement: 'top',
+//     html: true
+// });
+</script>
 
 
 {{-- ================= Edit Sales modal =============== --}}
@@ -614,7 +650,6 @@
         document.getElementById('product_name').innerHTML = product_name;
         document.getElementById('edit_title').innerHTML = 'Edit '+ product_name + 'Sales';
         });
-
 
     }
 
@@ -697,6 +732,12 @@
 @section('LoadImage_JS')
   <script src="{{ asset('assets/js/load_image.js') }}" ></script>
 @endsection
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+</script>
 
 
 

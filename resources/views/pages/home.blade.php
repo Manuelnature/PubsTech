@@ -110,7 +110,7 @@
                                     <span class="text-danger">@error('txt_stock_date') {{ $message }} @enderror</span>
                                 </div>
                                 <div class="col-md-2" style="padding-top:30px !important;">
-                                    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+                                    <button type="submit" class="btn btn-secondary btn-block">Filter</button>
                                 </div>
                             </div>
                         </form>
@@ -606,8 +606,9 @@
         <!-- /.container-fluid -->
     </section>
 
+     <!-- Overall Transfer Records -->
     @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
-        <!-- Overall Transfer Records -->
+
         <section class="content">
             <div class="container-fluid">
             <div class="row">

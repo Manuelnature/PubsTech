@@ -74,4 +74,19 @@ class Sales extends Model
         }
     }
 
+
+    public static function get_filter_sales_details($date_from, $date_to){
+        try{
+            return  DB::table('tbl_products')
+            ->select('tbl_products.id', 'tbl_products.name', 'tbl_sales.*')
+            ->join('tbl_sales', 'tbl_sales.product_id', '=', 'tbl_products.id')
+            ->whereBetween(DB::raw('CAST(tbl_sales.created_at as date)'), [$date_from, $date_to])
+            ->orderBy('tbl_sales.created_at', 'desc')
+            ->get();
+
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
 }

@@ -81,6 +81,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('add_sale', [RetailingController::class, 'add_sale'])->name('add_sale');
          Route::post('add_sale_from_modal', [RetailingController::class, 'add_sale_from_modal'])->name('add_sale_from_modal');
          Route::post('update_sale', [RetailingController::class, 'update_sale'])->name('update_sale');
+         Route::post('filter_sale', [RetailingController::class, 'filter_sale'])->name('filter_sale');
 
          // WAREHOUSE ======================
          Route::get('warehouse', [WarehouseController::class, 'index']);
@@ -92,6 +93,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::get('transfer', [TransferController::class, 'index']);
          Route::post('transfer_stock', [TransferController::class, 'transfer_stock'])->name('transfer_stock');
          Route::post('update_transfer', [TransferController::class, 'update_transfer'])->name('update_transfer');
+         Route::post('filter_transfer', [TransferController::class, 'filter_transfer'])->name('filter_transfer');
 
          // USERS ======================
          Route::get('users', [UserController::class, 'index']);
@@ -142,6 +144,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('add_transaction', [WashingTransactionController::class, 'add_transaction'])->name('add_transaction');
          Route::get('edit_transaction/{id}', [WashingTransactionController::class, 'edit_transaction'])->name('edit_transaction');
          Route::post('update_transaction/{id}', [WashingTransactionController::class, 'update_transaction'])->name('update_transaction');
+         Route::post('filter_transaction', [WashingTransactionController::class, 'filter_transaction'])->name('filter_transaction');
 
 
 

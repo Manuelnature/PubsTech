@@ -33,8 +33,11 @@ class TransferController extends Controller
         //=========== Latest Transfers ========
         $latest_transfers = $this->last_product_transfer();
 
+        $date_from = '';
+        $date_to = '';
 
-        return view('pages.transfer', compact('all_products', 'all_users', 'all_transfer_records', 'latest_transfers'));
+
+        return view('pages.transfer', compact('all_products', 'all_users', 'all_transfer_records', 'latest_transfers', 'date_from', 'date_to'));
     }
 
 
@@ -484,5 +487,53 @@ class TransferController extends Controller
         }
     }
 
+
+    public function filter_transfer(Request $request){
+        $request->validate([
+            'txt_date_from' => 'required|before_or_equal:today',
+            'txt_date_to' => 'required|before_or_equal:today',
+            ], [
+            'txt_date_from.required' => 'Start Date is required for filter',
+            'txt_date_to.required' => 'End Date is required for filter',
+            'txt_date_from.before_or_equal' => 'Date from cannot be after today',
+            'txt_date_to.before_or_equal' => 'Date to cannot be after today',
+        ]);
+
+        $date_from = $request->get('txt_date_from');
+        $date_to = $request->get('txt_date_to');
+
+        if (($date_from != ""|| $date_from != NULL) && ($date_to != ""|| $date_to != NULL)) {
+            $all_products = Products::select_products_in_warehouse();
+            $all_users = User::all();
+
+
+            //=========== Latest Transfers ========
+            $latest_transfers = $this->last_product_transfer();
+
+            $all_transfer_records = WarehouseLogs::get_transfer_filter_details($date_from, $date_to);
+            // dd($all_transfer_records);
+            if (count($all_transfer_records) > 0) {
+                return view('pages.transfer', compact('all_products', 'all_users', 'all_transfer_records', 'latest_transfers', 'date_from', 'date_to'));
+            }
+            else {
+                Alert::warning('No record found within the chosen dates');
+                return redirect('transfer');
+            }
+        }
+        elseif (($date_from != ""|| $date_from != NULL) && ($date_to == "" || $date_to == NULL)) {
+            Alert::toast('Please select Date To','warning');
+            return redirect('transfer');
+        }
+        elseif (($date_from == ""|| $date_from == NULL) && ($date_to != "" || $date_to != NULL)) {
+            Alert::toast('Please select Date From','warning');
+            return redirect('transfer');
+        }
+        else {
+            Alert::toast('Select all dates','warning');
+            return redirect('transfer');
+        }
+
+
+    }
 
 }

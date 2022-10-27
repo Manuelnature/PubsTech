@@ -26,6 +26,11 @@ class HomeController extends Controller
             $total_number_of_products = 0;
         }
 
+        // $total_number_of_products = count($get_all_products);
+
+        // $get_all_warehouse_records = Warehouse::all();
+
+
         $get_all_washers = CarWasher::all();
         if (count($get_all_washers) > 0) {
             $total_number_of_car_washers = count($get_all_washers);
@@ -41,6 +46,43 @@ class HomeController extends Controller
         } else {
             $total_number_of_users = 0;
         }
+        // $total_number_of_users = count($get_all_users);
+
+        // $total_no_of_items = 0;
+
+        // if(count($get_all_warehouse_records) > 0){
+        //     foreach ($get_all_warehouse_records as $warehouse_record) {
+        //         $total_no_of_items = $total_no_of_items + $warehouse_record->total_items;
+        //     }
+        // }
+
+
+        // $total_price_of_items = 0;
+        // if(count($get_all_warehouse_records) > 0){
+        //     foreach ($get_all_warehouse_records as $warehouse_record) {
+        //         $total_price_of_items = $total_price_of_items + $warehouse_record->total_price;
+        //     }
+        // }
+
+
+
+        // $get_sales_records = Sales::all();
+
+        // $total_quantity_sold = 0;
+
+        // if(count($get_sales_records) > 0){
+        //     foreach ($get_sales_records as $sales_record) {
+        //         $total_quantity_sold = $total_quantity_sold + $sales_record->quantity_sold;
+        //     }
+        // }
+
+        // $total_expected_sold_price = 0;
+        // if(count($get_sales_records) > 0){
+        //     foreach ($get_sales_records as $sales_record) {
+        //         $total_expected_sold_price = $total_expected_sold_price + $sales_record->expected_price;
+        //     }
+        // }
+
 
 
         // ===========INDIVIDUAL RETAIL DETAILS ===============
@@ -91,6 +133,8 @@ class HomeController extends Controller
         }
 
 
+
+
         $overall_transfer_record = $this->overall_transfer_record();
 
         $get_transfer_start_date = Dashboard::transfer_start_date();
@@ -112,6 +156,7 @@ class HomeController extends Controller
 
         return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
 
+        // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
     }
 
 
@@ -169,13 +214,12 @@ class HomeController extends Controller
 
         }
         else{
-            array_push( $get_all_sales, ['product_name' => '', 'original_stock'=>'0', 'total_quantity_sold_per_product'=>'0', 'total_expected_price_per_product'=>'0']);
+            array_push( $get_all_sales, ['product_name' => '', 'original_stock'=> 0, 'total_quantity_sold_per_product'=>0, 'total_expected_price_per_product'=>0]);
         }
 
         $all_sales_data = json_encode($get_all_sales);
 
         $response = [$total_quantity_sold, $total_expected_price, $all_sales_data];
-        // dd($all_sales_data);
 
         return $response;
     }
@@ -380,119 +424,6 @@ class HomeController extends Controller
 
 
     public function filter_records (Request $request){
-        // $request->validate([
-        //     'txt_date_from' => 'required|before_or_equal:today',
-        //     'txt_date_to' => 'required|before_or_equal:today',
-        //     ], [
-        //     'txt_date_from.required' => 'Start Date is required for filter',
-        //     'txt_date_to.required' => 'End Date is required for filter',
-        //     'txt_date_from.before_or_equal' => 'Date from cannot be after today',
-        //     'txt_date_to.before_or_equal' => 'Date to cannot be after today',
-        // ]);
-
-        $date_from = $request->get('txt_date_from');
-        $date_to = $request->get('txt_date_to');
-
-        if (($date_from != ""|| $date_from != NULL) && ($date_to != "" || $date_to != NULL)){
-
-            $get_all_products = Products::all();
-            if (count($get_all_products) > 0) {
-                $total_number_of_products = count($get_all_products);
-            } else {
-                $total_number_of_products = 0;
-            }
-
-            $get_all_washers = CarWasher::all();
-            if (count($get_all_washers) > 0) {
-                $total_number_of_car_washers = count($get_all_washers);
-            } else {
-                $total_number_of_car_washers = 0;
-            }
-
-            $get_all_users = User::all();
-            if (count($get_all_users) > 0) {
-                $total_number_of_users = count($get_all_users);
-            } else {
-                $total_number_of_users = 0;
-            }
-
-
-            // ===========INDIVIDUAL RETAIL DETAILS ===============
-            $response_from_retailer_dashboard = $this->retailer_dashboard();
-            $individual_total_quantity_sold = $response_from_retailer_dashboard[0];
-            $individual_total_expected_price = $response_from_retailer_dashboard[1];
-            $individual_all_sales_data = $response_from_retailer_dashboard[2];
-            // dd($individual_all_sales_data);
-
-
-                $all_transaction_dates = array();
-            // ======= Get array from overall sales record function =======
-            $overall_sales_record = $this->overall_sales_record();
-
-            $get_sales_start_date = Dashboard::sales_start_date();
-            if (count($get_sales_start_date) > 0) {
-                $sales_start_date = $get_sales_start_date[0]->created_at;
-            } else {
-                $sales_start_date = Carbon::now()->format('Y-m-d');
-            }
-
-
-            $get_sales_end_date = Dashboard::sales_end_date();
-            if (count($get_sales_end_date) > 0) {
-                $sales_end_date = $get_sales_end_date[0]->created_at;
-            } else {
-                $sales_end_date = "";
-            }
-
-
-            $overall_transfer_record = $this->overall_transfer_record();
-
-            $get_transfer_start_date = Dashboard::transfer_start_date();
-            if (count($get_transfer_start_date) > 0) {
-                $transfer_start_date = $get_transfer_start_date[0]->created_at;
-            } else {
-                $transfer_start_date = Carbon::now()->format('Y-m-d');
-            }
-            // $transfer_start_date = $get_transfer_start_date[0]->created_at;
-            $get_transfer_end_date = Dashboard::transfer_end_date();
-            if (count($get_transfer_end_date) > 0) {
-                $transfer_end_date = $get_transfer_end_date[0]->created_at;
-            } else {
-                $transfer_end_date = "";
-            }
-
-            array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
-
-
-            // ======================= CALLING FILTER FUNCTIONS =============================
-
-            $filter_sales_data = $this->filter_sales_record($date_from, $date_to);
-
-            $filter_transfer_data = $this->filter_transfer_records($date_from, $date_to);
-
-
-
-            return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'date_from', 'date_to'));
-        }
-        elseif (($date_from != ""|| $date_from != NULL) && ($date_to == "" || $date_to == NULL)) {
-            Alert::toast('Please select Date To','warning');
-            return redirect('home');
-        }
-        elseif (($date_from == ""|| $date_from == NULL) && ($date_to != "" || $date_to != NULL)) {
-            Alert::toast('Please select Date From','warning');
-            return redirect('home');
-        }
-        else{
-            Alert::toast('No date selected','warning');
-            return redirect('home');
-
-        }
-
-
-    }
-
-
-    public function filter_records_old (Request $request){
         $request->validate([
             'txt_date_from' => 'required|before_or_equal:today',
             'txt_date_to' => 'required|before_or_equal:today',
@@ -506,86 +437,74 @@ class HomeController extends Controller
         $date_from = $request->get('txt_date_from');
         $date_to = $request->get('txt_date_to');
 
-        if (($date_from != ""|| $date_from != NULL) && ($date_to != "" || $date_to != NULL)){
 
 
-            $get_all_products = Products::all();
-            $total_number_of_products = count($get_all_products);
+        $get_all_products = Products::all();
+        $total_number_of_products = count($get_all_products);
 
-            $get_all_washers = CarWasher::all();
-            $total_number_of_car_washers = count($get_all_washers);
-
-
-            $get_all_users = User::all();
-            $total_number_of_users = count($get_all_users);
+        $get_all_washers = CarWasher::all();
+        $total_number_of_car_washers = count($get_all_washers);
 
 
-            $all_filter_records = array();
+        $get_all_users = User::all();
+        $total_number_of_users = count($get_all_users);
 
-            $get_filter_records = Dashboard::filter_response($date_from, $date_to);
 
-            if(count($get_filter_records) > 0){
-                $total_quantity_sold = 0;
-                $total_quantity_of_stocks = 0;
-                $total_stock_left = 0;
-                $total_expected_price = 0;
-                foreach ($get_filter_records as $sales_record) {
-                    $total_quantity_sold = $total_quantity_sold + $sales_record->quantity_sold;
-                    $total_quantity_of_stocks = $total_quantity_of_stocks + $sales_record->original_stock;
-                    $total_stock_left = $total_stock_left + $sales_record->stock_after;
-                    $total_expected_price = (double)$total_expected_price + (double)$sales_record->expected_price;
-                }
+        $all_filter_records = array();
 
-                array_push( $all_filter_records, ['date_from' => $date_from, 'date_to'=>$date_to, 'total_quantity_sold' => $total_quantity_sold, 'total_quantity_of_stocks'=> $total_quantity_of_stocks, 'total_stock_left'=>$total_stock_left, 'total_expected_price'=>$total_expected_price]);
-            }
-            else {
-                Alert::toast('No records found within the selected date range','warning');
-                    return redirect()->back();
+        $get_filter_records = Dashboard::filter_response($date_from, $date_to);
+
+        if(count($get_filter_records) > 0){
+            $total_quantity_sold = 0;
+            $total_quantity_of_stocks = 0;
+            $total_stock_left = 0;
+            $total_expected_price = 0;
+            foreach ($get_filter_records as $sales_record) {
+                $total_quantity_sold = $total_quantity_sold + $sales_record->quantity_sold;
+                $total_quantity_of_stocks = $total_quantity_of_stocks + $sales_record->original_stock;
+                $total_stock_left = $total_stock_left + $sales_record->stock_after;
+                $total_expected_price = (double)$total_expected_price + (double)$sales_record->expected_price;
             }
 
-
-
-
-            // ===========INDIVIDUAL RETAIL DETAILS ===============
-            $response_from_retailer_dashboard = $this->retailer_dashboard();
-            $individual_total_quantity_sold = $response_from_retailer_dashboard[0];
-            $individual_total_expected_price = $response_from_retailer_dashboard[1];
-            $individual_all_sales_data = $response_from_retailer_dashboard[2];
-            // dd($individual_all_sales_data);
-
-
-
-            // ======================= CALLING FILTER FUNCTIONS =============================
-
-            $filter_sales_data = $this->filter_sales_record($date_from, $date_to);
-
-            $filter_transfer_data = $this->filter_transfer_records($date_from, $date_to);
-
-
-
-
-            return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
-
-
-            // return redirect('pages.dashboard')->with(['total_number_of_products' => $total_number_of_products, 'total_number_of_car_washers' => $total_number_of_car_washers, 'total_number_of_users' => $total_number_of_users, 'all_filter_records' => $all_filter_records, 'filter_transfer_data' => $filter_transfer_data, 'filter_sales_data' => $filter_sales_data, 'individual_total_quantity_sold' => $individual_total_quantity_sold, 'individual_total_expected_price' => $individual_total_expected_price, 'individual_all_sales_data' => $individual_all_sales_data]);
-
-            // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
-
-            //working
-            // return redirect('dashboard')->with(compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
-
+            array_push( $all_filter_records, ['date_from' => $date_from, 'date_to'=>$date_to, 'total_quantity_sold' => $total_quantity_sold, 'total_quantity_of_stocks'=> $total_quantity_of_stocks, 'total_stock_left'=>$total_stock_left, 'total_expected_price'=>$total_expected_price]);
         }
-        else{
-
-            Alert::toast('No date selected','warning');
-            return redirect('home');
-
+        else {
+            Alert::toast('No records found within the selected date range','warning');
+                return redirect()->back();
         }
 
+
+
+
+        // ===========INDIVIDUAL RETAIL DETAILS ===============
+        $response_from_retailer_dashboard = $this->retailer_dashboard();
+        $individual_total_quantity_sold = $response_from_retailer_dashboard[0];
+        $individual_total_expected_price = $response_from_retailer_dashboard[1];
+        $individual_all_sales_data = $response_from_retailer_dashboard[2];
+
+
+
+        // ======================= CALLING FILTER FUNCTIONS =============================
+
+        $filter_sales_data = $this->filter_sales_record($date_from, $date_to);
+
+        $filter_transfer_data = $this->filter_transfer_records($date_from, $date_to);
+
+
+
+
+        // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+
+
+        // return redirect('pages.dashboard')->with(['total_number_of_products' => $total_number_of_products, 'total_number_of_car_washers' => $total_number_of_car_washers, 'total_number_of_users' => $total_number_of_users, 'all_filter_records' => $all_filter_records, 'filter_transfer_data' => $filter_transfer_data, 'filter_sales_data' => $filter_sales_data, 'individual_total_quantity_sold' => $individual_total_quantity_sold, 'individual_total_expected_price' => $individual_total_expected_price, 'individual_all_sales_data' => $individual_all_sales_data]);
+
+        // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
+
+        //working working
+        return redirect('dashboard')->with(compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
 
     }
 
 
 }
-
 

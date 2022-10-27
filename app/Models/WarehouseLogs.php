@@ -75,5 +75,22 @@ class WarehouseLogs extends Model
         }
     }
 
+
+
+    public static function get_transfer_filter_details($date_from, $date_to){
+        try{
+            return  DB::table('tbl_products')
+            ->select('tbl_products.id', 'tbl_products.name', 'tbl_warehouse_logs.*')
+            ->join('tbl_warehouse_logs', 'tbl_warehouse_logs.product_id', '=', 'tbl_products.id')
+            ->whereBetween(DB::raw('CAST(tbl_warehouse_logs.created_at as date)'), [$date_from, $date_to])
+            // ->where(DB::raw('CAST(created_at as date)'), '>=',  $date_from)
+            // ->where(DB::raw('CAST(created_at as date)'), '<=',  $date_to)
+            ->get();
+
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
 }
 

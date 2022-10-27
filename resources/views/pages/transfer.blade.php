@@ -150,6 +150,39 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <form action="{{ route('filter_transfer') }}" method="POST">
+                    @csrf
+                    <div class="row mb-3">
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="txt_date_from">Start Date</label>
+                                <input type="date" class="form-control" id="txt_date_from" name="txt_date_from" value="{{ old('txt_date_from') }}">
+                            </div>
+                            <span class="text-danger">@error('txt_date_from') {{ $message }} @enderror</span>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="txt_date_to">End Date</label>
+                                <input type="date" class="form-control" id="txt_date_to" name="txt_date_to" value="{{ old('txt_date_to') }}">
+                            </div>
+                            <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
+                        </div>
+                        <div class="col-md-2" style="padding-top:30px !important;">
+                            <button type="submit" class="btn btn-secondary btn-block">Filter</button>
+                        </div>
+                    </div>
+                </form>
+
+                @if ($date_from != '' && $date_to != '')
+                    <p>
+                        {{ \Carbon\Carbon::parse($date_from)->format('j F, Y')}}
+                        <strong> &nbsp;-&nbsp; </strong>
+                        {{ \Carbon\Carbon::parse($date_to)->format('j F, Y')}}
+                    </p>
+                @endif
+
+
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
@@ -472,6 +505,13 @@
             $("#txt_stock_threshold").attr("value", 0);
 
     </script>
+
+<script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+</script>
+
 
 
         <!-- DataTables  & Plugins -->

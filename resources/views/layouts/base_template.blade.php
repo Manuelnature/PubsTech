@@ -244,7 +244,7 @@
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
 
-                @if ($user_session_details->role == 'Retailer')
+                {{-- @if ($user_session_details->role == 'Retailer')
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'retailer_dashboard' ? 'active' : null }}">
                             <a href="{{ url('retailer_dashboard' )}}" >
@@ -253,16 +253,16 @@
                             </a>
                         </li>
                     </li>
-                @else
-                    <li class="nav-item">
-                        <li class="nav-link {{ Request::segment(1) === 'home' ? 'active' : null }}">
-                            <a href="{{ url('home' )}}" >
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
+                @else --}}
+                <li class="nav-item">
+                    <li class="nav-link {{ Request::segment(1) === 'home' ? 'active' : null }}">
+                        <a href="{{ url('home' )}}" >
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard</p>
+                        </a>
                     </li>
-                @endif
+                </li>
+
 
                 @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
                     <li class="nav-item">
@@ -326,7 +326,7 @@
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
                             <a href="{{ url('vehicles' )}}" >
-                                <i class="nav-icon fas fa-id-card"></i>
+                                <i class="nav-icon fas fa-car"></i>
                                 <p>Vehicles</p>
                             </a>
                         </li>
@@ -422,6 +422,7 @@
 
 <!-- jQuery -->
 {{-- <script src="plugins/jquery/jquery.min.js"></script> --}}
+
 
 
 

@@ -19,6 +19,7 @@ class RetailingController extends Controller
         // $all_products = Products::where('status', 'Active')->get();
         $all_products = Products::select_products_in_retail();
         $most_purchased_products = Products::where('is_most_purchased', '1')->where('status', 'Active')->get();
+        // dd($most_purchased_products);
         $all_sales_records = Sales::get_sales_details();
 
         $user_session = Session::get('user_session');
@@ -134,8 +135,6 @@ class RetailingController extends Controller
         }
 
     }
-
-
 
 
     public function add_sale_from_modal(Request $request){
@@ -561,6 +560,54 @@ class RetailingController extends Controller
         } catch (exception $e) {
             echo 'Caught exception';
         }
+    }
+
+
+
+    public function filter_sale(Request $request){
+
+        $date_from = $request->get('txt_date_from');
+        $date_to = $request->get('txt_date_to');
+
+        if (($date_from != ""|| $date_from != NULL) && ($date_to != ""|| $date_to != NULL)){
+
+
+            $all_products = Products::select_products_in_retail();
+            $most_purchased_products = Products::where('is_most_purchased', '1')->where('status', 'Active')->get();
+
+
+            $user_session = Session::get('user_session');
+            $active_user = $user_session->first_name." ".$user_session->last_name;
+            $today_date = Carbon::now()->format('Y-m-d');
+
+            $individual_sales_for_today = Sales::get_individual_sales_details_for_today($active_user, $today_date);
+
+            $all_sales_records = Sales::get_filter_sales_details($date_from, $date_to);
+            // dd($all_sales_records);
+            if (count($all_sales_records) > 0) {
+
+                return view('pages.retailing', compact('all_products', 'most_purchased_products', 'all_sales_records', 'individual_sales_for_today' ));
+
+            }
+            else {
+                Alert::warning('No record found within the chosen dates');
+                return redirect('retailing');
+            }
+
+        }
+        elseif (($date_from != ""|| $date_from != NULL) && ($date_to == "" || $date_to == NULL)) {
+            Alert::toast('Please select Date To','warning');
+            return redirect('retailing');
+        }
+        elseif (($date_from == ""|| $date_from == NULL) && ($date_to != "" || $date_to != NULL)) {
+            Alert::toast('Please select Date From','warning');
+            return redirect('retailing');
+        }
+        else {
+            Alert::toast('Select all dates','warning');
+            return redirect('retailing');
+        }
+
     }
 
 

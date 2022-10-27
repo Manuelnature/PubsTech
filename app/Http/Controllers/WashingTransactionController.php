@@ -30,7 +30,10 @@ class WashingTransactionController extends Controller
         $all_washing_transactions = WashingTransaction::select_all_washing_transactions();
         // dd($all_washing_transactions);
 
-        return view('car_wash.washing_transactions', compact('all_washers', 'all_vehicles_types', 'all_services', 'all_pricing', 'all_users', 'all_washing_transactions'));
+        $date_from = '';
+        $date_to = '';
+
+        return view('car_wash.washing_transactions', compact('all_washers', 'all_vehicles_types', 'all_services', 'all_pricing', 'all_users', 'all_washing_transactions', 'date_from', 'date_to'));
     }
 
     public function add_transaction(Request $request){
@@ -113,15 +116,15 @@ class WashingTransactionController extends Controller
         // dd($request->all());
         try {
             $request->validate([
-                'txt_washer_id' => 'required',
-                'txt_debt_amount' => 'required',
+                'txt_edit_vehicle_type_id' => 'required',
+                'txt_edit_service_id' => 'required',
                 'txt_edit_washer_id' => 'required',
                 'txt_edit_supervisor' => 'required',
                 'txt_edit_total_price' => 'required',
                 'txt_edit_washer_commission' => 'required',
             ], [
-                'txt_washer_id.required' => 'Vehicle Name is required',
-                'txt_debt_amount.required' => 'Service Name is required',
+                'txt_edit_vehicle_type_id.required' => 'Vehicle Name is required',
+                'txt_edit_service_id.required' => 'Service Name is required',
                 'txt_edit_washer_id.required' => 'Washer Name is required',
                 'txt_edit_supervisor.required' => 'Washer Name is required',
                 'txt_edit_total_price.required' => 'Total Price is required',
@@ -154,11 +157,51 @@ class WashingTransactionController extends Controller
             $update_transaction->created_by = $active_user;
             $update_transaction->save();
 
-            Alert::toast('Transaction entered successfully','success');
+            Alert::toast('Transaction updated successfully','success');
             return redirect('washing_transaction');
 
         } catch (exception $e) {
             echo 'Caught exception';
         }
+    }
+
+    public function filter_transaction(Request $request){
+         $request->validate([
+            'txt_date_from' => 'required|before_or_equal:today',
+            'txt_date_to' => 'required|before_or_equal:today',
+            ], [
+            'txt_date_from.required' => 'Start Date is required for filter',
+            'txt_date_to.required' => 'End Date is required for filter',
+            'txt_date_from.before_or_equal' => 'Date from cannot be after today',
+            'txt_date_to.before_or_equal' => 'Date to cannot be after today',
+        ]);
+
+        $date_from = $request->get('txt_date_from');
+        $date_to = $request->get('txt_date_to');
+
+        if (($date_from != "" || $date_from != NULL) && ($date_to != "" || $date_to != NULL)) {
+
+            $all_washers = CarWasher::all();
+            $all_vehicles_types = VehicleType::all();
+            $all_users = User::all();
+            $all_services = Service::all();
+            $all_pricing = Pricing::select_all_pricing();
+
+            $all_washing_transactions = WashingTransaction::select_filter_washing_transactions($date_from, $date_to);
+            // dd($all_washing_transactions);
+            if (count($all_washing_transactions) > 0) {
+                return view('car_wash.washing_transactions', compact('all_washers', 'all_vehicles_types', 'all_services', 'all_pricing', 'all_users', 'all_washing_transactions', 'date_from', 'date_to'));
+            }
+            else {
+                Alert::warning('No record found within the chosen dates');
+                return redirect('washing_transaction');
+            }
+        }
+        else {
+            Alert::toast('Select all dates','warning');
+            return redirect('washing_transaction');
+        }
+
+
     }
 }

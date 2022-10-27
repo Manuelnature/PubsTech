@@ -40,24 +40,31 @@ class LoginStockController extends Controller
         $user_session = Session::get('user_session');
         $active_user_id = $user_session->id;
 
-        $date = $request->get('txt_stock_date');
+        if ($request->get('txt_stock_date') != NULL || $request->get('txt_stock_date') != "") {
+            $date = $request->get('txt_stock_date');
 
-        $get_filter_login_stock = LoginStock::filter_login_stock($date, $active_user_id);
-        // dd($get_filter_login_stock);
-        if (count($get_filter_login_stock) > 0) {
-            $all_sales_audit_records = $get_filter_login_stock;
-        }
-        else
-        {
-            $all_sales_audit_records = array();
-            // $all_sales_audit_records = Retail::get_each_product_details();
-            Alert::toast('No records found on the selected date','warning');
-            return redirect('login_stock');
-        }
-        // dd($all_sales_audit_records);
-        $get_retail_records = Retail::get_each_product_details();
+            $get_filter_login_stock = LoginStock::filter_login_stock($date, $active_user_id);
+            if (count($get_filter_login_stock) > 0) {
+                $all_sales_audit_records = $get_filter_login_stock;
+            }
+            else
+            {
+                $all_sales_audit_records = array();
+                // $all_sales_audit_records = Retail::get_each_product_details();
+                Alert::toast('No records found on the selected date','warning');
+                return redirect('login_stock');
+            }
+            // dd($all_sales_audit_records);
+            $get_retail_records = Retail::get_each_product_details();
 
-        return view('pages.login_stock', compact('all_sales_audit_records', 'date', 'get_retail_records'));
+            return view('pages.login_stock', compact('all_sales_audit_records', 'date', 'get_retail_records'));
+        }
+        else {
+            Alert::toast('No date selected','warning');
+            return back();
+        }
+
+
     }
 
 }

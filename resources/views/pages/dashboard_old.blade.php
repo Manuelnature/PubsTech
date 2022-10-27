@@ -6,15 +6,15 @@
 @endphp
 
 <?php
-    // $total_number_of_products = Session::get('total_number_of_products');
-    // $total_number_of_car_washers = Session::get('total_number_of_car_washers');
-    // $total_number_of_users = Session::get('total_number_of_users');
-    // $all_filter_records = Session::get('all_filter_records');
-    // $filter_transfer_data = Session::get('filter_transfer_data');
-    // $filter_sales_data = Session::get('filter_sales_data');
-    // $individual_total_quantity_sold = Session::get('individual_total_quantity_sold');
-    // $individual_total_expected_price = Session::get('individual_total_expected_price');
-    // $individual_all_sales_data = Session::get('individual_all_sales_data');
+    $total_number_of_products = Session::get('total_number_of_products');
+    $total_number_of_car_washers = Session::get('total_number_of_car_washers');
+    $total_number_of_users = Session::get('total_number_of_users');
+    $all_filter_records = Session::get('all_filter_records');
+    $filter_transfer_data = Session::get('filter_transfer_data');
+    $filter_sales_data = Session::get('filter_sales_data');
+    $individual_total_quantity_sold = Session::get('individual_total_quantity_sold');
+    $individual_total_expected_price = Session::get('individual_total_expected_price');
+    $individual_all_sales_data = Session::get('individual_all_sales_data');
 ?>
 
 
@@ -78,7 +78,7 @@
                                     <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
                                 </div>
                                 <div class="col-md-2" style="padding-top:30px !important;">
-                                    <button type="submit" class="btn btn-secondary btn-block">Filter</button>
+                                    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
                                 </div>
                             </div>
                         </form>
@@ -327,9 +327,9 @@
                 <div class="card-header">
                   <h3 class="card-title" style="font-weight: 800; color:#0096FF">Summary of Overall Sales
                     <span style="margin-left:40px !important">
-                        {{ \Carbon\Carbon::parse($date_from)->format('j F, Y')}}
-                        <strong> &nbsp;-&nbsp; </strong>
-                        {{ \Carbon\Carbon::parse($date_to)->format('j F, Y')}}
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('j F, Y')}}
+                        <strong> &nbsp;-&nbsp;</strong>
+                        {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('j F, Y')}}
                     </span>
                   </h3>
                   <div class="card-tools">
@@ -389,9 +389,9 @@
                     <div class="card-header">
                     <h3 class="card-title" style="font-weight: 700; color:#0096FF">Summary of Overall Transfer Transactions
                         <span style="margin-left:40px !important">
-                            {{ \Carbon\Carbon::parse($date_from)->format('j F, Y')}}
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_from'])->format('j F, Y')}}
                             <strong> &nbsp;-&nbsp; </strong>
-                            {{ \Carbon\Carbon::parse($date_to)->format('j F, Y')}}
+                            {{ \Carbon\Carbon::parse($all_filter_records[0]['date_to'])->format('j F, Y')}}
                         </span>
                     </h3>
                     <div class="card-tools">

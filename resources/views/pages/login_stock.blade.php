@@ -64,9 +64,9 @@
             </div>
             <div class="card-body">
                 @if ($date)
-                <h3>
-                    {{ \Carbon\Carbon::parse($date)->format('F j, Y')}}
-                </h3>
+                <h6 style="font-weight:600">
+                  {{ \Carbon\Carbon::parse($date)->format('j F, Y')}}
+                </h6>
                 @endif
                 <table id="stock_left" class="table table-bordered table-striped" style="width: 100%">
                     <thead>
