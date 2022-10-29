@@ -43,9 +43,9 @@ class WarehouseController extends Controller
 
 
 
-        // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $product_id = $request->get('txt_product_name');
         // $number_of_crates = $request->get('txt_quantity_of_crates');
@@ -206,7 +206,8 @@ class WarehouseController extends Controller
         ]);
 
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $warehouse_id = $request->get('warehouse_id');
         $product_id = $request->get('product_id');

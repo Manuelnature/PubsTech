@@ -23,7 +23,8 @@ class RetailingController extends Controller
         $all_sales_records = Sales::get_sales_details();
 
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
         $today_date = Carbon::now()->format('Y-m-d');
 
         $individual_sales_for_today = Sales::get_individual_sales_details_for_today($active_user, $today_date);

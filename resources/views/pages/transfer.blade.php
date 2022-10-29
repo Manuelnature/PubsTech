@@ -85,7 +85,7 @@
                             <select class="form-control select2" data-placeholder="Select User" style="width: 100%;" name="txt_collected_by" value="{{ old('txt_collected_by') }}" >
                                 <option selected disabled>Select User</option>
                                 @foreach ($all_users as $user)
-                                    <option value="{{$user->first_name}} {{$user->last_name}}">{{ucwords(trans($user->first_name))}} {{ucwords(trans($user->last_name))}}</option>
+                                    <option value="{{$user->username}}">{{ucwords(trans($user->first_name))}} {{ucwords(trans($user->last_name))}}</option>
                                 @endforeach
                           </select>
                         </div>

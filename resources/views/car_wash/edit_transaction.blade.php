@@ -115,7 +115,7 @@
                             <select class="form-control select2" style="width: 100%;" id="txt_edit_supervisor"  name="txt_edit_supervisor" value="{{ old('txt_edit_supervisor') }}" >
                                 <option selected value="{{ $transaction_to_edit->supervisor }}">{{ $transaction_to_edit->supervisor }}</option>
                                 @foreach ($all_users as $user )
-                                    <option value="{{ $user->first_name }} {{ $user->last_name }}">{{ $user->first_name }} {{ $user->last_name }}</option>
+                                    <option value="{{ $user->username }}">{{ $user->first_name }} {{ $user->last_name }}</option>
                                 @endforeach
                             </select>
                         </div>

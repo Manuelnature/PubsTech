@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Products;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 use Session;
 use Carbon\Carbon;
 use Image;
@@ -36,11 +37,12 @@ class ProductController extends Controller
 
         // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $data = new Products();
-        $data->name = $request->get('txt_product_name');
-        $data->description = $request->get('txt_description');
+        $data->name = ucwords($request->get('txt_product_name'));
+        $data->description = Str::ucfirst($request->get('txt_description'));
         $data->price_per_item= $request->get('txt_price_per_item');
         $data->quantity_per_crate = $request->get('txt_quantity_per_crate');
         $data->stock_threshold = $request->get('txt_stock_threshold');
@@ -114,7 +116,8 @@ class ProductController extends Controller
         ]);
 
          $user_session = Session::get('user_session');
-         $active_user = $user_session->first_name.' '.$user_session->last_name;
+        //  $active_user = $user_session->first_name.' '.$user_session->last_name;
+        $active_user = $user_session->username;
 
         $product_id = $request->get('product_id');
         $update_product = Products::find($product_id);
@@ -126,13 +129,13 @@ class ProductController extends Controller
 
         $price_per_crate = (double)($request->get('txt_edit_price_per_item')) * (double)($request->get('txt_edit_quantity_per_crate'));
 
-        $update_product->name = $request->get('txt_edit_product_name');
+        $update_product->name = ucwords($request->get('txt_edit_product_name'));
         $update_product->price_per_item = $request->get('txt_edit_price_per_item');
         $update_product->quantity_per_crate = $request->get('txt_edit_quantity_per_crate');
         $update_product->price_per_crate = $price_per_crate;
         $update_product->stock_threshold = $request->get('txt_edit_stock_threshold');
         $update_product->status = $request->get('txt_edit_status');
-        $update_product->description = $request->get('txt_edit_description');
+        $update_product->description = Str::ucfirst($request->get('txt_edit_description'));
         $update_product->updated_by = $active_user;
         $update_product->updated_at = $current_date_and_time;
         $update_product->save();

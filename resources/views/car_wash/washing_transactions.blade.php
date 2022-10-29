@@ -94,7 +94,7 @@
                             <select class="form-control select2" style="width: 100%;" id="txt_supervisor"  name="txt_supervisor" value="{{ old('txt_supervisor') }}" >
                                 <option selected disabled>Select Supervisor</option>
                                 @foreach ($all_users as $user )
-                                    <option value="{{ $user->username }}">{{ ucwords(trans($user->first_name)) }} {{ ucwords(trans($user->last_name)) }}</option>
+                                    <option value="{{ $user->username }}">{{ ucwords($user->username) }} </option>
                                 @endforeach
                             </select>
                         </div>
@@ -224,30 +224,26 @@
                             {{-- <td>{{$washing_transaction->service_ids}}</td> --}}
                             <td>
                                 @php
+                                     $service_names = "";
                                     foreach(json_decode($washing_transaction->service_ids, true) as $service_id){
-                                        // echo $service_ids;
-                                        // $service_names = array();
+
                                         foreach ($all_services as $service ){
                                             if ($service_id == $service->id) {
-                                                // echo implode( ', ', $service->name );
-                                                echo $service->name.", ";
-                                                // $service_names[] = ucfirst($service->name);
+                                                if($service_names == ""){
+                                                    $service_names =  $service_names.''.$service->name;
+                                                }
+                                                else{
+                                                    $service_names =  $service_names.', '.$service->name;
+                                                }
+                                                // echo $service->name;
+                                                // $service_names =  $service_names.', '.$service->name;
                                             }
                                         }
-                                        // echo implode(', ', $service_names);
-
                                     }
+                                    echo $service_names;
                                 @endphp
                             </td>
-                            {{-- @foreach (json_decode($washing_transaction->service_ids true) as $service_ids)
-                                @foreach ( $all_services as $service )
-                                    @if ($service_ids == $service)
 
-                                    @else
-
-                                    @endif
-                                @endforeach
-                            @endforeach --}}
                             <td>{{ucwords(trans($washing_transaction->nickname))}}</td>
                             <td>GH¢ {{number_format($washing_transaction->amount, 2 ) }}</td>
                             <td>GH¢ {{number_format($washing_transaction->washer_commission, 2 ) }}</td>
@@ -273,27 +269,28 @@
 
                                 <td class="text-center">
 
-                                    <a  href="{{ url('edit_transaction', $washing_transaction->transaction_id)}}" class="text-primary"><i class="fas fa-edit"></i></a>
-                                    {{-- <a class="text-primary"
+                                    {{-- <a  href="{{ url('edit_transaction', $washing_transaction->transaction_id)}}" class="text-primary"><i class="fas fa-edit"></i></a> --}}
+                                    <a class="text-primary"
                                         onclick="edit_transaction(this)"
                                         data-toggle="modal"
                                         data-target="#edit_transaction"
-                                        data-transaction_id="{{ $washing_transaction->id }}"
-                                        data-vehicle_id="{{ $washing_transaction->vehicle_id }}"
-                                        data-vehicle_name="{{ $washing_transaction->vehicle_name }}"
+                                        data-transaction_id="{{ $washing_transaction->transaction_id }}"
+                                        data-vehicle_type_id="{{ $washing_transaction->vehicle_type_id }}"
+                                        data-vehicle_type_name="{{ $washing_transaction->vehicle_type_name }}"
                                         data-service_ids="{{ $washing_transaction->service_ids }}"
                                         data-washer_id="{{ $washing_transaction->washer_id }}"
                                         data-washer_firstname="{{ $washing_transaction->firstname }}"
                                         data-washer_lastname="{{ $washing_transaction->lastname }}"
                                         data-washer_nickname="{{ $washing_transaction->nickname }}"
-                                        data-vehicle_type="{{ $washing_transaction->vehicle_type_name }}"
+                                        {{-- data-vehicle_type="{{ $washing_transaction->vehicle_type_name }}" --}}
                                         data-price="{{ $washing_transaction->amount }}"
                                         data-washer_commission="{{ $washing_transaction->washer_commission }}"
                                         data-supervisor="{{ $washing_transaction->supervisor }}"
-                                        data-description="{{ $washing_transaction->description }}"
+                                        data-description="{{ $washing_transaction->transaction_description }}"
+                                        data-all_services = {{ $all_services }}
                                     >
                                     <i class="fas fa-edit"></i>
-                                    </a> --}}
+                                    </a>
 
                                     {{-- <a class="text-danger"
                                         onclick="delete_product(this)"
@@ -324,7 +321,7 @@
 
 
 
-      {{-- <div class="modal fade" id="edit_transaction" >
+      <div class="modal fade" id="edit_transaction" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -345,8 +342,8 @@
                                     <label for="txt_edit_vehicle_id">Vehicle Name</label>
                                     <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_id"  name="txt_edit_vehicle_id" value="{{ old('txt_edit_vehicle_id') }}" >
                                         <option selected id="selected_vehicle">Select Vehicle</option>
-                                        @foreach ($all_vehicles as $vehicle )
-                                            <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                                        @foreach ($all_vehicles_types as $vehicle_type )
+                                            <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -358,6 +355,15 @@
                                     <label for="txt_edit_service_id">Services</label>
                                     <select class="select2" multiple="multiple" data-placeholder="Select Services" name="txt_edit_service_id[]" id="txt_edit_service_id" style="width: 100%;">
                                         <option selected id="selected_services"></option>
+
+                                                        {{-- // @foreach (json_decode($transaction_to_edit->service_ids, true) as $service_id )
+                                                        //     @foreach ( $all_services as $service )
+                                                        //         @if ($service->id == $service_id)
+                                                        //             <option selected value="{{ $service->id }}">{{ $service->name }}</option>
+                                                        //         @endif
+                                                        //     @endforeach
+                                                        // @endforeach --}}
+
                                         @foreach ($all_services as $service )
                                             <option value="{{ $service->id }}">{{ $service->name }}</option>
                                         @endforeach
@@ -387,7 +393,7 @@
                                     <select class="form-control" style="width: 100%;" id="txt_edit_supervisor"  name="txt_edit_supervisor" value="{{ old('txt_edit_supervisor') }}" >
                                         <option selected id="selected_supervisor">Select Supervisor</option>
                                         @foreach ($all_users as $user )
-                                            <option value="{{ $user->first_name }} {{ $user->last_name }}">{{ $user->first_name }} {{ $user->last_name }}</option>
+                                            <option value="{{ $user->username }}">{{ $user->username }} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -430,7 +436,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div> --}}
+      </div>
       <!-- /.modal -->
 
       {{-- <div class="modal fade" id="delete-product" >
@@ -485,32 +491,43 @@
         var link = $(e.relatedTarget) //use this https://api.jquery.com/event.relatedtarget/
             modal = $(this)
         var transaction_id = link.data('transaction_id')
-        var vehicle_id = link.data('vehicle_id')
-        var vehicle_name = link.data('vehicle_name')
+        var vehicle_type_id = link.data('vehicle_type_id')
+        var vehicle_type_name = link.data('vehicle_type_name')
         var service_ids = link.data('service_ids')
         var washer_id = link.data('washer_id')
         var washer_firstname = link.data('washer_firstname')
         var washer_lastname = link.data('washer_lastname')
         var washer_nickname = link.data('washer_nickname')
-        var vehicle_type = link.data('vehicle_type')
         var price = link.data('price')
         var washer_commission = link.data('washer_commission')
         var supervisor = link.data('supervisor')
         var description = link.data('description')
 
-        // modal.find('#transaction_id').val(transaction_id);
-        // modal.find('#selected_vehicle').val(vehicle_id);
-        // modal.find('#selected_services').val(service_ids);
-        // modal.find('#selected_washer').val(washer_id);
-        // modal.find('#txt_edit_total_price').val(price);
-        // modal.find('#selected_supervisor').val(supervisor);
-        // modal.find('#txt_edit_washer_commission').val(washer_commission);
-        // modal.find('#txt_edit_description').val(description);
-        // document.getElementById('selected_vehicle').innerHTML = vehicle_name;
-        // // document.getElementById('txt_edit_service_id').data-placeholder =vehicle_name;
-        // document.getElementById('selected_washer').innerHTML = washer_firstname+" "+washer_lastname;
-        // document.getElementById('selected_supervisor').innerHTML = supervisor;
-        // document.getElementById('title').innerHTML = 'Edit Transaction';
+        var all_services = link.data('all_services')
+
+        modal.find('#transaction_id').val(transaction_id);
+        modal.find('#selected_vehicle').val(vehicle_type_id);
+        modal.find('#selected_services').val(service_ids);
+        modal.find('#selected_washer').val(washer_id);
+        modal.find('#txt_edit_total_price').val(price);
+        modal.find('#selected_supervisor').val(supervisor);
+        modal.find('#txt_edit_washer_commission').val(washer_commission);
+        modal.find('#txt_edit_description').val(description);
+        document.getElementById('selected_vehicle').innerHTML = vehicle_type_name;
+        // document.getElementById('txt_edit_service_id').data-placeholder =vehicle_name;
+        document.getElementById('selected_washer').innerHTML = washer_firstname+" "+washer_lastname;
+        document.getElementById('selected_supervisor').innerHTML = supervisor;
+        document.getElementById('title').innerHTML = 'Edit Transaction';
+
+
+        all_services.forEach(function(service) {
+            console.log(service.name);
+            });
+
+
+            service_ids.forEach(function(service_id) {
+            console.log(service_id);
+            });
         });
     }
 
@@ -543,6 +560,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             setServiceList( @json($all_pricing));
+
         });
     </script>
     @endsection

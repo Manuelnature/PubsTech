@@ -51,19 +51,32 @@ class WasherDebtsController extends Controller
             $user_session = Session::get('user_session');
             $active_user = $user_session->first_name." ".$user_session->last_name;
 
-            $add_debts = new WasherDebts();
-            $add_debts->washer_id = $washer_id;
-            $add_debts->debt_amount = $debt_amount;
-            $add_debts->amount_paid = $amount_paid;
-            $add_debts->amount_left = $amount_left;
-            $add_debts->payment_status = $payment_status;
-            $add_debts->paid_to = $paid_to;
-            $add_debts->paid_on = $paid_on;
-            $add_debts->remark = $remark;
-            $add_debts->save();
+            if (($amount_paid != "" || $amount_paid != NULL ) && ($paid_to == "" || $paid_to == NULL)) {
 
-            Alert::toast('Washer debts recorded','success');
-            return back();
+                Alert::toast('Select the person paid to','warning');
+                return back();
+            }
+            elseif (($amount_paid != "" || $amount_paid != NULL ) && ($paid_on == "" || $paid_on == NULL)) {
+
+                Alert::toast('Select Date for payment','warning');
+                return back();
+            }
+            else {
+                $add_debts = new WasherDebts();
+                $add_debts->washer_id = $washer_id;
+                $add_debts->debt_amount = $debt_amount;
+                $add_debts->amount_paid = $amount_paid;
+                $add_debts->amount_left = $amount_left;
+                $add_debts->payment_status = $payment_status;
+                $add_debts->paid_to = $paid_to;
+                $add_debts->paid_on = $paid_on;
+                $add_debts->remark = $remark;
+                $add_debts->save();
+
+                Alert::toast('Washer debts recorded','success');
+                return back();
+            }
+
 
         } catch (exception $e) {
             echo 'Caught exception';

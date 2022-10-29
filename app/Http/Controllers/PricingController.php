@@ -43,7 +43,8 @@ class PricingController extends Controller
             $price = $request->get('txt_service_price');
             $description = Str::ucfirst($request->get('txt_pricing_description'));
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
 
             $add_pricing = new Pricing();
             $add_pricing->service_id = $service_id;
@@ -78,7 +79,8 @@ class PricingController extends Controller
             $price = $request->get('txt_edit_sevice_price');
             $description = Str::ucfirst($request->get('txt_edit_pricing_description'));
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
             $current_date_and_time = Carbon::now()->toDateTimeString();
 
             $update_pricing = Pricing::find($pricing_id);

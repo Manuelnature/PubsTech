@@ -55,7 +55,7 @@
                             <select class="form-control select2" style="width: 100%;" id="txt_washer_id"  name="txt_washer_id" value="{{ old('txt_washer_id') }}" >
                                 <option selected disabled>Select Washer</option>
                                 @foreach ($all_washers as $washer )
-                                    <option value="{{ $washer->id }}">{{ $washer->firstname }} {{ $washer->lastname }}</option>
+                                    <option value="{{ $washer->id }}" {{ old('txt_washer_id') == $washer->id ? 'selected' : '' }}>{{ $washer->firstname }} {{ $washer->lastname }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger">@error('txt_washer_id') {{ $message }} @enderror</span>
@@ -83,7 +83,8 @@
                         <div class="form-group">
                             <label for="txt_amount_left">Amount Left</label>
                             <input type="number" min="0" oninput="this.value =
-                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_left" name="txt_amount_left" >                        </div>
+                            !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_amount_left" name="txt_amount_left" readonly>
+                            </div>
                         <span class="text-danger">@error('txt_amount_left') {{ $message }} @enderror</span>
                     </div>
                 </div>
@@ -92,8 +93,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txt_payment_status">Payment Status</label>
-                            <select class="form-control select2" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
-                                <option selected disabled>Select Status</option>
+                            <select class="form-control" style="width: 100%;" id="txt_payment_status"  name="txt_payment_status" value="{{ old('txt_payment_status') }}" >
+                                <option selected id="selected_status"></option>
                                 <option value="Fully Paid">Fully Paid</option>
                                 <option value="Partly Paid">Partly Paid</option>
                                 <option value="Not Paid">Not Paid</option>
@@ -227,7 +228,7 @@
                                 @if ($debts->paid_to == "" || $debts->paid_to == NULL)
                                     <p>-</p>
                                 @else
-                                    <p>{{$debts->paid_to}}</p>
+                                    <p>{{ucwords(trans($debts->paid_to))}}</p>
                                 @endif
                             </td>
                             <td>{{ ucfirst($debts->remark) }}</td>
@@ -336,7 +337,7 @@
                                 <div class="form-group">
                                     <label for="txt_edit_amount_left">Amount Left</label>
                                     <input type="number" min="0" oninput="this.value =
-                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_amount_left" name="txt_edit_amount_left" >                        </div>
+                                    !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null" class="form-control" id="txt_edit_amount_left" name="txt_edit_amount_left"  readonly>                        </div>
                                 <span class="text-danger">@error('txt_edit_amount_left') {{ $message }} @enderror</span>
                             </div>
                         </div>
@@ -358,10 +359,10 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="txt_edit_paid_to">Paid To</label>
-                                    <select class="form-control" style="width: 100%;" id="txt_edit_paid_to"  name="txt_paid_to" value="{{ old('txt_edit_paid_to') }}" >
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_paid_to"  name="txt_edit_paid_to" >
                                         <option selected id="selected_paid_to"></option>
                                         @foreach ($all_users as $users)
-                                            <option value="{{ $users->username }}">{{ $users->first_name }} {{ $users->last_name }}</option>
+                                            <option value="{{ $users->username }}">{{ ucwords($users->username) }}</option>
                                         @endforeach
                                     </select>
                                     <span class="text-danger">@error('txt_edit_paid_to') {{ $message }} @enderror</span>
@@ -439,7 +440,24 @@
   <!-- /.content-wrapper -->
 
   @section('Extra_JS')
-  <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+    <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
+  @endsection
+
+  <script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_paid_on")[0].setAttribute('max', today);
+    document.getElementsByName("txt_edit_paid_on")[0].setAttribute('max', today);
+</script>
+
+
+  @section('WasherDebt_JS')
+    <script type="text/javascript" src="{{ asset('assets/js/washer_debt.js') }}"></script>
+
+    {{-- <script type="text/javascript">
+        $(document).ready(function(){
+            setServiceList( @json($all_pricing));
+        });
+    </script> --}}
   @endsection
 
   <script>
@@ -472,7 +490,7 @@
         modal.find('#txt_edit_debt_description').val(remark);
         document.getElementById('selected_washer').innerHTML = washer_firstname+' '+washer_lastname;
         document.getElementById('selected_payment_status').innerHTML = payment_status;
-        document.getElementById('selected_paid_to').innerHTML = paid_to;
+        document.getElementById('selected_paid_to').innerHTML = paid_to.charAt(0).toUpperCase()+ paid_to.slice(1);
         // document.getElementById('txt_edit_debt_description').innerHTML = remark;
         document.getElementById('title').innerHTML = 'Edit '+ washer_firstname+' '+washer_lastname+'\s debt';
         });
@@ -498,6 +516,9 @@
 
   </script>
 
+
+
+
         <!-- DataTables  & Plugins -->
       <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
       <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -521,7 +542,7 @@
             "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 6, "desc" ]],
+            "order": [[ 5, "desc" ]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
           }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
           $('#example2').DataTable({

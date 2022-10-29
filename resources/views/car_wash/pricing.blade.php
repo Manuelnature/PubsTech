@@ -167,7 +167,7 @@
                             <td>{{ucwords(trans($pricing->service_name)) }}</td>
                             <td>GH¢ {{number_format($pricing->price, 2 ) }}</td>
                             <td>{{$pricing->washer_percentage}} %</td>
-                            <td>{{ucfirst(trans($pricing->description)) }}</td>
+                            <td>{{ucfirst($pricing->description) }}</td>
                             <td>{{$pricing->created_by}}</td>
                             <td>{{$pricing->created_at}}</td>
                             <td>

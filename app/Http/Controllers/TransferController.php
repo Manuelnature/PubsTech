@@ -78,7 +78,8 @@ class TransferController extends Controller
         ]);
 
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $product_id = $request->get('txt_product_id');
 
@@ -295,7 +296,8 @@ class TransferController extends Controller
         // dd($request->all());
         try {
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
 
             $transfer_id = $request->get('txt_transfer_id');
             $product_id = $request->get('txt_product_id');

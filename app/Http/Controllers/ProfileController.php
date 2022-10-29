@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 use App\Models\User;
 use Session;
 
@@ -18,8 +19,8 @@ class ProfileController extends Controller
         $user_id = $request->get('user_id');
 
         $update_user = User::find($user_id);
-        $update_user->first_name = $request->get('txt_edit_first_name');
-        $update_user->last_name = $request->get('txt_edit_last_name');
+        $update_user->first_name = ucwords($request->get('txt_edit_first_name'));
+        $update_user->last_name = ucwords($request->get('txt_edit_last_name'));
         $update_user->email = $request->get('txt_edit_email');
         $update_user->phone_number = $request->get('txt_edit_phone_number');
         $update_user->save();

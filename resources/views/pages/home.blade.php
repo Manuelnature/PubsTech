@@ -33,6 +33,8 @@
     </div>
     <!-- /.content-header -->
 
+
+    <!-- Current Stock Modal -->
     <div class="modal fade" id="view_current_stock" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -86,7 +88,7 @@
     </div>
 
 
-
+    <!--Stock At Login Modal -->
     <div class="modal fade" id="view_stocks_left" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -210,7 +212,7 @@
                                         <span class="text-danger">@error('txt_date_to') {{ $message }} @enderror</span>
                                     </div>
                                     <div class="col-md-2" style="padding-top:30px !important;">
-                                        <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+                                        <button type="submit" class="btn btn-secondary btn-block">Filter</button>
                                     </div>
                                 </div>
                             </form>

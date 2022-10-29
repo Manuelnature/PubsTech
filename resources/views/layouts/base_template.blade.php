@@ -321,7 +321,7 @@
                     </li>
                 @endif
 
-                <li class="nav-header">CAR WASHING BAY</li>
+                <li class="nav-header"><i class="fas fa-car-side"></i>  CAR WASHING BAY  <i class="fas fa-car-side"></i></li>
                 @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
@@ -335,7 +335,7 @@
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'services' ? 'active' : null }}">
                             <a href="{{ url('services' )}}" >
-                                <i class="nav-icon fas fa-id-card"></i>
+                                <i class="nav-icon fas fa-hand-rock"></i>
                                 <p>Services</p>
                             </a>
                         </li>
@@ -343,7 +343,7 @@
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'pricing' ? 'active' : null }}">
                             <a href="{{ url('pricing' )}}" >
-                                <i class="nav-icon fas fa-id-card"></i>
+                                <i class="nav-icon fas fa-money-bill-alt"></i>
                                 <p>Pricing</p>
                             </a>
                         </li>
@@ -351,7 +351,7 @@
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'washers' ? 'active' : null }}">
                             <a href="{{ url('washers' )}}" >
-                                <i class="nav-icon fas fa-id-card"></i>
+                                <i class="nav-icon fas fa-car-crash"></i>
                                 <p>Car Washers</p>
                             </a>
                         </li>
@@ -359,7 +359,7 @@
                     <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'washer_debt' ? 'active' : null }}">
                             <a href="{{ url('washer_debt' )}}" >
-                                <i class="nav-icon fas fa-id-card"></i>
+                                <i class="nav-icon fas fa-money-bill-wave-alt"></i>
                                 <p>Car Washer Debts</p>
                             </a>
                         </li>
@@ -368,7 +368,7 @@
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'washing_transaction' ? 'active' : null }}">
                         <a href="{{ url('washing_transaction' )}}" >
-                            <i class="nav-icon fas fa-id-card"></i>
+                            <i class="nav-icon fas fa-dumpster"></i>
                             <p>Transactions</p>
                         </a>
                     </li>
@@ -481,6 +481,7 @@
 @yield('Product_JS')
 @yield('Service_JS')
 @yield('LoadImage_JS')
+@yield('WasherDebt_JS')
 
 
 </body>
