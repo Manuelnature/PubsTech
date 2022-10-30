@@ -764,7 +764,7 @@
             "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[6, "desc"]],
+            "order": [[5, "desc"]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#my_sales_wrapper .col-md-6:eq(0)');
 
@@ -772,7 +772,7 @@
             "paging": true,
             "lengthChange": true,
             "ordering": true,
-            "order": [[ 6, "desc" ]],
+            "order": [[ 5, "desc" ]],
             "info": true,
             "autoWidth": false,
             "responsive": true,
