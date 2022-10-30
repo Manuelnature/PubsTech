@@ -48,7 +48,7 @@ class RetailingController extends Controller
 
         // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $amount = floatval(preg_replace('/[^\d.]/', '', $request->get('txt_total_amount'))); //Removes comma from the amount entered
         $product_id = $request->get('txt_product_id');

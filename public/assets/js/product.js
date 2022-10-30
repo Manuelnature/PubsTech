@@ -171,7 +171,8 @@ function calculatePriceForRetailEdit(){
     if(amount.length == 0){
         return;
         }
-    var amount_int = parseInt(amount);
+    // var amount_int = parseInt(amount);
+    var amount_int = parseFloat(amount).toFixed(2);
 
     var cost = amount_int * quantity_int;
 
