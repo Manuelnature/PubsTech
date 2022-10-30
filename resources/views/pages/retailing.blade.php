@@ -732,9 +732,9 @@
 @endsection
 
 <script>
-    var today = new Date().toISOString().split('T')[0];
-    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
-    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+    // var today = new Date().toISOString().split('T')[0];
+    // document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    // document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
 </script>
 
 
