@@ -117,7 +117,9 @@ class HomeController extends Controller
 
     public function retailer_dashboard(){
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
+
         $firstname = $user_session->first_name;
         $last_name = $user_session->last_name;
 
@@ -183,7 +185,8 @@ class HomeController extends Controller
 
     public function overall_sales_record(){
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
         $firstname = $user_session->first_name;
         $last_name = $user_session->last_name;
 
@@ -283,7 +286,8 @@ class HomeController extends Controller
 
     public function filter_sales_record($date_from, $date_to){
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
 
         // ============ GETTING TABLE RECORDS=================
