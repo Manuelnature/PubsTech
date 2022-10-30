@@ -732,9 +732,9 @@
 @endsection
 
 <script>
-    // var today = new Date().toISOString().split('T')[0];
-    // document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
-    // document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_date_to")[0].setAttribute('max', today);
+    document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
 </script>
 
 
@@ -764,7 +764,7 @@
             "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[5, "desc"]],
+            "order": [[6, "desc"]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#my_sales_wrapper .col-md-6:eq(0)');
 
@@ -772,7 +772,7 @@
             "paging": true,
             "lengthChange": true,
             "ordering": true,
-            "order": [[ 5, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "info": true,
             "autoWidth": false,
             "responsive": true,
