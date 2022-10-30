@@ -356,14 +356,7 @@
                             </a>
                         </li>
                     </li>
-                    <li class="nav-item">
-                        <li class="nav-link {{ Request::segment(1) === 'washer_debt' ? 'active' : null }}">
-                            <a href="{{ url('washer_debt' )}}" >
-                                <i class="nav-icon fas fa-money-bill-wave-alt"></i>
-                                <p>Car Washer Debts</p>
-                            </a>
-                        </li>
-                    </li>
+                    
                 @endif
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'washing_transaction' ? 'active' : null }}">
@@ -373,6 +366,16 @@
                         </a>
                     </li>
                 </li>
+                 @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+                <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'washer_debt' ? 'active' : null }}">
+                            <a href="{{ url('washer_debt' )}}" >
+                                <i class="nav-icon fas fa-money-bill-wave-alt"></i>
+                                <p>Car Washer Debts</p>
+                            </a>
+                        </li>
+                    </li>
+                  @endif
 
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'logout' ? 'active' : null }}">

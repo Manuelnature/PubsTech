@@ -232,6 +232,7 @@
             </div><!--/. container-fluid -->
         </section>
 
+
         <!--=========== INITIAL DASHBOARD PRESENTATION========================-->
             <!-- Small boxes (Stat box) -->
             {{-- <div class="row">
@@ -420,86 +421,7 @@
         @endif
 
 
-        <section class="content">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h5 class="card-title">Overall Sales
-                        <span style="margin-left:40px !important">
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('j F, Y')}}
-                            <strong> &nbsp;-&nbsp; </strong>
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('j F, Y')}}
-                        </span>
-                      </h5>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                          <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <!-- /.card-header -->
-
-
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-sm-6 col-md-6">
-                              <div class="info-box mb-3">
-                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                                <div class="info-box-content">
-                                  <span class="info-box-text">Total Stocks Sold</span>
-                                  <span class="info-box-number">{{ $overall_total_quantity_sold }}</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                              </div>
-                              <!-- /.info-box -->
-                            </div>
-                            <!-- /.col -->
-
-                            <!-- fix for small devices only -->
-                            <div class="clearfix hidden-md-up"></div>
-
-                            <div class="col-12 col-sm-6 col-md-6">
-                              <div class="info-box mb-3">
-                                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
-
-                                <div class="info-box-content">
-                                  <span class="info-box-text">Expected Amount</span>
-                                  <span class="info-box-number">
-                                    @php
-                                        echo 'Gh¢ '.number_format($overall_total_expected_price, 2);
-                                    @endphp
-                                  </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                              </div>
-                              <!-- /.info-box -->
-                            </div>
-                            <!-- /.col -->
-                          </div>
-                      <!-- /.row -->
-                    </div>
-                    <!-- ./card-body -->
-                    <div class="card-footer">
-
-
-                    </div>
-                    <!-- /.card-footer -->
-                  </div>
-                  <!-- /.card -->
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-            </div><!--/. container-fluid -->
-        </section>
-
+        
 
     <section class="content">
         <div class="container-fluid">
@@ -628,6 +550,87 @@
         </div>
         <!-- /.container-fluid -->
     </section>
+
+
+    <section class="content">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-title">Overall Sales
+                        <span style="margin-left:40px !important">
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('j F, Y')}}
+                            <strong> &nbsp;-&nbsp; </strong>
+                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('j F, Y')}}
+                        </span>
+                      </h5>
+
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
+
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6">
+                              <div class="info-box mb-3">
+                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+                                <div class="info-box-content">
+                                  <span class="info-box-text">Total Stocks Sold</span>
+                                  <span class="info-box-number">{{ $overall_total_quantity_sold }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                              </div>
+                              <!-- /.info-box -->
+                            </div>
+                            <!-- /.col -->
+
+                            <!-- fix for small devices only -->
+                            <div class="clearfix hidden-md-up"></div>
+
+                            <div class="col-12 col-sm-6 col-md-6">
+                              <div class="info-box mb-3">
+                                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
+
+                                <div class="info-box-content">
+                                  <span class="info-box-text">Expected Amount</span>
+                                  <span class="info-box-number">
+                                    @php
+                                        echo 'Gh¢ '.number_format($overall_total_expected_price, 2);
+                                    @endphp
+                                  </span>
+                                </div>
+                                <!-- /.info-box-content -->
+                              </div>
+                              <!-- /.info-box -->
+                            </div>
+                            <!-- /.col -->
+                          </div>
+                      <!-- /.row -->
+                    </div>
+                    <!-- ./card-body -->
+                    <div class="card-footer">
+
+
+                    </div>
+                    <!-- /.card-footer -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div><!--/. container-fluid -->
+        </section>
 
 
     <!-- Overall Sales Records -->
