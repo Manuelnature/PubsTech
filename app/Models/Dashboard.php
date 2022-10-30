@@ -195,4 +195,29 @@ class Dashboard extends Model
     }
 
 
+    public static function get_all_sales(){
+        try{
+            return  DB::table('tbl_sales')
+            ->select('tbl_sales.*')
+            ->get();
+
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
+
+    public static function get_all_filter_sales($date_from, $date_to){
+        try{
+            return  DB::table('tbl_sales')
+            ->select('tbl_sales.*')
+            ->whereBetween(DB::raw('CAST(created_at as date)'), [$date_from, $date_to])
+            ->get();
+
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
+
 }

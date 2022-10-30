@@ -106,11 +106,27 @@ class HomeController extends Controller
         } else {
             $transfer_end_date = "";
         }
+
         // $transfer_end_date = $get_transfer_end_date[0]->created_at;
 
         array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
 
-        return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
+
+
+        ///====================For sales total
+        $get_all_sales = Dashboard::get_all_sales();
+        // dd($get_user_sales);
+        $overall_total_quantity_sold = 0;
+        $overall_total_expected_price = 0;
+        if(count($get_all_sales) > 0){
+            foreach ($get_all_sales as $sales_record) {
+                $overall_total_quantity_sold = $overall_total_quantity_sold + $sales_record->quantity_sold;
+                $overall_total_expected_price = (double)$overall_total_expected_price + (double)$sales_record->expected_price;
+            }
+        }
+        // dd($overall_total_expected_price);
+
+        return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates',  'overall_total_expected_price', 'overall_total_quantity_sold'));
 
     }
 
@@ -198,6 +214,8 @@ class HomeController extends Controller
         $total_expected_price_per_product = 0;
         $get_all_sales = array();
 
+        $overall_total_amount_of_all_products = 0;
+
         if (count($all_sales_records) > 0) {
 
             foreach ($all_sales_records as $sales_record) {
@@ -218,8 +236,13 @@ class HomeController extends Controller
                     $expected_price = (double)$expected_price + (double)$get_all_sales_under_each_product[$i]->expected_price;
                 }
 
+                // $overall_total_amount_of_all_products = (double)$overall_total_amount_of_all_products + (double)$expected_price;
+                //  dd($overall_total_amount_of_all_products);
+
                 array_push( $get_all_sales, ['product_name' => $product_name, 'total_quantity_sold_per_product'=>$quantity_sold, 'total_expected_price_per_product'=>$expected_price]);
             }
+            // $overall_total_amount_of_all_products = $overall_total_amount_of_all_products + $expected_price;
+            // dd($overall_total_amount_of_all_products);
 
         }
         else {
@@ -476,7 +499,22 @@ class HomeController extends Controller
 
 
 
-            return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'date_from', 'date_to'));
+
+            $get_all_sales = Dashboard::get_all_filter_sales($date_from, $date_to);
+            // dd($get_user_sales);
+            $overall_total_quantity_sold = 0;
+            $overall_total_expected_price = 0;
+            if(count($get_all_sales) > 0){
+                foreach ($get_all_sales as $sales_record) {
+                    $overall_total_quantity_sold = $overall_total_quantity_sold + $sales_record->quantity_sold;
+                    $overall_total_expected_price = (double)$overall_total_expected_price + (double)$sales_record->expected_price;
+                }
+            }
+            // dd($overall_total_expected_price);
+
+
+
+            return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'date_from', 'date_to', 'overall_total_expected_price', 'overall_total_quantity_sold'));
         }
         elseif (($date_from != ""|| $date_from != NULL) && ($date_to == "" || $date_to == NULL)) {
             Alert::toast('Please select Date To','warning');
