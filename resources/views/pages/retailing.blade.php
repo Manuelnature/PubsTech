@@ -272,7 +272,6 @@
                     <thead>
                     <tr>
                         <th>Product Name</th>
-                        {{-- <th>Original Stock</th> --}}
                         <th>Stock Before</th>
                         <th>Quantity Sold</th>
                         <th>Stock After</th>
@@ -287,7 +286,6 @@
                     @foreach ($individual_sales_for_today as $today_sales)
                         <tr>
                             <td>{{  ucwords(trans($today_sales->name)) }}</td>
-                            {{-- <td>{{ $today_sales->original_stock }}</td> --}}
                             <td>{{ $today_sales->stock_before }}</td>
                             <td>{{ $today_sales->quantity_sold }}</td>
                             <td>{{ $today_sales->stock_after }}</td>
@@ -766,7 +764,7 @@
             "lengthChange": true,
             "autoWidth": false,
             "ordering": true,
-            "order": [[ 6, "desc" ]],
+            "order": [[6, "desc"]],
             "buttons": ["csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#my_sales_wrapper .col-md-6:eq(0)');
 
