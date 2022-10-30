@@ -150,7 +150,8 @@ class RetailingController extends Controller
 
         // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $amount = floatval(preg_replace('/[^\d.]/', '', $request->get('txt_total_amount_modal'))); //Removes comma from the amount entered
         $product_id = $request->get('txt_product_id_modal');
@@ -246,7 +247,8 @@ class RetailingController extends Controller
         // dd($request->all());
         try {
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
             $current_date_and_time = Carbon::now()->toDateTimeString();
 
             $sale_id = $request->get('txt_sale_id');
@@ -578,7 +580,8 @@ class RetailingController extends Controller
 
 
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
             $today_date = Carbon::now()->format('Y-m-d');
 
             $individual_sales_for_today = Sales::get_individual_sales_details_for_today($active_user, $today_date);
@@ -629,7 +632,8 @@ class RetailingController extends Controller
 
         // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $amount = floatval(preg_replace('/[^\d.]/', '', $request->get('txt_total_amount'))); //Removes comma from the amount entered
         $product_id = $request->get('txt_product_id');
@@ -753,7 +757,8 @@ class RetailingController extends Controller
 
         // dd($request->all());
         $user_session = Session::get('user_session');
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
 
         $amount = floatval(preg_replace('/[^\d.]/', '', $request->get('txt_total_amount_modal'))); //Removes comma from the amount entered
         $product_id = $request->get('txt_product_id_modal');
@@ -877,7 +882,8 @@ class RetailingController extends Controller
         // dd($request->all());
         try {
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
             $current_date_and_time = Carbon::now()->toDateTimeString();
 
             $sale_id = $request->get('txt_sale_id');
@@ -975,7 +981,8 @@ class RetailingController extends Controller
         // dd($request->all());
         try {
             $user_session = Session::get('user_session');
-            $active_user = $user_session->first_name." ".$user_session->last_name;
+            // $active_user = $user_session->first_name." ".$user_session->last_name;
+            $active_user = $user_session->username;
             $current_date_and_time = Carbon::now()->toDateTimeString();
 
             $sale_id = $request->get('txt_sale_id');

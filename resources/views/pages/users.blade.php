@@ -163,14 +163,14 @@
                   <tbody>
                     @foreach ($all_users as $user)
                         <tr>
-                            <td>{{ ucwords(trans($user->first_name )) }}</td>
-                            <td> {{ ucwords(trans($user->last_name)) }}</td>
+                            <td>{{ ucwords($user->first_name ) }}</td>
+                            <td> {{ ucwords($user->last_name) }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone_number }}</td>
                             <td>{{ $user->role }}</td>
                             <td>{{ $user->date_employed }}</td>
                             <td>{{ $user->date_registered }}</td>
-                            <td> {{ ucfirst(trans($user->registered_by)) }}</td>
+                            <td> {{ ucwords($user->registered_by) }}</td>
                             <td>
                                 @if ($user->updated_by == "" || $user->updated_by == NULL)
                                     <p>Not updated</p>
