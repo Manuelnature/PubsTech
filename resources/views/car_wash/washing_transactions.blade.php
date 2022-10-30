@@ -269,28 +269,26 @@
 
                                 <td class="text-center">
 
-                                    {{-- <a  href="{{ url('edit_transaction', $washing_transaction->transaction_id)}}" class="text-primary"><i class="fas fa-edit"></i></a> --}}
-                                    <a class="text-primary"
+                                    <a  href="{{ url('edit_transaction', $washing_transaction->transaction_id)}}" class="text-primary"><i class="fas fa-edit"></i></a>
+                                    {{-- <a class="text-primary"
                                         onclick="edit_transaction(this)"
                                         data-toggle="modal"
                                         data-target="#edit_transaction"
                                         data-transaction_id="{{ $washing_transaction->transaction_id }}"
-                                        data-vehicle_type_id="{{ $washing_transaction->vehicle_type_id }}"
+                                        data-vehicle_type_id="{{ (int)$washing_transaction->vehicle_type_id }}"
                                         data-vehicle_type_name="{{ $washing_transaction->vehicle_type_name }}"
                                         data-service_ids="{{ $washing_transaction->service_ids }}"
                                         data-washer_id="{{ $washing_transaction->washer_id }}"
                                         data-washer_firstname="{{ $washing_transaction->firstname }}"
                                         data-washer_lastname="{{ $washing_transaction->lastname }}"
                                         data-washer_nickname="{{ $washing_transaction->nickname }}"
-                                        {{-- data-vehicle_type="{{ $washing_transaction->vehicle_type_name }}" --}}
                                         data-price="{{ $washing_transaction->amount }}"
                                         data-washer_commission="{{ $washing_transaction->washer_commission }}"
                                         data-supervisor="{{ $washing_transaction->supervisor }}"
                                         data-description="{{ $washing_transaction->transaction_description }}"
-                                        data-all_services = {{ $all_services }}
                                     >
-                                    <i class="fas fa-edit"></i>
-                                    </a>
+                                        <i class="fas fa-edit"></i>
+                                    </a> --}}
 
                                     {{-- <a class="text-danger"
                                         onclick="delete_product(this)"
@@ -330,7 +328,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form action="{{ route('update_service') }}" method="POST">
+            <form action="{{ route('update_transaction_modal') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="card-body">
@@ -339,21 +337,21 @@
                                 <input type="hidden" name="transaction_id" id="transaction_id">
 
                                 <div class="form-group">
-                                    <label for="txt_edit_vehicle_id">Vehicle Name</label>
-                                    <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_id"  name="txt_edit_vehicle_id" value="{{ old('txt_edit_vehicle_id') }}" >
-                                        <option selected id="selected_vehicle">Select Vehicle</option>
+                                    <label for="txt_edit_vehicle_type_id">Vehicle Name</label>
+                                    <select class="form-control" style="width: 100%;" id="txt_edit_vehicle_type_id"  name="txt_edit_vehicle_type_id" >
+                                        <option selected id="selected_vehicle"></option>
                                         @foreach ($all_vehicles_types as $vehicle_type )
                                             <option value="{{ $vehicle_type->id }}">{{ $vehicle_type->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <span class="text-danger">@error('txt_edit_vehicle_id') {{ $message }} @enderror</span>
+                                <span class="text-danger">@error('txt_edit_vehicle_type_id') {{ $message }} @enderror</span>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="txt_edit_service_id">Services</label>
-                                    <select class="select2" multiple="multiple" data-placeholder="Select Services" name="txt_edit_service_id[]" id="txt_edit_service_id" style="width: 100%;">
+                                    <label for="txt_edit_service_id">Services</label> <!-- data-placeholder="Select Services" -->
+                                    <select class="select2" multiple="multiple" name="txt_edit_service_id[]" id="txt_edit_service_id" style="width: 100%;">
                                         <option selected id="selected_services"></option>
 
                                                         {{-- // @foreach (json_decode($transaction_to_edit->service_ids, true) as $service_id )
@@ -393,7 +391,7 @@
                                     <select class="form-control" style="width: 100%;" id="txt_edit_supervisor"  name="txt_edit_supervisor" value="{{ old('txt_edit_supervisor') }}" >
                                         <option selected id="selected_supervisor">Select Supervisor</option>
                                         @foreach ($all_users as $user )
-                                            <option value="{{ $user->username }}">{{ $user->username }} </option>
+                                            <option value="{{ $user->username }}">{{ ucwords($user->username) }} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -419,7 +417,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="txt_edit_description">Description</label>
-                                    <textarea class="form-control" rows="3" placeholder="Enter Transaction Description" name="txt_edit_description">{{old('txt_edit_description')}}</textarea>
+                                    <textarea class="form-control" rows="3" placeholder="Enter Transaction Description" name="txt_edit_description"></textarea>
                                 </div>
                                 <span class="text-danger">@error('txt_edit_description') {{ $message }} @enderror</span>
                             </div>
@@ -485,6 +483,15 @@
     document.getElementsByName("txt_date_from")[0].setAttribute('max', today);
  </script>
 
+{{-- <script type="text/javascript">
+    // $(document).ready(function() {
+    //     $('#txt_edit_service_id').multiselect();
+    // });
+    $(document).ready(function() {
+    $('.txt_edit_service_id').select2();
+});
+</script> --}}
+
   <script>
     function edit_transaction() {
         $('#edit_transaction').on('shown.bs.modal', function(e) {
@@ -503,7 +510,6 @@
         var supervisor = link.data('supervisor')
         var description = link.data('description')
 
-        var all_services = link.data('all_services')
 
         modal.find('#transaction_id').val(transaction_id);
         modal.find('#selected_vehicle').val(vehicle_type_id);
@@ -514,20 +520,43 @@
         modal.find('#txt_edit_washer_commission').val(washer_commission);
         modal.find('#txt_edit_description').val(description);
         document.getElementById('selected_vehicle').innerHTML = vehicle_type_name;
-        // document.getElementById('txt_edit_service_id').data-placeholder =vehicle_name;
         document.getElementById('selected_washer').innerHTML = washer_firstname+" "+washer_lastname;
         document.getElementById('selected_supervisor').innerHTML = supervisor;
         document.getElementById('title').innerHTML = 'Edit Transaction';
 
+        var all_services = @json($all_services);
+        // console.log(all_services);
 
+
+        var service_names = "";
         all_services.forEach(function(service) {
-            console.log(service.name);
-            });
-
-
+            // console.log(service.name);
             service_ids.forEach(function(service_id) {
-            console.log(service_id);
+            // console.log(service_id);
+                if (service_id == service.id) {
+                    // console.log(service.name);
+
+                    // if(service_names == ""){
+                    //     service_names =  service_names+''+service.name;
+                    // }
+                    // else{
+                    //     service_names =  service_names+', '+service.name;
+                    // }
+
+                    // var newOption = new Option(service.name, service.id, true);
+                    // $('#selected_services').append(newOption).trigger('change');
+                    service_names = service_names+' '+service.name;
+                    // $('#selected_services').val(service.name);
+
+                }
             });
+        });
+
+        document.getElementById('selected_services').innerHTML = service_names;
+
+
+        // $('#selected_services').val(service_names);
+        console.log(service_names);
         });
     }
 
@@ -547,11 +576,9 @@
 
   </script>
 
-{{-- <script type="text/javascript">
-    $(document).ready(function() {
-        $('#txt_edit_service_id').multiselect();
-    });
-</script> --}}
+
+
+
 
   {{-- ======== Perform Calculation on Services Selected ============== --}}
     @section('Service_JS')
@@ -560,7 +587,6 @@
     <script type="text/javascript">
         $(document).ready(function(){
             setServiceList( @json($all_pricing));
-
         });
     </script>
     @endsection

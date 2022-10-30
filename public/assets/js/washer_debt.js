@@ -119,15 +119,15 @@ function calculateEditAmountLeft(){
 
     if(amount_left == debt_amount){
         $('#selected_payment_status').val("Not Paid");
-        document.getElementById('selected_payment_status').innerHTML = "Not Paid";
+        // document.getElementById('selected_payment_status').innerHTML = "Not Paid";
     }
     else if(amount_left < debt_amount && amount_left != 0) {
         $('#selected_payment_status').val("Partly Paid");
-        document.getElementById('selected_payment_status').innerHTML = "Partly Paid";
+        // document.getElementById('selected_payment_status').innerHTML = "Partly Paid";
     }
     else if(amount_left == 0){
         $('#selected_payment_status').val("Fully Paid");
-        document.getElementById('selected_payment_status').innerHTML = "Fully Paid";
+        // document.getElementById('selected_payment_status').innerHTML = "Fully Paid";
     }
 
 }

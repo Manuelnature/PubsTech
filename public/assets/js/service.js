@@ -82,6 +82,7 @@ $('#txt_edit_vehicle_type_id').change(function(e) {
     calculateEditPriceForServices();
 });
 
+
 $('#txt_edit_service_id').change(function(e) {
     e.preventDefault();
     calculateEditPriceForServices();
@@ -97,7 +98,6 @@ function calculateEditPriceForServices(){
 
     var service_ids = $('#txt_edit_service_id').val();
 
-    // const service_ids = [$('#txt_service_id').val()];
     console.log('vehicle_type_id '+ vehicle_type_id);
     console.log('service_ids '+service_ids);
 

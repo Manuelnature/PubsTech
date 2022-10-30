@@ -22,8 +22,11 @@ class WashingTransactionController extends Controller
         $all_washers = CarWasher::all();
         // $all_vehicles = Vehicle::all();
         $all_vehicles_types = VehicleType::all();
+        // dd($all_vehicles_types);
         $all_users = User::all();
         $all_services = Service::all();
+
+        // $all_services = Service::select_all_services();
         // $all_pricing = Pricing::all();
         $all_pricing = Pricing::select_all_pricing();
 
@@ -138,6 +141,61 @@ class WashingTransactionController extends Controller
             // dd($service_ids);
             $vehicle_type_id= $request->get('txt_edit_vehicle_type_id');
             // dd($vehicle_type_id);
+            $washer_id= $request->get('txt_edit_washer_id');
+            $supervisor= ucwords($request->get('txt_edit_supervisor'));
+            $total_amount = $request->get('txt_edit_total_price');
+            $washer_commision = $request->get('txt_edit_washer_commission');
+            $description = Str::ucfirst($request->get('txt_edit_description'));
+            $user_session = Session::get('user_session');
+            $active_user = $user_session->first_name." ".$user_session->last_name;
+
+            $update_transaction = WashingTransaction::find($transaction_id);
+            $update_transaction->vehicle_type_id = $vehicle_type_id;
+            $update_transaction->service_ids = $service_ids;
+            $update_transaction->washer_id = $washer_id;
+            $update_transaction->amount = $total_amount;
+            $update_transaction->washer_commission = $washer_commision;
+            $update_transaction->supervisor = $supervisor;
+            $update_transaction->description = $description;
+            $update_transaction->created_by = $active_user;
+            $update_transaction->save();
+
+            Alert::toast('Transaction updated successfully','success');
+            return redirect('washing_transaction');
+
+        } catch (exception $e) {
+            echo 'Caught exception';
+        }
+    }
+
+    public function update_transaction_modal(Request $request){
+        // dd($request->all());
+        try {
+            // $request->validate([
+            //     'txt_edit_vehicle_type_id' => 'required',
+            //     'txt_edit_service_id' => 'required',
+            //     'txt_edit_washer_id' => 'required',
+            //     'txt_edit_supervisor' => 'required',
+            //     'txt_edit_total_price' => 'required',
+            //     'txt_edit_washer_commission' => 'required',
+            // ], [
+            //     'txt_edit_vehicle_type_id.required' => 'Vehicle Name is required',
+            //     'txt_edit_service_id.required' => 'Service Name is required',
+            //     'txt_edit_washer_id.required' => 'Washer Name is required',
+            //     'txt_edit_supervisor.required' => 'Washer Name is required',
+            //     'txt_edit_total_price.required' => 'Total Price is required',
+            //     'txt_edit_washer_commission.required' => 'Total Price is required',
+            // ]);
+            $transaction_id = $request->get('transaction_id');;
+            // dd($transaction_id);
+            $service_id= $request->get('txt_edit_service_id');
+            // $service_ids = str_replace("'", "\'", json_encode($service_id));
+            $service_ids = json_encode($service_id);
+
+            dump($service_ids);
+            $vehicle_type_id = $request->get('txt_edit_type_vehicle_id');
+
+            dd($vehicle_type_id);
             $washer_id= $request->get('txt_edit_washer_id');
             $supervisor= ucwords($request->get('txt_edit_supervisor'));
             $total_amount = $request->get('txt_edit_total_price');

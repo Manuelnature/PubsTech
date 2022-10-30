@@ -145,6 +145,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::get('edit_transaction/{id}', [WashingTransactionController::class, 'edit_transaction'])->name('edit_transaction');
          Route::post('update_transaction/{id}', [WashingTransactionController::class, 'update_transaction'])->name('update_transaction');
          Route::post('filter_transaction', [WashingTransactionController::class, 'filter_transaction'])->name('filter_transaction');
+         Route::post('update_transaction_modal', [WashingTransactionController::class, 'update_transaction_modal'])->name('update_transaction_modal');
 
 
 

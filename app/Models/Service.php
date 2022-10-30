@@ -22,6 +22,16 @@ class Service extends Model
         }
     }
 
+    public static function select_all_services(){
+        try{
+            return  DB::table('tbl_services')
+            ->select( 'tbl_services.*')
+            ->get();
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
     // public static function get_all_services(){
     //     try{
     //         return  DB::table('tbl_services')
