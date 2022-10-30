@@ -194,8 +194,8 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title">Overall Sales
-                    <span style="margin-left:40px !important">
+                  <h5 class="card-title" style="font-weight: 800; color:#0096FF">Overall Sales
+                    <span style="margin-left:40px !important;">
                         {{ \Carbon\Carbon::parse($date_from)->format('j F, Y')}}
                         <strong> &nbsp;-&nbsp; </strong>
                         {{ \Carbon\Carbon::parse($date_to)->format('j F, Y')}}
