@@ -62,24 +62,20 @@ class WashersController extends Controller
 
     public function update_car_washer(Request $request){
         try {
+            // dd($request->all());
             $request->validate([
-                'txt_washer_id' => 'required|regex:/^[a-zA-Z-\s]+$/',
-                'txt_debt_amount' => 'required|regex:/^[a-zA-Z-\s]+$/',
-                'txt_amount_paid' => 'required|regex:/^\+?\d+$/',
-                'txt_amount_left' => 'unique:tbl_car_washers,nickname',
-                'txt_payment_status' => 'unique:tbl_car_washers,nickname',
-                'txt_paid_to' => 'unique:tbl_car_washers,nickname',
-                'txt_paid_on' => 'unique:tbl_car_washers,nickname',
-                'txt_paid_to' => 'unique:tbl_car_washers,nickname',
-                'txt_paid_on' => 'unique:tbl_car_washers,nickname',
+                'txt_edit_firstname' => 'required|regex:/^[a-zA-Z-\s]+$/',
+                'txt_edit_lastname' => 'required|regex:/^[a-zA-Z-\s]+$/',
+                'txt_edit_phone_number' => 'required|regex:/^\+?\d+$/',
+                // 'txt_edit_nickname' => 'unique:tbl_car_washers,nickname',
             ], [
-                'txt_washer_id.required' => 'First Name is required',
-                'txt_debt_amount.required' => 'Last Name is required',
-                'txt_amount_paid.regex' => 'First Name is must be in letters only',
-                'txt_amount_left.regex' => 'Last Name is must be in letters only',
-                'txt_payment_status.required' => 'Phone Number is required',
-                'txt_paid_to.regex' => 'Phone Number is not valid',
-                'txt_paid_on.unique' => 'Nickname already exist',
+                'txt_edit_firstname.required' => 'First Name is required',
+                'txt_edit_lastname.required' => 'Last Name is required',
+                'txt_edit_firstname.regex' => 'First Name is must be in letters only',
+                'txt_edit_lastname.regex' => 'Last Name is must be in letters only',
+                'txt_edit_phone_number.required' => 'Phone Number is required',
+                'txt_edit_phone_number.regex' => 'Phone Number is not valid',
+                // 'txt_edit_nickname.unique' => 'Nickname already exist',
             ]);
             $washer_id = $request->get('washer_id');
             $firstname = ucwords($request->get('txt_edit_firstname'));
@@ -108,5 +104,13 @@ class WashersController extends Controller
         } catch (exception $e) {
             echo 'Caught exception';
         }
+    }
+
+    public function delete_car_washer(Request $request){
+        $washer_id = $request->get('washer_id');
+        CarWasher::where('id', $washer_id)->delete();
+
+        Alert::toast('Washer Record Deleted','warning');
+        return back();
     }
 }

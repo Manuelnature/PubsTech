@@ -21,6 +21,7 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\WashersController;
 use App\Http\Controllers\WashingTransactionController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\CarwashDashboardController;
 
 
 // ==========AUTH
@@ -131,6 +132,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::get('washers', [WashersController::class, 'index']);
          Route::post('add_washer', [WashersController::class, 'add_car_washer'])->name('add_washer');
          Route::post('update_washer', [WashersController::class, 'update_car_washer'])->name('update_washer');
+         Route::post('delete_washer', [WashersController::class, 'delete_car_washer'])->name('delete_washer');
 
 
          // CAR WASHER DEBT ======================
@@ -147,7 +149,8 @@ Route::group(['middleware' => 'disable_back_button'], function () {
          Route::post('filter_transaction', [WashingTransactionController::class, 'filter_transaction'])->name('filter_transaction');
          Route::post('update_transaction_modal', [WashingTransactionController::class, 'update_transaction_modal'])->name('update_transaction_modal');
 
-
+        // CAR DASHBOARD ======================
+        Route::get('car_dash', [CarwashDashboardController::class, 'index']);
 
          // LOGOUT ======================
          Route::get('logout', [LoginController::class, 'logout_user'])->name('logout');

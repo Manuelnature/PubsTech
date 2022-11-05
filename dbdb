@@ -547,6 +547,25 @@ CREATE TABLE tbl_washer_debts(
 
 
 
+-- ================= Updates =============
+ALTER TABLE `tbl_pricing` DROP FOREIGN KEY `FK_pricing_service`; ALTER TABLE `tbl_pricing` ADD CONSTRAINT `FK_pricing_service` FOREIGN KEY (`service_id`) REFERENCES `tbl_services`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_washing_transactions` DROP FOREIGN KEY `FK_washer_transaction`; ALTER TABLE `tbl_washing_transactions` ADD CONSTRAINT `FK_washer_transaction` FOREIGN KEY (`washer_id`) REFERENCES `tbl_car_washers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_warehouse` ADD  CONSTRAINT `fkProduct` FOREIGN KEY (`product_id`) REFERENCES `tbl_products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_warehouse_logs` ADD  CONSTRAINT `fkwlogsProduct` FOREIGN KEY (`product_id`) REFERENCES `tbl_products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_sales_audit` ADD  CONSTRAINT `fk_audit_user` FOREIGN KEY (`user_id`) REFERENCES `tbl_users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_sales_audit` ADD  CONSTRAINT `fk_audit_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tbl_sales` ADD  CONSTRAINT `fk_sales_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
+
 
 
 

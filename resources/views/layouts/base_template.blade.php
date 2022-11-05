@@ -324,6 +324,14 @@
                 <li class="nav-header"><i class="fas fa-car-side"></i>  CAR WASHING BAY  <i class="fas fa-car-side"></i></li>
                 @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
                     <li class="nav-item">
+                        <li class="nav-link {{ Request::segment(1) === 'car_dash' ? 'active' : null }}">
+                            <a href="{{ url('car_dash' )}}" >
+                                <i class="nav-icon fas fa-car"></i>
+                                <p>Washing Bay Dashboard</p>
+                            </a>
+                        </li>
+                    </li>
+                    <li class="nav-item">
                         <li class="nav-link {{ Request::segment(1) === 'vehicles' ? 'active' : null }}">
                             <a href="{{ url('vehicles' )}}" >
                                 <i class="nav-icon fas fa-car"></i>
@@ -356,7 +364,7 @@
                             </a>
                         </li>
                     </li>
-                    
+
                 @endif
                 <li class="nav-item">
                     <li class="nav-link {{ Request::segment(1) === 'washing_transaction' ? 'active' : null }}">

@@ -186,15 +186,15 @@
                                 <i class="fas fa-edit"></i>
                                 </a>
 
-                                {{-- <a class="text-danger"
-                                    onclick="delete_product(this)"
+                                <a class="text-danger"
+                                    onclick="delete_washer(this)"
                                     data-toggle="modal"
-                                    data-target="#delete-product"
-                                    data-product_id="{{ $product->id }}"
-                                    data-product_name="{{ $product->name }}"
+                                    data-target="#delete_washer"
+                                    data-washer_id="{{ $washer->id}}"
+                                    data-washer_nickname="{{ $washer->nickname  }}"
                                 >
                                 <i class="fas fa-trash"></i>
-                                </a> --}}
+                                </a>
                             </td>
 
                         </tr>
@@ -289,23 +289,23 @@
       </div>
       <!-- /.modal -->
 
-      {{-- <div class="modal fade" id="delete-product" >
+      <div class="modal fade" id="delete_washer" >
         <div class="modal-dialog">
           <div class="modal-content">
 
-            <form action="{{ route('delete_product') }}" method="POST">
+            <form action="{{ route('delete_washer') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="form-group">
-                            <input type="hidden" class="form-control" id="product_id" name="product_id">
+                            <input type="hidden" class="form-control" id="washer_id" name="washer_id">
                         </div>
                         <h5 class="text-center mb-4">Are you sure you want to delete </h5>
-                        <h4 id="product_name" class="text-center text-bold mb-4"></h4>
+                        <h4 id="washer_nickname" class="text-center text-bold mb-4"></h4>
 
                         <div class="text-center">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger pl-3 pr-3">Yes</button>
+                            <button type="submit" class="btn btn-danger pl-3 pr-3" style="width: 80px" >Yes</button>
                         </div>
                     </div>
                 </div>
@@ -315,7 +315,7 @@
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
-      </div> --}}
+      </div>
 
 
 
@@ -352,18 +352,18 @@
     }
 
 
-    // function delete_product() {
-    //     $('#delete-product').on('shown.bs.modal', function(e) {
-    //     var link = $(e.relatedTarget)
-    //         modal = $(this)
-    //     var product_id = link.data('product_id')
-    //     var product_name = link.data('product_name')
+    function delete_washer() {
+        $('#delete_washer').on('shown.bs.modal', function(e) {
+        var link = $(e.relatedTarget)
+            modal = $(this)
+        var washer_id = link.data('washer_id')
+        var washer_nickname = link.data('washer_nickname')
 
-    //     modal.find('#product_id').val(product_id);
-    //     document.getElementById('product_name').innerHTML = product_name;
-    //     });
+        modal.find('#washer_id').val(washer_id);
+        document.getElementById('washer_nickname').innerHTML = washer_nickname.charAt(0).toUpperCase()+ washer_nickname.slice(1);
+        });
 
-    // }
+    }
 
   </script>
 

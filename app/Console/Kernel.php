@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +16,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('hello:world')->everyMinute();
+        // $schedule->command('user:end_stock')->everyMinute();
+        // $schedule->call('App\Http\Controllers\LoginController@logout_user')->everyMinute();
+        $schedule->call('Full\Namespace\LoginController@logout_user')->everyMinute();
+
+        $schedule->call(function () {
+            Log::channel('my_logs')->info('Scheduler Scheduler');
+        })->everyMinute();
     }
 
     /**

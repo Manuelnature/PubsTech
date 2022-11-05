@@ -233,104 +233,67 @@
         </section>
 
 
-        <!--=========== INITIAL DASHBOARD PRESENTATION========================-->
-            <!-- Small boxes (Stat box) -->
-            {{-- <div class="row">
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>{{ $total_products }}</h3>
-                    <p>Total Products</p>
-                </div>
-                <div class="inner">
-                    <h3>{{ $total_products }}</h3>
-                    <p>Total Products</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>{{ $total_no_of_items }}<sup style="font-size: 20px"></sup></h3>
-                    <p>Total Items (Pieces)</p>
-                </div>
-                <div class="inner">
-                    <h3>
-                        @php
-                            echo 'Gh¢ '.number_format($total_price_of_items,2);
-                        @endphp
-                    <sup style="font-size: 20px"></sup></h3>
-                    <p>Total Price</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $total_quantity_sold }}</h3>
-                    <p>Total Quantity Sold</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-                <div class="inner">
-                    <h3>
-                        @php
-                            echo 'Gh¢ '.number_format($total_expected_sold_price,2);
-                        @endphp
-                    </h3>
-                    <p>Expected Price</p>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>
-                        @php
-                            $total_remaining_items = (double)$total_no_of_items - (double)$total_quantity_sold;
-                            echo $total_remaining_items;
-                        @endphp
-                    </h3>
-                    <p>Total Quantity Remaining</p>
-                </div>
-                <div class="inner">
-                    <h3>
-                        @php
-                            $total_expected_remaining_price = (double)$total_price_of_items - (double)$total_expected_sold_price;
-                            echo 'Gh¢ '.number_format($total_expected_remaining_price,2);
-                        @endphp
-                    </h3>
-                    <p>Expected Price</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <!-- ./col -->
-            </div> --}}
-            <!-- /.row -->
-
-
         @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
+            <section class="content">
+                <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                        <h3>{{ $total_number_of_products }}</h3>
+
+                        <p>Products</p>
+                        </div>
+                        <div class="icon">
+                        <i class="ion ion-bag"></i>
+                        </div>
+                        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+                    </div>
+                    </div>
+                    <!-- ./col -->
+
+                    <div class="col-lg-4 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                        <h3>{{ $total_number_of_users }}</h3>
+
+                        <p>Users</p>
+                        </div>
+                        <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                        </div>
+                        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+                    </div>
+                    </div>
+
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{ $total_number_of_car_washers }}<sup style="font-size: 20px"></sup></h3>
+
+                            <p>Car Washers</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+                        </div>
+                    </div>
+                    <!-- ./col -->
+
+                </div>
+                <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </section>
+        @endif
+
+
+
+        {{-- @if ($user_session_details->role == 'Super Admin' || $user_session_details->role == 'Admin')
             <!-- Overall Info -->
             <section class="content">
                 <div class="container-fluid">
@@ -418,10 +381,10 @@
 
                 </div><!--/. container-fluid -->
             </section>
-        @endif
+        @endif --}}
 
 
-        
+
 
     <section class="content">
         <div class="container-fluid">

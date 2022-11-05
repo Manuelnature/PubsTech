@@ -133,12 +133,12 @@ class LoginController extends Controller
 
 
     public function logout_user(Request $request){
-        $date_and_time_now = Carbon::now()->toDateTimeString();
 
         $user_session = Session::get('user_session');
         Log::channel('my_logs')->info('SESSION FOUND ');
         Log::channel('my_logs')->info($user_session );
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        // $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
         $current_user_id = $user_session->id;
 
         Log::channel('my_logs')->info('SESSION assigned ');
@@ -149,14 +149,12 @@ class LoginController extends Controller
 
         // $get_all_from_warehouse = Warehouse::all();
         $get_all_from_retail = Retail::all();
-        Log::channel('my_logs')->info('RETAIL ARRAY FOUND ');
-        Log::channel('my_logs')->info(count($get_all_from_retail));
-        $my_variable = 0;
+
 
         if (count($get_all_from_retail) > 0) {
-            Log::channel('my_logs')->info('EEEEEEEEEEEEEEEE IN IF STATEMENT');
+
             foreach ($get_all_from_retail as $retail_details) {
-                $my_variable = $my_variable + 1;
+
                 Log::channel('my_logs')->info('FOREACHHHHHHHHHHHHH');
                 $product_id = $retail_details->product_id;
 
@@ -219,7 +217,6 @@ class LoginController extends Controller
                 }
 
             }
-            Log::channel('my_logs')->info('My variable is : '.$my_variable);
         }
         Log::channel('my_logs')->info('LLLLLLLASSSSSSSSSSST ALLLLLLLLLLL');
         $request->session()->forget('user_session');

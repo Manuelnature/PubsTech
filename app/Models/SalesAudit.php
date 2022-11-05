@@ -57,7 +57,6 @@ class SalesAudit extends Model
             ->join('tbl_users', 'tbl_sales_audit.user_id', '=', 'tbl_users.id')
             ->where('tbl_sales_audit.created_at', '=', $last_audit_time)
             ->get();
-
         }catch(exception $e){
             echo 'Caught exception';
         }
