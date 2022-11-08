@@ -54,7 +54,7 @@
                         <!-- /.card-header -->
 
                         <div class="card-body">
-                            <form action="{{ route('filter_sales') }}" method="POST">
+                            <form action="{{ route('filter_car_dash') }}" method="POST">
                                 @csrf
                                 <div class="row mb-3">
 
@@ -190,101 +190,101 @@
 
 
     <section class="content">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card">
-                    <div class="card-header">
-                      <h5 class="card-title" style="font-weight: 800;">Overall Washing Records
-                        <span style="margin-left:40px !important">
-                            {{-- {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('j F, Y')}}
-                            <strong> &nbsp;-&nbsp; </strong>
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('j F, Y')}} --}}
-                        </span>
-                      </h5>
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title" style="font-weight: 800;">Overall Washing Records
+                    <span style="margin-left:40px !important">
+                        {{ \Carbon\Carbon::parse($carwash_start_date)->format('j F, Y')}}
+                        <strong> &nbsp;-&nbsp; </strong>
+                        {{ \Carbon\Carbon::parse($carwash_end_date)->format('j F, Y')}}
+                    </span>
+                    </h5>
 
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                          <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                          <i class="fas fa-times"></i>
-                        </button>
-                      </div>
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                     </div>
-                    <!-- /.card-header -->
+                </div>
+                <!-- /.card-header -->
 
 
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12 col-sm-4 col-md-4">
-                              <div class="info-box mb-3">
-                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-4 col-md-4">
+                            <div class="info-box mb-3">
+                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
 
-                                <div class="info-box-content">
-                                  <span class="info-box-text">Total Vehicles Washed</span>
-                                  <span class="info-box-number">{{ $total_vehicles_washed }}</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                              </div>
-                              <!-- /.info-box -->
+                            <div class="info-box-content">
+                                <span class="info-box-text">Total Vehicles Washed</span>
+                                <span class="info-box-number">{{ $total_vehicles_washed }}</span>
                             </div>
+                            <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
 
 
-                            <!-- fix for small devices only -->
-                            <div class="clearfix hidden-md-up"></div>
+                        <!-- fix for small devices only -->
+                        <div class="clearfix hidden-md-up"></div>
 
-                            <div class="col-12 col-sm-4 col-md-4">
-                              <div class="info-box mb-3">
+                        <div class="col-12 col-sm-4 col-md-4">
+                            <div class="info-box mb-3">
+                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">Expected Amount</span>
+                                <span class="info-box-number">
+                                @php
+                                    echo 'Gh¢ '.number_format($total_washing_amount, 2);
+                                @endphp
+                                </span>
+                            </div>
+                            <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+
+                        <div class="col-12 col-sm-4 col-md-4">
+                            <div class="info-box mb-3">
                                 <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
 
                                 <div class="info-box-content">
-                                  <span class="info-box-text">Expected Amount</span>
-                                  <span class="info-box-number">
+                                <span class="info-box-text">Expected Washer Commission</span>
+                                <span class="info-box-number">
                                     @php
-                                        echo 'Gh¢ '.number_format($total_washing_amount, 2);
+                                        echo 'Gh¢ '.number_format($total_washers_commision, 2);
                                     @endphp
-                                  </span>
+                                </span>
                                 </div>
                                 <!-- /.info-box-content -->
-                              </div>
-                              <!-- /.info-box -->
+                            </div>
+                            <!-- /.info-box -->
                             </div>
 
-                            <div class="col-12 col-sm-4 col-md-4">
-                                <div class="info-box mb-3">
-                                  <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-coins"></i></span>
-
-                                  <div class="info-box-content">
-                                    <span class="info-box-text">Expected Washer Commission</span>
-                                    <span class="info-box-number">
-                                      @php
-                                          echo 'Gh¢ '.number_format($total_washers_commision, 2);
-                                      @endphp
-                                    </span>
-                                  </div>
-                                  <!-- /.info-box-content -->
-                                </div>
-                                <!-- /.info-box -->
-                              </div>
-
-                          </div>
-                      <!-- /.row -->
-                    </div>
-                    <!-- ./card-body -->
-                    <div class="card-footer">
-
-
-                    </div>
-                    <!-- /.card-footer -->
-                  </div>
-                  <!-- /.card -->
+                        </div>
+                    <!-- /.row -->
                 </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
-            </div><!--/. container-fluid -->
-        </section>
+                <!-- ./card-body -->
+                <div class="card-footer">
+
+
+                </div>
+                <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!--/. container-fluid -->
+    </section>
 
 
     <!-- Overall Sales Records -->
@@ -295,12 +295,13 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title" style="font-weight: 800;">Individual Washing Records</h3>
+                  <h3 class="card-title" style="font-weight: 800;">Individual Washing Records
                         <span style="margin-left:40px !important">
-                            {{-- {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_start_date'])->format('j F, Y')}}
+                            {{ \Carbon\Carbon::parse($carwash_start_date)->format('j F, Y')}}
                             <strong> &nbsp;-&nbsp; </strong>
-                            {{ \Carbon\Carbon::parse($all_transaction_dates[0]['sales_end_date'])->format('j F, Y')}} --}}
+                            {{ \Carbon\Carbon::parse($carwash_end_date)->format('j F, Y')}}
                         </span>
+                    </h3>
                   <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                       <i class="fas fa-minus"></i>

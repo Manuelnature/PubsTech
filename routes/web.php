@@ -151,6 +151,7 @@ Route::group(['middleware' => 'disable_back_button'], function () {
 
         // CAR DASHBOARD ======================
         Route::get('car_dash', [CarwashDashboardController::class, 'index']);
+        Route::post('filter_car_dash', [CarwashDashboardController::class, 'filter_transaction_records'])->name('filter_car_dash');
 
          // LOGOUT ======================
          Route::get('logout', [LoginController::class, 'logout_user'])->name('logout');
