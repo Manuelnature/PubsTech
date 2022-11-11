@@ -15,9 +15,11 @@ use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
 use Carbon\Carbon;
+use Log;
 
 class HomeController extends Controller
 {
+
     public function index(){
         $get_all_products = Products::all();
         if (count($get_all_products) > 0) {
@@ -29,6 +31,7 @@ class HomeController extends Controller
         // $total_number_of_products = count($get_all_products);
 
         // $get_all_warehouse_records = Warehouse::all();
+
 
 
         $get_all_washers = CarWasher::all();
@@ -133,8 +136,6 @@ class HomeController extends Controller
         }
 
 
-
-
         $overall_transfer_record = $this->overall_transfer_record();
 
         $get_transfer_start_date = Dashboard::transfer_start_date();
@@ -152,12 +153,17 @@ class HomeController extends Controller
         }
         // $transfer_end_date = $get_transfer_end_date[0]->created_at;
 
+
+
+
         array_push( $all_transaction_dates, ['sales_start_date' => $sales_start_date, 'sales_end_date'=>$sales_end_date, 'transfer_start_date'=>$transfer_start_date, 'transfer_end_date'=>$transfer_end_date]);
 
         return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates'));
 
         // return view('pages.dashboard', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users','all_filter_records', 'filter_transfer_data', 'filter_sales_data', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data'));
     }
+
+
 
 
     public function retailer_dashboard(){

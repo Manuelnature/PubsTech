@@ -15,6 +15,7 @@ use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
 use Carbon\Carbon;
+use Log;
 
 class HomeController extends Controller
 {
@@ -129,6 +130,7 @@ class HomeController extends Controller
         return view('pages.home', compact('total_number_of_products', 'total_number_of_car_washers', 'total_number_of_users', 'individual_total_quantity_sold', 'individual_total_expected_price', 'individual_all_sales_data', 'all_sales_audit_records', 'get_retail_records', 'overall_sales_record', 'overall_transfer_record', 'all_transaction_dates',  'overall_total_expected_price', 'overall_total_quantity_sold'));
 
     }
+
 
 
     public function retailer_dashboard(){

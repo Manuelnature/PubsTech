@@ -562,6 +562,26 @@ ALTER TABLE `tbl_sales_audit` ADD  CONSTRAINT `fk_audit_product` FOREIGN KEY (`p
 
 ALTER TABLE `tbl_sales` ADD  CONSTRAINT `fk_sales_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `tbl_sales_audit`  ADD `status` VARCHAR(100) NULL  AFTER `starting_stock_price`;
+
+
+
+Add another column called "status" to the table (possible values are start_stock and end_stock) All caps in the db
+1. Query all users in the system
+2. Loop through all the users
+    a. get the user id
+    start here
+
+    1. Query tbl_sales_audit where the status = "Start_stock" and date is previous day(n-1);
+        a. Loop through each record and get user_id and product_id;
+        b. Get the sum of quantity_sold and the sum of expected_price in sales table for this particular user_id and product_id.
+        c. Ending stock -- Substract the total quantity sold from the starting stock in tbl_sales_audit;
+        d. Update ending_stock and expected_amount and status in tbl_sales_audit;
+
+    c. Update all those rows with with their ending_stock and expected_amount and change status to end_stock
+    d.
+
+
 
 
 

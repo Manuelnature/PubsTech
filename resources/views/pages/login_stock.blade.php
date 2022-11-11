@@ -73,7 +73,8 @@
                       <tr>
                           <th>Product Name</th>
                           <th>Price Per Item</th>
-                          <th>Stock Left</th>
+                          <th>Starting Stock</th>
+                          <th>Ending Stock</th>
                           <th>Expected Price</th>
                           <th>Date & Time</th>
                       </tr>
@@ -85,20 +86,27 @@
                                     <td>{{ ucwords(trans($audit_record->name)) }}</td>
                                     <td>{{ $audit_record->price_per_item }}</td>
                                     <td>{{ $audit_record->starting_stock}}</td>
-                                    <td>
+                                    <td>{{ $audit_record->ending_stock}}</td>
+                                    {{-- <td>
                                         @php
                                             $expected_amount = (double)$audit_record->starting_stock * (double)$audit_record->price_per_item;
                                             echo 'Gh¢ '.number_format($expected_amount, 2);
+                                        @endphp
+                                    </td> --}}
+                                    <td>
+                                        @php
+                                            echo 'Gh¢ '.number_format($audit_record->expected_amount, 2);
                                         @endphp
                                     </td>
                                     <td>{{ $audit_record->created_at}}</td>
                                 </tr>
                             @endforeach
-                        @else
+                        {{-- @else
                             @foreach ($get_retail_records as $retail_details)
                                 <tr>
                                     <td>{{ ucwords(trans($retail_details->name)) }}</td>
                                     <td>{{ $retail_details->price_per_piece }}</td>
+                                    <td>{{ $retail_details->total_quantity}}</td>
                                     <td>{{ $retail_details->total_quantity}}</td>
                                     <td>
                                         @php
@@ -108,7 +116,7 @@
                                     </td>
                                     <td>{{ $audit_record->created_at}}</td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                             {{-- <tr>
                                 <td>-</td>
                                 <td>0</td>
@@ -139,6 +147,11 @@
   @section('Extra_JS')
   <script src="{{ asset('assets/js/extraJS.js') }}" ></script>
   @endsection
+
+  <script>
+    var today = new Date().toISOString().split('T')[0];
+    document.getElementsByName("txt_stock_date")[0].setAttribute('max', today);
+</script>
 
   <script>
     function edit_product() {
@@ -228,7 +241,7 @@
                 "lengthChange": true,
                 "ordering": true,
                 "info": true,
-                "order": [[ 4, "desc" ]],
+                "order": [[ 5, "asc" ]],
                 "buttons": ["csv", "excel", "pdf", "print"]
                 }).buttons().container().appendTo('#stock_left_wrapper .col-md-6:eq(0)');
         });

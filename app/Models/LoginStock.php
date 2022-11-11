@@ -8,6 +8,29 @@ use Illuminate\Support\Facades\DB;
 
 class LoginStock extends Model
 {
+
+    public static function select_audit(){
+        return  DB::table('tbl_sales_audit')
+        ->select('created_at')
+        ->orderBy('created_at', 'desc')
+        ->limit(1)
+        ->get();
+    }
+
+    public static function get_all_product_audit_records($last_audit_time){
+        try{
+            return  DB::table('tbl_products')
+            ->select('tbl_products.*', 'tbl_sales_audit.*', 'tbl_users.*')
+            ->join('tbl_sales_audit', 'tbl_sales_audit.product_id', '=', 'tbl_products.id')
+            ->join('tbl_users', 'tbl_sales_audit.user_id', '=', 'tbl_users.id')
+            ->where('tbl_sales_audit.created_at', '=', $last_audit_time)
+            ->get();
+        }catch(exception $e){
+            echo 'Caught exception';
+        }
+    }
+
+
     public static function filter_login_stock($date, $active_user_id){
         try{
             return  DB::table('tbl_products')

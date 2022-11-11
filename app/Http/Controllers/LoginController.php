@@ -103,7 +103,7 @@ class LoginController extends Controller
 
         $user_session = Session::get('user_session');
         $current_user_id = $user_session->id;
-        $active_user = $user_session->first_name." ".$user_session->last_name;
+        $active_user = $user_session->username;
         $sales_audit_records = array();
         $date_and_time_now = Carbon::now()->toDateTimeString();
         $today_date = Carbon::now()->format('Y-m-d');
@@ -121,6 +121,7 @@ class LoginController extends Controller
                 $sales_audit->user_id = $current_user_id;
                 $sales_audit->product_id = $product_id;
                 $sales_audit->starting_stock = $stock_left;
+                $sales_audit->status = 'START_STOCK';
                 $sales_audit->sales_date = $today_date;
                 $sales_audit->created_by = $active_user;
                 $sales_audit->save();
@@ -177,6 +178,7 @@ class LoginController extends Controller
                     $difference_in_stock = (int)$starting_stock - (int)$stock_left;
                     $expected_amount = (double)($price_per_item) * (double)$difference_in_stock;
 
+                    $sales_audit->status = 'END_STOCK';
                     $sales_audit->ending_stock = $stock_left;
                     $sales_audit->expected_amount = $expected_amount;
                     $sales_audit->save();
@@ -205,6 +207,7 @@ class LoginController extends Controller
                             $sales_audit->user_id = $current_user_id;
                             $sales_audit->product_id = $product_id;
                             $sales_audit->starting_stock = $starting_stock;
+                            $sales_audit->status = 'END_STOCK';
                             $sales_audit->ending_stock = $ending_stock;
                             $sales_audit->expected_amount = $expected_amount;
                             $sales_audit->sales_date = $today_date;
@@ -224,28 +227,6 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-
-
-
-     // $get_all_from_sales_audit = SalesAudit::find($main_product_id);
-
-    //  $get_all_from_sales_audit = SalesAudit::where('product_id', $main_product_id)->get()[0];
-    //  if($get_all_from_sales_audit){
-    //      $sales_audit = SalesAudit::where('product_id', $main_product_id)->get()[0];
-    //      $sales_audit->user_id = $current_user_id;
-    //      // $sales_audit->product_id = $main_product_id;
-    //      $sales_audit->starting_stock = $stock_left;
-    //      $sales_audit->sales_date = $today_date;
-    //      $sales_audit->save();
-    //  }
-    //  else{
-    //      $sales_audit = new SalesAudit();
-    //      $sales_audit->user_id = $current_user_id;
-    //      $sales_audit->product_id = $main_product_id;
-    //      $sales_audit->starting_stock = $stock_left;
-    //      $sales_audit->sales_date = $today_date;
-    //      $sales_audit->save();
-    //  }
 
 
 

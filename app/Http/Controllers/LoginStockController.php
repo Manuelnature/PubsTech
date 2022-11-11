@@ -17,11 +17,10 @@ class LoginStockController extends Controller
     public function index(){
 
         $date = Carbon::now()->format('Y-m-d');
-        $last_audit_time = SalesAudit::select_audit();
+        $last_audit_time = LoginStock::select_audit();
         if(count($last_audit_time) > 0){
-
             $last_audit_time = $last_audit_time[0]->created_at;
-            $all_sales_audit_records = SalesAudit::get_all_product_audit_records($last_audit_time);
+            $all_sales_audit_records = LoginStock::get_all_product_audit_records($last_audit_time);
             // dd($all_sales_audit_records);
         }
         else{
@@ -49,7 +48,7 @@ class LoginStockController extends Controller
             }
             else
             {
-                $all_sales_audit_records = array();
+                // $all_sales_audit_records = array();
                 // $all_sales_audit_records = Retail::get_each_product_details();
                 Alert::toast('No records found on the selected date','warning');
                 return redirect('login_stock');
@@ -61,7 +60,7 @@ class LoginStockController extends Controller
         }
         else {
             Alert::toast('No date selected','warning');
-            return back();
+            return redirect('login_stock');
         }
 
 

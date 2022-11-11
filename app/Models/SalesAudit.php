@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SalesAudit extends Model
 {
@@ -61,4 +62,23 @@ class SalesAudit extends Model
             echo 'Caught exception';
         }
     }
+
+    public static function get_yesterday_audit(){
+        return  DB::table('tbl_sales_audit')
+        ->select('tbl_sales_audit.*')
+        ->where('status', '=', 'START_STOCK')
+        ->where(DB::raw('CAST(created_at as date)'), '=', Carbon::now()->subDays(1)->format('Y-m-d'))
+        ->get();
+    }
+
+
+    public static function get_records_from_sales($product_id, $username, $yesterday_date){
+        return  DB::table('tbl_sales')
+        ->select('tbl_sales.*')
+        ->where('product_id', '=', $product_id)
+        ->where('created_by', '=', $username)
+        ->where(DB::raw('CAST(created_at as date)'), '=', $yesterday_date)
+        ->get();
+    }
+
 }
