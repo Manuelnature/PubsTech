@@ -39,6 +39,8 @@ class LoginStockController extends Controller
         $user_session = Session::get('user_session');
         $active_user_id = $user_session->id;
 
+        // dd($request->get('txt_stock_date'));
+
         if ($request->get('txt_stock_date') != NULL || $request->get('txt_stock_date') != "") {
             $date = $request->get('txt_stock_date');
 

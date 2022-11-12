@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Oct 30, 2022 at 07:25 PM
+-- Generation Time: Nov 12, 2022 at 04:08 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -46,7 +46,9 @@ CREATE TABLE `tbl_car_washers` (
 --
 
 INSERT INTO `tbl_car_washers` (`id`, `firstname`, `lastname`, `nickname`, `phone_number`, `bio`, `created_at`, `created_by`, `updated_by`, `updated_at`) VALUES
-(1, 'Naki', 'Tan', 'Nacktan', '0245152323', '', '2022-10-23 12:13:53', 'Manuel Tetteh', NULL, NULL);
+(2, 'Abudu', 'Wahab', 'Liliah', '024565789', 'Hey there', '2022-11-03 23:29:38', 'Manuel Tetteh', NULL, NULL),
+(3, 'Abhim', 'Abuga', 'Buga', '0245124578', '', '2022-11-05 02:19:39', 'Manuel Tetteh', NULL, NULL),
+(4, 'Nimla', 'Koni', 'Koni Wai', '024512452', '', '2022-11-05 02:19:57', 'Manuel Tetteh', 'Manuel Tetteh', '2022-11-05 03:19:06');
 
 -- --------------------------------------------------------
 
@@ -77,7 +79,7 @@ INSERT INTO `tbl_pricing` (`id`, `service_id`, `vehicle_type_id`, `price`, `desc
 (4, 1, 2, NULL, NULL, '2022-10-28 22:58:15', 'manuel', NULL, NULL),
 (5, 2, 2, NULL, NULL, '2022-10-28 22:58:15', 'manuel', NULL, NULL),
 (6, 3, 2, NULL, NULL, '2022-10-28 22:58:15', 'manuel', NULL, NULL),
-(7, 4, 1, NULL, NULL, '2022-10-28 22:59:02', 'manuel', NULL, NULL),
+(7, 4, 1, '12', '', '2022-10-28 22:59:02', 'manuel', 'manuel', '2022-11-05 01:55:19'),
 (8, 4, 2, NULL, NULL, '2022-10-28 22:59:02', 'manuel', NULL, NULL),
 (9, 1, 3, '30', '', '2022-10-28 22:59:36', 'manuel', 'manuel', '2022-10-29 13:16:10'),
 (10, 2, 3, '40', '', '2022-10-28 22:59:36', 'manuel', 'manuel', '2022-10-29 13:16:23'),
@@ -144,10 +146,10 @@ CREATE TABLE `tbl_retail` (
 --
 
 INSERT INTO `tbl_retail` (`id`, `product_id`, `price_per_piece`, `stock_before`, `stock_after`, `no_of_crates`, `no_of_pieces`, `total_quantity`, `total_amount`, `created_at`, `updated_at`) VALUES
-(1, 1, '6', '17', '16', '1', '4', '16', '96', '2022-10-21 15:28:22', NULL),
-(2, 4, '9', '15', '14', '0', '14', '14', '126', '2022-10-21 15:29:49', NULL),
-(3, 2, '10', '16', '15', '1', '3', '15', '150', '2022-10-21 15:30:30', NULL),
-(4, 3, '9', '16', '18', '1', '6', '18', '162', '2022-10-21 15:31:28', '2022-10-27 09:52:58');
+(1, 1, '6', '14', '13', '1', '1', '13', '78', '2022-10-21 15:28:22', NULL),
+(2, 4, '9', '14', '13', '0', '13', '13', '117', '2022-10-21 15:29:49', NULL),
+(3, 2, '10', '13', '12', '1', '0', '12', '120', '2022-10-21 15:30:30', NULL),
+(4, 3, '9', '18', '17', '1', '5', '17', '153', '2022-10-21 15:31:28', '2022-10-27 09:52:58');
 
 -- --------------------------------------------------------
 
@@ -183,7 +185,13 @@ INSERT INTO `tbl_sales` (`id`, `product_id`, `original_stock`, `stock_before`, `
 (4, 4, NULL, '15', '14', '1', '9', NULL, '2022-10-21 16:24:16', NULL, 'Manuel Tetteh', '2022-10-21 16:24:16', NULL, '2022-10-21 16:24:16'),
 (5, 2, NULL, '19', '16', '3', '30', NULL, '2022-10-26 23:31:01', NULL, 'Manuel Tetteh', '2022-10-26 23:31:01', NULL, '2022-10-26 23:31:01'),
 (6, 3, NULL, '15', '13', '2', '18', NULL, '2022-10-26 23:32:59', NULL, 'Manuel Tetteh', '2022-10-26 23:32:59', NULL, '2022-10-26 23:32:59'),
-(7, 2, NULL, '16', '15', '1', '10', NULL, '2022-10-27 11:42:19', NULL, 'Manuel Tetteh', '2022-10-27 11:42:19', NULL, '2022-10-27 11:42:19');
+(7, 2, NULL, '16', '15', '1', '10', NULL, '2022-10-27 11:42:19', NULL, 'Manuel Tetteh', '2022-10-27 11:42:19', NULL, '2022-10-27 11:42:19'),
+(8, 2, NULL, '15', '13', '2', '20', NULL, '2022-10-30 19:17:46', NULL, 'manuel', '2022-10-30 19:17:46', NULL, '2022-10-30 19:17:46'),
+(9, 1, NULL, '16', '14', '2', '12', NULL, '2022-11-09 22:57:38', NULL, 'manuel', '2022-11-09 22:57:38', NULL, '2022-11-09 22:57:38'),
+(10, 1, NULL, '14', '13', '1', '6', NULL, '2022-11-09 23:10:21', NULL, 'manuel', '2022-11-09 23:10:21', NULL, '2022-11-09 23:10:21'),
+(11, 2, NULL, '13', '12', '1', '10', NULL, '2022-11-10 23:40:34', NULL, 'manuel', '2022-11-10 23:40:34', NULL, '2022-11-10 23:40:34'),
+(12, 4, NULL, '14', '13', '1', '9', NULL, '2022-11-10 23:40:45', NULL, 'manuel', '2022-11-10 23:40:45', NULL, '2022-11-10 23:40:45'),
+(13, 3, NULL, '18', '17', '1', '9', NULL, '2022-11-10 23:40:52', NULL, 'manuel', '2022-11-10 23:40:52', NULL, '2022-11-10 23:40:52');
 
 -- --------------------------------------------------------
 
@@ -197,6 +205,7 @@ CREATE TABLE `tbl_sales_audit` (
   `product_id` int(11) DEFAULT NULL,
   `starting_stock` varchar(20) DEFAULT NULL,
   `starting_stock_price` varchar(20) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
   `ending_stock` varchar(20) DEFAULT NULL,
   `ending_stock_price` varchar(20) DEFAULT NULL,
   `expected_amount` varchar(20) DEFAULT NULL,
@@ -211,79 +220,35 @@ CREATE TABLE `tbl_sales_audit` (
 -- Dumping data for table `tbl_sales_audit`
 --
 
-INSERT INTO `tbl_sales_audit` (`id`, `user_id`, `product_id`, `starting_stock`, `starting_stock_price`, `ending_stock`, `ending_stock_price`, `expected_amount`, `sales_date`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES
-(1, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-21', 'Manuel Tetteh', '2022-10-21 16:29:45', NULL, '2022-10-21 16:29:45'),
-(2, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-21', 'Manuel Tetteh', '2022-10-21 16:29:45', NULL, '2022-10-21 16:29:45'),
-(3, 1, 2, '19', NULL, NULL, NULL, NULL, '2022-10-21', 'Manuel Tetteh', '2022-10-21 16:29:45', NULL, '2022-10-21 16:29:45'),
-(4, 1, 3, '15', NULL, NULL, NULL, NULL, '2022-10-21', 'Manuel Tetteh', '2022-10-21 16:29:45', NULL, '2022-10-21 16:29:45'),
-(5, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 12:09:26', NULL, '2022-10-23 12:09:26'),
-(6, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 12:09:26', NULL, '2022-10-23 12:09:26'),
-(7, 1, 2, '19', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 12:09:26', NULL, '2022-10-23 12:09:26'),
-(8, 1, 3, '15', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 12:09:26', NULL, '2022-10-23 12:09:26'),
-(9, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 15:05:07', NULL, '2022-10-23 15:05:07'),
-(10, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 15:05:07', NULL, '2022-10-23 15:05:07'),
-(11, 1, 2, '19', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 15:05:07', NULL, '2022-10-23 15:05:07'),
-(12, 1, 3, '15', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 15:05:07', NULL, '2022-10-23 15:05:07'),
-(13, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 17:24:08', NULL, '2022-10-23 17:24:08'),
-(14, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 17:24:08', NULL, '2022-10-23 17:24:08'),
-(15, 1, 2, '19', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 17:24:08', NULL, '2022-10-23 17:24:08'),
-(16, 1, 3, '15', NULL, NULL, NULL, NULL, '2022-10-23', 'Manuel Tetteh', '2022-10-23 17:24:08', NULL, '2022-10-23 17:24:08'),
-(17, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-25', 'Manuel Tetteh', '2022-10-25 20:50:46', NULL, '2022-10-25 20:50:46'),
-(18, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-25', 'Manuel Tetteh', '2022-10-25 20:50:46', NULL, '2022-10-25 20:50:46'),
-(19, 1, 2, '19', NULL, NULL, NULL, NULL, '2022-10-25', 'Manuel Tetteh', '2022-10-25 20:50:46', NULL, '2022-10-25 20:50:46'),
-(20, 1, 3, '15', NULL, NULL, NULL, NULL, '2022-10-25', 'Manuel Tetteh', '2022-10-25 20:50:46', NULL, '2022-10-25 20:50:46'),
-(21, 1, 1, '16', NULL, '16', NULL, '0', '2022-10-26', 'Manuel Tetteh', '2022-10-26 21:05:08', NULL, '2022-10-26 21:05:08'),
-(22, 1, 4, '14', NULL, '14', NULL, '0', '2022-10-26', 'Manuel Tetteh', '2022-10-26 21:05:08', NULL, '2022-10-26 21:05:08'),
-(23, 1, 2, '19', NULL, '16', NULL, '30', '2022-10-26', 'Manuel Tetteh', '2022-10-26 21:05:08', NULL, '2022-10-26 21:05:08'),
-(24, 1, 3, '15', NULL, '16', NULL, '-9', '2022-10-26', 'Manuel Tetteh', '2022-10-26 21:05:08', NULL, '2022-10-26 21:05:08'),
-(25, 10, 1, '16', NULL, '16', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:41:27', NULL, '2022-10-26 21:41:27'),
-(26, 10, 4, '14', NULL, '14', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:41:27', NULL, '2022-10-26 21:41:27'),
-(27, 10, 2, '19', NULL, '19', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:41:27', NULL, '2022-10-26 21:41:27'),
-(28, 10, 3, '15', NULL, '15', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:41:27', NULL, '2022-10-26 21:41:27'),
-(29, 10, 1, '16', NULL, '16', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:43:13', NULL, '2022-10-26 21:43:13'),
-(30, 10, 4, '14', NULL, '14', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:43:13', NULL, '2022-10-26 21:43:13'),
-(31, 10, 2, '19', NULL, '19', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:43:13', NULL, '2022-10-26 21:43:13'),
-(32, 10, 3, '15', NULL, '15', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 21:43:13', NULL, '2022-10-26 21:43:13'),
-(33, 10, 1, '16', NULL, '16', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 22:58:47', NULL, '2022-10-26 22:58:47'),
-(34, 10, 4, '14', NULL, '14', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 22:58:47', NULL, '2022-10-26 22:58:47'),
-(35, 10, 2, '19', NULL, '19', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 22:58:47', NULL, '2022-10-26 22:58:47'),
-(36, 10, 3, '15', NULL, '15', NULL, '0', '2022-10-26', 'tt amenu', '2022-10-26 22:58:47', NULL, '2022-10-26 22:58:47'),
-(37, 10, 1, '16', NULL, NULL, NULL, NULL, '2022-10-26', 'tt amenu', '2022-10-26 23:09:19', NULL, '2022-10-26 23:09:19'),
-(38, 10, 4, '14', NULL, NULL, NULL, NULL, '2022-10-26', 'tt amenu', '2022-10-26 23:09:19', NULL, '2022-10-26 23:09:19'),
-(39, 10, 2, '19', NULL, NULL, NULL, NULL, '2022-10-26', 'tt amenu', '2022-10-26 23:09:19', NULL, '2022-10-26 23:09:19'),
-(40, 10, 3, '15', NULL, NULL, NULL, NULL, '2022-10-26', 'tt amenu', '2022-10-26 23:09:19', NULL, '2022-10-26 23:09:19'),
-(41, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 01:08:29', NULL, '2022-10-27 01:08:29'),
-(42, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 01:08:29', NULL, '2022-10-27 01:08:29'),
-(43, 1, 2, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 01:08:29', NULL, '2022-10-27 01:08:29'),
-(44, 1, 3, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 01:08:29', NULL, '2022-10-27 01:08:29'),
-(45, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 09:25:16', NULL, '2022-10-27 09:25:16'),
-(46, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 09:25:16', NULL, '2022-10-27 09:25:16'),
-(47, 1, 2, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 09:25:16', NULL, '2022-10-27 09:25:16'),
-(48, 1, 3, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 09:25:16', NULL, '2022-10-27 09:25:16'),
-(49, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 23:35:48', NULL, '2022-10-27 23:35:48'),
-(50, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 23:35:48', NULL, '2022-10-27 23:35:48'),
-(51, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 23:35:48', NULL, '2022-10-27 23:35:48'),
-(52, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-27', 'Manuel Tetteh', '2022-10-27 23:35:48', NULL, '2022-10-27 23:35:48'),
-(53, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-28', 'Manuel Tetteh', '2022-10-28 22:16:49', NULL, '2022-10-28 22:16:49'),
-(54, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-28', 'Manuel Tetteh', '2022-10-28 22:16:49', NULL, '2022-10-28 22:16:49'),
-(55, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-28', 'Manuel Tetteh', '2022-10-28 22:16:49', NULL, '2022-10-28 22:16:49'),
-(56, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-28', 'Manuel Tetteh', '2022-10-28 22:16:49', NULL, '2022-10-28 22:16:49'),
-(57, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 11:47:34', NULL, '2022-10-29 11:47:34'),
-(58, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 11:47:34', NULL, '2022-10-29 11:47:34'),
-(59, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 11:47:34', NULL, '2022-10-29 11:47:34'),
-(60, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 11:47:34', NULL, '2022-10-29 11:47:34'),
-(61, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 19:31:06', NULL, '2022-10-29 19:31:06'),
-(62, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 19:31:06', NULL, '2022-10-29 19:31:06'),
-(63, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 19:31:06', NULL, '2022-10-29 19:31:06'),
-(64, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 19:31:06', NULL, '2022-10-29 19:31:06'),
-(65, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 23:27:05', NULL, '2022-10-29 23:27:05'),
-(66, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 23:27:05', NULL, '2022-10-29 23:27:05'),
-(67, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 23:27:05', NULL, '2022-10-29 23:27:05'),
-(68, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-29', 'Manuel Tetteh', '2022-10-29 23:27:05', NULL, '2022-10-29 23:27:05'),
-(69, 1, 1, '16', NULL, NULL, NULL, NULL, '2022-10-30', 'Manuel Tetteh', '2022-10-30 17:34:45', NULL, '2022-10-30 17:34:45'),
-(70, 1, 4, '14', NULL, NULL, NULL, NULL, '2022-10-30', 'Manuel Tetteh', '2022-10-30 17:34:45', NULL, '2022-10-30 17:34:45'),
-(71, 1, 2, '15', NULL, NULL, NULL, NULL, '2022-10-30', 'Manuel Tetteh', '2022-10-30 17:34:45', NULL, '2022-10-30 17:34:45'),
-(72, 1, 3, '18', NULL, NULL, NULL, NULL, '2022-10-30', 'Manuel Tetteh', '2022-10-30 17:34:45', NULL, '2022-10-30 17:34:45');
+INSERT INTO `tbl_sales_audit` (`id`, `user_id`, `product_id`, `starting_stock`, `starting_stock_price`, `status`, `ending_stock`, `ending_stock_price`, `expected_amount`, `sales_date`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES
+(1, 1, 1, '16', NULL, 'END_STOCK', '16', NULL, '0', '2022-11-09', 'manuel', '2022-11-09 22:12:25', NULL, '2022-11-09 22:12:25'),
+(2, 1, 4, '14', NULL, 'END_STOCK', '14', NULL, '0', '2022-11-09', 'manuel', '2022-11-09 22:12:25', NULL, '2022-11-09 22:12:25'),
+(3, 1, 2, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-09', 'manuel', '2022-11-09 22:12:25', NULL, '2022-11-09 22:12:25'),
+(4, 1, 3, '18', NULL, 'END_STOCK', '18', NULL, '0', '2022-11-09', 'manuel', '2022-11-09 22:12:25', NULL, '2022-11-09 22:12:25'),
+(5, 1, 1, '16', NULL, 'END_STOCK', '13', NULL, '18', '2022-11-09', 'Manuel Tetteh', '2022-11-09 22:12:39', NULL, '2022-11-09 22:12:39'),
+(6, 1, 4, '14', NULL, 'END_STOCK', '14', NULL, '0', '2022-11-09', 'Manuel Tetteh', '2022-11-09 22:12:39', NULL, '2022-11-09 22:12:39'),
+(7, 1, 2, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-09', 'Manuel Tetteh', '2022-11-09 22:12:39', NULL, '2022-11-09 22:12:39'),
+(8, 1, 3, '18', NULL, 'END_STOCK', '18', NULL, '0', '2022-11-09', 'Manuel Tetteh', '2022-11-09 22:12:39', NULL, '2022-11-09 22:12:39'),
+(9, 1, 1, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:09:19', NULL, '2022-11-10 21:09:19'),
+(10, 1, 4, '14', NULL, 'END_STOCK', '14', NULL, '0', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:09:19', NULL, '2022-11-10 21:09:19'),
+(11, 1, 2, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:09:19', NULL, '2022-11-10 21:09:19'),
+(12, 1, 3, '18', NULL, 'END_STOCK', '18', NULL, '0', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:09:19', NULL, '2022-11-10 21:09:19'),
+(13, 1, 1, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:56:42', NULL, '2022-11-10 21:56:42'),
+(14, 1, 4, '14', NULL, 'END_STOCK', '13', NULL, '9', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:56:42', NULL, '2022-11-10 21:56:42'),
+(15, 1, 2, '13', NULL, 'END_STOCK', '12', NULL, '10', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:56:42', NULL, '2022-11-10 21:56:42'),
+(16, 1, 3, '18', NULL, 'END_STOCK', '17', NULL, '9', '2022-11-10', 'Manuel Tetteh', '2022-11-10 21:56:42', NULL, '2022-11-10 21:56:42'),
+(17, 1, 1, '13', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-10', 'manuel', '2022-11-10 23:42:10', NULL, '2022-11-10 23:42:10'),
+(18, 1, 4, '13', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-10', 'manuel', '2022-11-10 23:42:10', NULL, '2022-11-10 23:42:10'),
+(19, 1, 2, '12', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-10', 'manuel', '2022-11-10 23:42:10', NULL, '2022-11-10 23:42:10'),
+(20, 1, 3, '17', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-10', 'manuel', '2022-11-10 23:42:10', NULL, '2022-11-10 23:42:10'),
+(21, 1, 1, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-11', 'manuel', '2022-11-11 21:42:26', NULL, '2022-11-11 21:42:26'),
+(22, 1, 4, '13', NULL, 'END_STOCK', '13', NULL, '0', '2022-11-11', 'manuel', '2022-11-11 21:42:26', NULL, '2022-11-11 21:42:26'),
+(23, 1, 2, '12', NULL, 'END_STOCK', '12', NULL, '0', '2022-11-11', 'manuel', '2022-11-11 21:42:26', NULL, '2022-11-11 21:42:26'),
+(24, 1, 3, '17', NULL, 'END_STOCK', '17', NULL, '0', '2022-11-11', 'manuel', '2022-11-11 21:42:26', NULL, '2022-11-11 21:42:26'),
+(25, 1, 1, '13', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-11', 'manuel', '2022-11-11 23:32:24', NULL, '2022-11-11 23:32:24'),
+(26, 1, 4, '13', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-11', 'manuel', '2022-11-11 23:32:24', NULL, '2022-11-11 23:32:24'),
+(27, 1, 2, '12', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-11', 'manuel', '2022-11-11 23:32:24', NULL, '2022-11-11 23:32:24'),
+(28, 1, 3, '17', NULL, 'START_STOCK', NULL, NULL, NULL, '2022-11-11', 'manuel', '2022-11-11 23:32:24', NULL, '2022-11-11 23:32:24');
 
 -- --------------------------------------------------------
 
@@ -493,18 +458,6 @@ CREATE TABLE `tbl_washer_debts` (
   `updated_at` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `tbl_washer_debts`
---
-
-INSERT INTO `tbl_washer_debts` (`id`, `washer_id`, `debt_amount`, `amount_paid`, `amount_left`, `payment_status`, `paid_to`, `paid_on`, `remark`, `created_at`, `created_by`, `updated_by`, `updated_at`) VALUES
-(1, 1, '30', 20, '10', 'Partly Paid', NULL, '2022-10-12', 'Still owing 10', '2022-10-25 23:18:34', NULL, 'manuel', '2022-10-26 00:37:12'),
-(2, 1, '50', 20, '30', 'Partly Paid', NULL, '2022-10-14', '', '2022-10-29 00:07:10', NULL, 'manuel', '2022-10-29 00:21:50'),
-(3, 1, '20', NULL, '20', 'Not Paid', NULL, NULL, '', '2022-10-29 00:07:54', NULL, NULL, NULL),
-(4, 1, '15', 15, '0', 'Fully Paid', NULL, '2022-10-19', '', '2022-10-29 00:11:16', NULL, 'manuel', '2022-10-29 00:20:13'),
-(5, 1, '15', 7, '8', 'Partly Paid', 'tetteh', '2022-10-06', '', '2022-10-29 00:22:35', NULL, 'manuel', '2022-10-29 01:24:51'),
-(6, 1, '45', 40, '5', 'Partly Paid', 'akorli', '2022-10-07', '', '2022-10-29 01:10:14', NULL, 'manuel', '2022-10-29 01:24:31');
-
 -- --------------------------------------------------------
 
 --
@@ -531,7 +484,13 @@ CREATE TABLE `tbl_washing_transactions` (
 --
 
 INSERT INTO `tbl_washing_transactions` (`id`, `vehicle_type_id`, `service_ids`, `washer_id`, `amount`, `washer_commission`, `supervisor`, `description`, `created_at`, `created_by`, `updated_by`, `updated_at`) VALUES
-(1, 3, '[\"1\",\"2\"]', 1, '70.00', '18.00', 'Akorli', '', '2022-10-29 23:47:53', 'Manuel Tetteh', NULL, NULL);
+(2, 3, '[\"3\",\"4\"]', 2, '60.00', '20.25', 'Tetteh', '', '2022-11-05 01:56:08', 'Manuel Tetteh', NULL, NULL),
+(3, 3, '[\"1\",\"2\",\"4\"]', 2, '105.00', '32.00', 'Tetteh', '', '2022-11-05 02:03:28', 'Manuel Tetteh', NULL, NULL),
+(4, 3, '[\"1\"]', 2, '30.00', '6.00', 'Tetteh', '', '2022-11-05 02:04:10', 'Manuel Tetteh', NULL, NULL),
+(5, 3, '[\"2\",\"3\"]', 3, '65.00', '18.25', 'Akorli', '', '2022-11-05 02:20:15', 'Manuel Tetteh', NULL, NULL),
+(6, 3, '[\"1\",\"2\",\"3\",\"4\"]', 4, '130.00', '38.25', 'Manuel', '', '2022-11-05 02:20:39', 'Manuel Tetteh', NULL, NULL),
+(7, 3, '[\"2\",\"3\"]', 3, '65.00', '18.25', 'Akorli', '', '2022-11-05 03:14:50', 'Manuel Tetteh', NULL, NULL),
+(8, 3, '[\"2\",\"3\"]', 4, '65.00', '18.25', 'Tetteh', '', '2022-11-07 23:06:51', 'Manuel Tetteh', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -548,8 +507,8 @@ ALTER TABLE `tbl_car_washers`
 --
 ALTER TABLE `tbl_pricing`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_pricing_service` (`service_id`),
-  ADD KEY `FK_pricing_vehicle` (`vehicle_type_id`);
+  ADD KEY `FK_pricing_vehicle` (`vehicle_type_id`),
+  ADD KEY `FK_pricing_service` (`service_id`);
 
 --
 -- Indexes for table `tbl_products`
@@ -569,15 +528,15 @@ ALTER TABLE `tbl_retail`
 --
 ALTER TABLE `tbl_sales`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ProductWarehouseLog` (`product_id`);
+  ADD KEY `fk_sales_product` (`product_id`);
 
 --
 -- Indexes for table `tbl_sales_audit`
 --
 ALTER TABLE `tbl_sales_audit`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_product_audit` (`product_id`),
-  ADD KEY `FK_user_audit` (`user_id`);
+  ADD KEY `fk_audit_user` (`user_id`),
+  ADD KEY `fk_audit_product` (`product_id`);
 
 --
 -- Indexes for table `tbl_services`
@@ -609,14 +568,14 @@ ALTER TABLE `tbl_vehicle_type`
 --
 ALTER TABLE `tbl_warehouse`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ProductWarehouse` (`product_id`);
+  ADD KEY `fkProduct` (`product_id`);
 
 --
 -- Indexes for table `tbl_warehouse_logs`
 --
 ALTER TABLE `tbl_warehouse_logs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ProductWarehouseLog` (`product_id`);
+  ADD KEY `fkwlogsProduct` (`product_id`);
 
 --
 -- Indexes for table `tbl_washer_debts`
@@ -630,8 +589,8 @@ ALTER TABLE `tbl_washer_debts`
 --
 ALTER TABLE `tbl_washing_transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_washer_transaction` (`washer_id`),
-  ADD KEY `FK_vehicle_transaction` (`vehicle_type_id`);
+  ADD KEY `FK_vehicle_transaction` (`vehicle_type_id`),
+  ADD KEY `FK_washer_transaction` (`washer_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -641,7 +600,7 @@ ALTER TABLE `tbl_washing_transactions`
 -- AUTO_INCREMENT for table `tbl_car_washers`
 --
 ALTER TABLE `tbl_car_washers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_pricing`
@@ -665,13 +624,13 @@ ALTER TABLE `tbl_retail`
 -- AUTO_INCREMENT for table `tbl_sales`
 --
 ALTER TABLE `tbl_sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_sales_audit`
 --
 ALTER TABLE `tbl_sales_audit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `tbl_services`
@@ -719,7 +678,7 @@ ALTER TABLE `tbl_washer_debts`
 -- AUTO_INCREMENT for table `tbl_washing_transactions`
 --
 ALTER TABLE `tbl_washing_transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -729,7 +688,7 @@ ALTER TABLE `tbl_washing_transactions`
 -- Constraints for table `tbl_pricing`
 --
 ALTER TABLE `tbl_pricing`
-  ADD CONSTRAINT `FK_pricing_service` FOREIGN KEY (`service_id`) REFERENCES `tbl_services` (`id`),
+  ADD CONSTRAINT `FK_pricing_service` FOREIGN KEY (`service_id`) REFERENCES `tbl_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_pricing_vehicle` FOREIGN KEY (`vehicle_type_id`) REFERENCES `tbl_vehicle_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -739,10 +698,35 @@ ALTER TABLE `tbl_retail`
   ADD CONSTRAINT `FK_retail_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `tbl_sales`
+--
+ALTER TABLE `tbl_sales`
+  ADD CONSTRAINT `fk_sales_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_sales_audit`
+--
+ALTER TABLE `tbl_sales_audit`
+  ADD CONSTRAINT `fk_audit_product` FOREIGN KEY (`product_id`) REFERENCES `tbl_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_audit_user` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `tbl_vehicles`
 --
 ALTER TABLE `tbl_vehicles`
   ADD CONSTRAINT `FK_vehicle_vehicle_type` FOREIGN KEY (`vehicle_type`) REFERENCES `tbl_vehicle_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_warehouse`
+--
+ALTER TABLE `tbl_warehouse`
+  ADD CONSTRAINT `fkProduct` FOREIGN KEY (`product_id`) REFERENCES `tbl_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_warehouse_logs`
+--
+ALTER TABLE `tbl_warehouse_logs`
+  ADD CONSTRAINT `fkwlogsProduct` FOREIGN KEY (`product_id`) REFERENCES `tbl_products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_washer_debts`
@@ -755,7 +739,7 @@ ALTER TABLE `tbl_washer_debts`
 --
 ALTER TABLE `tbl_washing_transactions`
   ADD CONSTRAINT `FK_vehicle_transaction` FOREIGN KEY (`vehicle_type_id`) REFERENCES `tbl_vehicle_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_washer_transaction` FOREIGN KEY (`washer_id`) REFERENCES `tbl_car_washers` (`id`);
+  ADD CONSTRAINT `FK_washer_transaction` FOREIGN KEY (`washer_id`) REFERENCES `tbl_car_washers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
