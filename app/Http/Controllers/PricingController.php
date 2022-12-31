@@ -46,16 +46,25 @@ class PricingController extends Controller
             // $active_user = $user_session->first_name." ".$user_session->last_name;
             $active_user = $user_session->username;
 
-            $add_pricing = new Pricing();
-            $add_pricing->service_id = $service_id;
-            $add_pricing->vehicle_type_id = $vehicle_type_id;
-            $add_pricing->price = $price;
-            $add_pricing->description = $description;
-            $add_pricing->created_by = $active_user;
-            $add_pricing->save();
+            $get_selected_service_and_vehicle_info = Pricing::where('vehicle_type_id', $vehicle_type_id)->where('service_id', $service_id)->get();
+            // dd($get_selected_service_and_vehicle_info);
+            if (count($get_selected_service_and_vehicle_info) > 0) {
+                Alert::toast('Record Already Exist','warning');
+                return back();
+            } else {
+                $add_pricing = new Pricing();
+                $add_pricing->service_id = $service_id;
+                $add_pricing->vehicle_type_id = $vehicle_type_id;
+                $add_pricing->price = $price;
+                $add_pricing->description = $description;
+                $add_pricing->created_by = $active_user;
+                $add_pricing->save();
 
-            Alert::toast('Service Pricing set successfully','success');
-            return back();
+                Alert::toast('Service Pricing set successfully','success');
+                return back();
+            }
+            
+
 
         } catch (exception $e) {
             echo 'Caught exception';
@@ -83,17 +92,37 @@ class PricingController extends Controller
             $active_user = $user_session->username;
             $current_date_and_time = Carbon::now()->toDateTimeString();
 
-            $update_pricing = Pricing::find($pricing_id);
-            $update_pricing->service_id = $service_id;
-            $update_pricing->vehicle_type_id = $vehicle_type_id;
-            $update_pricing->price = $price;
-            $update_pricing->description = $description;
-            $update_pricing->updated_by = $active_user;
-            $update_pricing->updated_at = $current_date_and_time;
-            $update_pricing->save();
+            $get_selected_service_and_vehicle_info = Pricing::where('vehicle_type_id', $vehicle_type_id)->where('service_id', $service_id)->get();
 
-            Alert::toast('Service pricing updated successfully','success');
-            return back();
+            if (count($get_selected_service_and_vehicle_info) > 0) {
+                Alert::toast('Record Already Exist','warning');
+                return back();
+            } else {
+
+                $update_pricing = Pricing::find($pricing_id);
+                $update_pricing->service_id = $service_id;
+                $update_pricing->vehicle_type_id = $vehicle_type_id;
+                $update_pricing->price = $price;
+                $update_pricing->description = $description;
+                $update_pricing->updated_by = $active_user;
+                $update_pricing->updated_at = $current_date_and_time;
+                $update_pricing->save();
+
+                Alert::toast('Service pricing updated successfully','success');
+                return back();
+            }
+
+            // $update_pricing = Pricing::find($pricing_id);
+            // $update_pricing->service_id = $service_id;
+            // $update_pricing->vehicle_type_id = $vehicle_type_id;
+            // $update_pricing->price = $price;
+            // $update_pricing->description = $description;
+            // $update_pricing->updated_by = $active_user;
+            // $update_pricing->updated_at = $current_date_and_time;
+            // $update_pricing->save();
+
+            // Alert::toast('Service pricing updated successfully','success');
+            // return back();
 
         } catch (exception $e) {
             echo 'Caught exception';
